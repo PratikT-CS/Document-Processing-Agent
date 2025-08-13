@@ -1,0 +1,1121 @@
+2025-08-13 14:15:11,958 - root - ERROR - Application error: Cannot find empty port in range: 7860-7860. You can specify a different port by setting the GRADIO_SERVER_PORT environment variable or passing the `server_port` parameter to `launch()`.
+2025-08-13 14:15:13,338 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:15:53,214 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 14:15:53,261 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 14:15:53,848 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:16:56,730 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:16:56,731 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:16:56,793 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:16:56,821 - src.agents.text_extractor - ERROR - Error in text extraction: File path or type not found in state
+2025-08-13 14:16:56,827 - src.agents.main_graph - INFO - Workflow completed with status: error
+2025-08-13 14:21:06,756 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:21:06,757 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:21:06,780 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:21:06,810 - src.agents.text_extractor - ERROR - Error in text extraction: File path or type not found in state
+2025-08-13 14:21:06,812 - src.agents.main_graph - INFO - Workflow completed with status: error
+2025-08-13 14:25:26,517 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:25:26,518 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:25:26,529 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:25:26,534 - src.agents.text_extractor - ERROR - Error in text extraction: File path or type not found in state
+2025-08-13 14:25:26,540 - src.agents.main_graph - INFO - Workflow completed with status: error
+2025-08-13 14:25:53,500 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:25:54,017 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 14:25:54,032 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 14:26:01,688 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:26:01,688 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:26:01,702 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:26:01,706 - src.agents.text_extractor - ERROR - Error in text extraction: 'file_type'
+2025-08-13 14:26:01,707 - src.agents.main_graph - INFO - Workflow completed with status: error
+2025-08-13 14:30:10,863 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 14:30:10,901 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 14:30:11,573 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:30:22,495 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:30:22,495 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:30:22,520 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:30:22,524 - src.agents.text_extractor - ERROR - Error in text extraction: 'file_type'
+2025-08-13 14:30:22,526 - src.agents.main_graph - INFO - Workflow completed with status: error
+2025-08-13 14:31:44,709 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 14:31:44,751 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 14:31:45,431 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:31:54,722 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:31:54,723 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:31:54,742 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:31:54,750 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:31:55,198 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8895 characters
+2025-08-13 14:31:55,200 - src.agents.summarizer - ERROR - Error in summarization: Unable to import langchain_google_vertexai. Please install with `pip install -U langchain-google-vertexai`
+2025-08-13 14:31:55,202 - src.agents.main_graph - INFO - Workflow completed with status: error
+2025-08-13 14:35:02,468 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 14:35:02,506 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 14:35:02,962 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:35:23,312 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:35:23,313 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:35:23,339 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:35:23,342 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:35:23,677 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8895 characters
+2025-08-13 14:36:02,758 - src.agents.summarizer - ERROR - Error in summarization: Unable to find your project. Please provide a project ID by:
+- Passing a constructor argument
+- Using vertexai.init()
+- Setting project using 'gcloud config set project my-project'
+- Setting a GCP environment variable
+- To create a Google Cloud project, please follow guidance at https://developers.google.com/workspace/guides/create-project
+2025-08-13 14:36:02,761 - src.agents.main_graph - INFO - Workflow completed with status: error
+2025-08-13 14:43:02,147 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 14:43:02,190 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 14:43:03,197 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:43:26,336 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:43:26,344 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:43:26,363 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:43:26,375 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:43:27,265 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8895 characters
+2025-08-13 14:43:29,334 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:43:31,810 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:43:34,764 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:43:34,774 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 14:44:28,282 - src.agents.main_graph - INFO - Processing question: Can you give me  the details of the vechicle from the document?...
+2025-08-13 14:44:28,301 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:44:28,320 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:44:29,148 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8895 characters
+2025-08-13 14:44:29,154 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:44:32,779 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:44:34,275 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:44:34,276 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 14:49:24,557 - src.agents.main_graph - INFO - Processing question: Hey There!...
+2025-08-13 14:49:24,562 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:49:24,564 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:49:24,896 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8895 characters
+2025-08-13 14:49:24,901 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:49:27,396 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:49:29,053 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:49:29,054 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 14:49:52,524 - src.agents.main_graph - INFO - Processing question: HI...
+2025-08-13 14:49:52,529 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:49:52,533 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:49:52,901 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8895 characters
+2025-08-13 14:49:52,908 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:49:57,446 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:49:59,273 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:49:59,274 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 14:50:19,294 - src.agents.main_graph - INFO - Processing question: What specific vehicle details are required on the Georgia Motor Vehicle Title Application (MV-I)?...
+2025-08-13 14:50:19,300 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:50:19,305 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\e7b245b40d2640b2431647a2033c383cb958935398f4172f3e12779c5942f747\144255GA MV-12020.pdf
+2025-08-13 14:50:19,941 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8895 characters
+2025-08-13 14:50:19,951 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:50:24,595 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:50:25,874 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:50:25,877 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 14:53:43,506 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 14:53:43,549 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 14:53:44,071 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 14:53:50,853 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:53:50,861 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:53:50,883 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:53:50,890 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:53:51,185 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4274 characters
+2025-08-13 14:53:52,816 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:53:55,694 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:53:57,177 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:53:57,180 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 14:54:08,303 - src.agents.main_graph - INFO - Processing question: What is the primary purpose of the T-7 Bill of Sale form from the Georgia Department of Revenue's Mo...
+2025-08-13 14:54:08,307 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:54:08,310 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:54:08,644 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4274 characters
+2025-08-13 14:54:08,656 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:54:11,938 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:54:13,307 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:54:13,308 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 14:58:01,790 - src.agents.main_graph - INFO - Processing question: What is 2+2?...
+2025-08-13 14:58:01,794 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:58:01,796 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:58:01,948 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4274 characters
+2025-08-13 14:58:01,953 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:58:04,920 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:58:06,376 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:58:06,379 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 14:58:57,874 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:58:57,879 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:58:57,889 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:58:57,895 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:58:58,964 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4274 characters
+2025-08-13 14:58:58,974 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:59:02,247 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:59:03,547 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:59:03,566 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 14:59:13,898 - src.agents.main_graph - INFO - Processing question: Under what circumstances is a vehicle exempt from odometer disclosure requirements when using this B...
+2025-08-13 14:59:13,903 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 14:59:13,905 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 14:59:14,088 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4274 characters
+2025-08-13 14:59:14,096 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 14:59:16,283 - langchain_google_genai.chat_models - WARNING - Retrying langchain_google_genai.chat_models._chat_with_retry.<locals>._chat_with_retry in 2.0 seconds as it raised InternalServerError: 500 An internal error has occurred. Please retry or report in https://developers.generativeai.google/guide/troubleshooting.
+2025-08-13 14:59:25,195 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 14:59:26,547 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 14:59:26,550 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 15:07:09,275 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 15:07:09,338 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 15:07:09,721 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 15:07:18,709 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 15:07:18,720 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 15:07:18,826 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:07:18,828 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d3f366e4131c6bcc7dab62edc96728ed371bb8495ba113fcec8743d51ec2e2d0\144255BILL OF SALE.pdf
+2025-08-13 15:07:19,343 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4274 characters
+2025-08-13 15:07:21,411 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 15:07:25,448 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 15:07:28,257 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 15:07:28,259 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 15:07:36,902 - src.agents.main_graph - INFO - Processing question: Under what circumstances is a vehicle exempt from odometer disclosure requirements on this Bill of S...
+2025-08-13 15:07:36,928 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:07:36,944 - src.agents.qa_agent - INFO - Processing question: Under what circumstances is a vehicle exempt from odometer disclosure requirements on this Bill of S...
+2025-08-13 15:07:36,961 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 15:07:36,987 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:07:39,728 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:07:39,744 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 15:07:39,756 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 15:08:10,332 - src.agents.main_graph - INFO - Processing question: So can you provde me details of vechile from the document?...
+2025-08-13 15:08:10,336 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:08:10,360 - src.agents.qa_agent - INFO - Processing question: So can you provde me details of vechile from the document?...
+2025-08-13 15:08:10,376 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 15:08:10,378 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 15:08:12,566 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 15:08:12,571 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 15:08:12,576 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 15:10:43,581 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 15:10:43,582 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 15:10:43,589 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:10:43,592 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 15:10:43,799 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4293 characters
+2025-08-13 15:10:43,804 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 15:10:46,906 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 15:10:49,940 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 15:10:49,981 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 15:11:29,011 - src.agents.main_graph - INFO - Processing question: Can you give me vechicle details from the document like VIN, Make, ...?...
+2025-08-13 15:11:29,015 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:11:29,023 - src.agents.qa_agent - INFO - Processing question: Can you give me vechicle details from the document like VIN, Make, ...?...
+2025-08-13 15:11:29,040 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 15:11:29,046 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 15:11:31,609 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 15:11:31,610 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 15:11:31,611 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 15:15:33,405 - root - ERROR - Application error: 'DocumentProcessingWorkflow' object has no attribute 'get_graph'
+2025-08-13 15:19:47,213 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 15:19:47,318 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 15:19:48,292 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 15:50:18,352 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 15:50:18,574 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 15:50:18,709 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 15:54:04,385 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 15:54:04,385 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 15:54:04,397 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:54:04,402 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 15:54:04,748 - src.agents.text_extractor - INFO - Raw Text: 
+MV-1 (Revised 6-2020)
+Georgia Department of Revenue - Motor Vehicle Division  
+Form MV -1 Motor Vehicle Title Application  
+For instructions on how to complete this form se e page 2.
+A VEHICLE INFORMAT ION 
+Vehicle ID (VIN) : _____________________________   Current Title # :  _________________________  _  Year:   ______   _ 
+Make :           _____________________________   Current Title’s State of Issue:   _______________ _  Color:      ______   _ 
+Model :            _____________________________   GA County of Residence:      ________________ _  Cylinders:  ______   _ 
+Body Style :          _____________________________   District #:       __________________________  __  Fuel Type: ______  _ 
+Odometer Exceptions :  EXEMPT   Exceeds Mechanical Limits of Odometer   Not the Actual Mileage, Warning Odometer Discrepancy 
+Odometer Reading :  _____________________________   Date Purchased :  _____________________________    
+COMPLETE FOR ALL COMMERC IAL VEHICLES  
+Gross Vehicle Weight & Load :  __________________________          Straight Truck?  Yes  No           Used for Hire?   Yes  No 
+Type of Trailer Pulled?   _____________________   Product Hauled?  ____________________   Is this a Farm Vehicle?    Yes  No 
+B OWNER INFORMATION  
+Number of Owners: _______                 Leased Vehicle:   No  Yes (If yes, complete Section D)  
+If purchased from an out -of-state business, did you pick up the vehicle out  of state?   Yes  No 
+*Owner’s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious
+name or address or for making a material false statement punishable by fine up to $5,000 or by imprisonment of up to five years, or both that
+the statements contained herein are true and accurate.
+OWNER # 1  
+Full Legal Name:  ____________________________________________  Driver’s License # :  __________________   State :  ____ _ 
+Date of Birth:   ___________   E-mail Address:  __________________________________________  Phone #:  _________________  
+Business Name:   _______________________ _____________________   Name of Agent :  ______________________________  _ 
+Address:  ________ ______________________________________________________________________________________ 
+Mailing Address:  _  _______________________________________________________________________________________  
+*Signature of Owner 1 o r Business Agent:   ___________________________________________________   Date:  ________________
+OWNER # 2 
+Full Legal Name:  ____________________________________________  Driver’s License # :  __________________   State:   ____ _ 
+Date of Birth:  ___________   E-mail Address:  __________________________________________  Phone #:  _________________  
+Business Name:   ____________________________________________   Name of Agent :  ________________________________  
+Address:   ________ ______________________________________________________________________________________  
+Mailing Address:  _  _______________________________________________________________________________________  
+*Signature of Owner 2 o r Business Agent :  ___________________________________________________   Date:  ________________
+C SELLER INFORMATION  D LESSEE INFORMATION  
+GA Dealer’s/Bank’s 12 -Digit Customer ID # (If applicable) : 
+__ __ __ __ __ __ __ __ __ __ __ __   
+Seller’s GA Sales Tax # : 
+__ __ __ __ __ __ __ __ __ 
+Full Legal Name or Business Name and Address : 
+_________________________________________________  
+____ _____________________________________________  
+____ _____________________________________________  
+If Georgia Seller, County Name:  _________________________  
+Directly Financed Dealer Sale:  Yes  No Driver’s License # (If individual ):  ________________________ __ 
+Lessee’s Full Legal Name & Address or Business Lessee’s Full Name 
+& Address:  
+___________________________________________________  
+____ _______________________________________________  
+____ _______________________________________________  
+Lessee’s GA C ounty Name:  ______________________________  
+Lessee’s Phone Number:      ______________________________  
+E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 
+12-Digit ELT ID #:  __ __ __ __ __ __ __ __ __ __ __ __   Name:   _____________________________________________   _
+Address:  _____________________________________________________________________________________________ _
+12-Digit ELT ID # :  __ __ __ __ __ __ __ __ __ __ __ __   Name:   _____________________________________________  _
+Address:   _____________________________________________________________________________________________  _
+F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in  fact. 
+Name:   _    _____________________________________________________________________________________________  
+Mailing Address:  _____ ___________________________________________________________________________________  
+Phone Number:  ___________________________   E-mail Address:   _________________________________________________  
+1FTFW1E68JK456789
+GA99887766
+2018
+Ford
+Black
+F-150
+Fulton
+4
+Pickup Truck
+Gasoline
+58000
+2/8/2025
+1
+Michael Johnson
+GA456789123
+GA
+1975-11-10
+michael.johnson@example.com
+(678) 555-9876
+789 Elm St, Alpharetta, GA 30009
+789 Elm St, Alpharetta, GA 30009
+3
+4
+5
+6
+7
+8
+9
+1
+2
+3
+4
+5
+1
+2
+3
+5
+6
+7
+9
+8
+4
+Atlanta Motors Group
+ 1000 Peachtree St, Atlanta, GA 30309
+Fulton
+3
+7
+6
+5
+4
+3
+2
+1
+0
+9
+8
+7
+6
+Wells Fargo Auto
+321 Bank Blvd, Atlanta, GA 30303
+ 
+ 
+
+Georgia Department of Revenue - Motor Vehicle Division  
+Form MV -1 Motor Vehicle Title Application  
+INSTRUCTION PAGE  
+Purpose of this form:  This form is to be used when applying for a tag and title and must be signed by all owners in Section B.  
+How to submit this form:  This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents 
+to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to 
+https://dor.georgia.gov  to locate the county tag office in your county of residence.  
+A VEHICLE INFORMATON  
+This section must be completed in its entirety.  If you do not know the district in which you live, please check with your county tag office.    
+Include all the requested information: vehicle identification number  (VIN), make of vehicle, model of vehicle, body style, current title number, 
+current title’s state of i ssue, Georgia county of residence, district number  (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and 
+odometer information including whether exempt, exceeds mechanical limits, not actual mileage.   
+Also include odometer reading and date purchase d.  
+COM PLETE FOR ALL COMMERC IAL VEHICL ES 
+This section must be completed for all request s concerning a commercial vehicle.  
+B OWNER INFORMATION  
+List the number of owners, whether the vehicle is leased, and if it was purchased out  of state.  
+All owners listed on the title must sign this form.  By signing this form you are agreeing to the following:  
+*Owner’s signature below warrants: I do solemnly swear or affirm under  criminal penalty of a felony for fraudulent use of a false or fictitious
+name or address or for making a material false statement punishable by fine up to $5,000 or by imprisonment of up to five years, or both
+that the statements contained herein are true  and accurate.
+OWNER # 1   
+For owner number one:  
+•If an individual, provide the full legal name, driver’s license number, state of issuance, date of birth, e-mail address, telephone
+number, address, and mailing address (if applicable).
+•If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable).
+•Signature is required.
+OWNER # 2 
+For owner number two : 
+•If an individual, provide the full legal name, driver’s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable).
+•If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if
+applicable).
+•Signature is required .
+C SELLER INFORMATION D LESSEE INFORMATION  
+Provide:  
+•Georgia dealer’s or b ank’s 12- digit customer identification
+number (if applicable)
+•Seller’s Georgia sales tax number
+•Full legal name or business name and address
+•Georgia county name (if applicable)
+•Whether the vehicle was directly financed by the dealerProvide:  
+•Lessee’s driver’s license number ( if individual)
+•Lessee’s full legal name and address or Business Lessee’s
+full name and address
+•Lessee’s Georgia county name
+•Lessee’s phone number
+E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 
+List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 
+•12-digit customer identification number
+•Name
+•Address
+F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. 
+If using a Power of Attorney, attach the Power of Attorney and fill in their:  
+•Name
+•Mailing address
+•Phone number
+•E-mail address
+2025-08-13 15:54:04,751 - src.agents.text_extractor - INFO - Processed Text: 
+MV-I (Revised 6-2020) Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application For instructions on how to complete this form se e page 2. A VEHICLE INFORMAT ION Vehicle ID (VIN) : _____________________________ Current Title : _________________________ _ Year: ______ _ Make : _____________________________ Current Title s State of Issue: _______________ _ Color: ______ _ Model : _____________________________ GA County of Residence: ________________ _ Cylinders: ______ _ Body Style : _____________________________ District : __________________________ __ Fuel Type: ______ _ Odometer Exceptions : EXEMPT Exceeds Mechanical Limits of Odometer Not the Actual Mileage, Warning Odometer Discrepancy Odometer Reading : _____________________________ Date Purchased : _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled? _____________________ Product Hauled? ____________________ Is this a Farm Vehicle? Yes No B OWNER INFORMATION Number of Owners: _______ Leased Vehicle: No Yes (If yes, complete Section D) If purchased from an out -of-state business, did you pick up the vehicle out of state? Yes No Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: _______________________ _____________________ Name of Agent : ______________________________ _ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner I o r Business Agent: ___________________________________________________ Date: ________________ OWNER 2 Full Legal Name: ____________________________________________ Driver s License : __________________ State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________ Name of Agent : ________________________________ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner 2 o r Business Agent : ___________________________________________________ Date: ________________ C SELLER INFORMATION D LESSEE INFORMATION GA Dealer s Bank s 12 -Digit Customer ID (If applicable) : __ __ __ __ __ __ __ __ __ __ __ __ Seller s GA Sales Tax : __ __ __ __ __ __ __ __ __ Full Legal Name or Business Name and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name: _________________________ Directly Financed Dealer Sale: Yes No Driver s License (If individual ): ________________________ __ Lessee s Full Legal Name Address or Business Lessee s Full Name Address: ___________________________________________________ ____ _______________________________________________ ____ _______________________________________________ Lessee s GA C ounty Name: ______________________________ Lessee s Phone Number: ______________________________ E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in fact. Name: _ _____________________________________________________________________________________________ Mailing Address: _____ ___________________________________________________________________________________ Phone Number: ___________________________ E-mail Address: _________________________________________________ 1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson example.com (678) 555-9876 789 Elm St, Alpharetta, GA 30009 789 Elm St, Alpharetta, GA 30009 3 4 5 6 7 8 9 I 2 3 4 5 I 2 3 5 6 7 9 8 4 Atlanta Motors Group 1000 Peachtree St, Atlanta, GA 30309 Fulton 3 7 6 5 4 3 2 I O 9 8 7 6 Wells Fargo Auto 321 Bank Blvd, Atlanta, GA 30303 Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application INSTRUCTION PAGE Purpose of this form: This form is to be used when applying for a tag and title and must be signed by all owners in Section B. How to submit this form: This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag office in your county of residence. A VEHICLE INFORMATON This section must be completed in its entirety. If you do not know the district in which you live, please check with your county tag office. Include all the requested information: vehicle identification number (VIN), make of vehicle, model of vehicle, body style, current title number, current title s state of i ssue, Georgia county of residence, district number (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and odometer information including whether exempt, exceeds mechanical limits, not actual mileage. Also include odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number of owners, whether the vehicle is leased, and if it was purchased out of state. All owners listed on the title must sign this form. By signing this form you are agreeing to the following: Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I For owner number one: If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable). Signature is required. OWNER 2 For owner number two : If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if applicable). Signature is required . C SELLER INFORMATION D LESSEE INFORMATION Provide: Georgia dealer s or b ank s 12- digit customer identification number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the dealerProvide: Lessee s driver s license number ( if individual) Lessee s full legal name and address or Business Lessee s full name and address Lessee s Georgia county name Lessee s phone number E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 12-digit customer identification number Name Address F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. If using a Power of Attorney, attach the Power of Attorney and fill in their: Name Mailing address Phone number E-mail address
+2025-08-13 15:54:04,752 - src.agents.text_extractor - INFO - Chunks: 
+[{'content': 'MV-I (Revised 6-2020) Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application For instructions on how to complete this form se e page 2. A VEHICLE INFORMAT ION Vehicle ID (VIN) : _____________________________ Current Title : _________________________ _ Year: ______ _ Make : _____________________________ Current Title s State of Issue: _______________ _ Color: ______ _ Model : _____________________________ GA County of Residence: ________________ _ Cylinders: ______ _ Body Style : _____________________________ District : __________________________ __ Fuel Type: ______ _ Odometer Exceptions : EXEMPT Exceeds Mechanical Limits of Odometer Not the Actual Mileage, Warning Odometer Discrepancy Odometer Reading : _____________________________ Date Purchased : _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled?', 'chunk_id': 0, 'word_count': 134, 'char_count': 995}, {'content': ': _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled? _____________________ Product Hauled? ____________________ Is this a Farm Vehicle? Yes No B OWNER INFORMATION Number of Owners: _______ Leased Vehicle: No Yes (If yes, complete Section D) If purchased from an out -of-state business, did you pick up the vehicle out of state? Yes No Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address:', 'chunk_id': 1, 'word_count': 153, 'char_count': 980}, {'content': 'herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: _______________________ _____________________ Name of Agent : ______________________________ _ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner I o r Business Agent: ___________________________________________________ Date: ________________ OWNER 2 Full Legal Name: ____________________________________________ Driver s License : __________________ State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________', 'chunk_id': 2, 'word_count': 85, 'char_count': 996}, {'content': 'State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________ Name of Agent : ________________________________ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner 2 o r Business Agent : ___________________________________________________ Date: ________________ C SELLER INFORMATION D LESSEE INFORMATION GA Dealer s Bank s 12 -Digit Customer ID (If applicable) : __ __ __ __ __ __ __ __ __ __ __ __ Seller s GA Sales Tax : __ __ __ __ __ __ __ __ __ Full Legal Name or Business Name and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name:', 'chunk_id': 3, 'word_count': 104, 'char_count': 982}, {'content': 'and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name: _________________________ Directly Financed Dealer Sale: Yes No Driver s License (If individual ): ________________________ __ Lessee s Full Legal Name Address or Business Lessee s Full Name Address: ___________________________________________________ ____ _______________________________________________ ____ _______________________________________________ Lessee s GA C ounty Name: ______________________________ Lessee s Phone Number: ______________________________ E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID :', 'chunk_id': 4, 'word_count': 98, 'char_count': 997}, {'content': '__ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in fact. Name: _ _____________________________________________________________________________________________ Mailing Address: _____ ___________________________________________________________________________________ Phone Number: ___________________________ E-mail Address: _________________________________________________ 1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson', 'chunk_id': 5, 'word_count': 94, 'char_count': 989}, {'content': '1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson example.com (678) 555-9876 789 Elm St, Alpharetta, GA 30009 789 Elm St, Alpharetta, GA 30009 3 4 5 6 7 8 9 I 2 3 4 5 I 2 3 5 6 7 9 8 4 Atlanta Motors Group 1000 Peachtree St, Atlanta, GA 30309 Fulton 3 7 6 5 4 3 2 I O 9 8 7 6 Wells Fargo Auto 321 Bank Blvd, Atlanta, GA 30303 Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application INSTRUCTION PAGE Purpose of this form: This form is to be used when applying for a tag and title and must be signed by all owners in Section B. How to submit this form: This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag', 'chunk_id': 6, 'word_count': 189, 'char_count': 995}, {'content': 'all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag office in your county of residence. A VEHICLE INFORMATON This section must be completed in its entirety. If you do not know the district in which you live, please check with your county tag office. Include all the requested information: vehicle identification number (VIN), make of vehicle, model of vehicle, body style, current title number, current title s state of i ssue, Georgia county of residence, district number (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and odometer information including whether exempt, exceeds mechanical limits, not actual mileage. Also include odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number', 'chunk_id': 7, 'word_count': 162, 'char_count': 998}, {'content': 'odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number of owners, whether the vehicle is leased, and if it was purchased out of state. All owners listed on the title must sign this form. By signing this form you are agreeing to the following: Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I For owner number one: If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number,', 'chunk_id': 8, 'word_count': 171, 'char_count': 999}, {'content': 'driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable). Signature is required. OWNER 2 For owner number two : If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if applicable). Signature is required . C SELLER INFORMATION D LESSEE INFORMATION Provide: Georgia dealer s or b ank s 12- digit customer identification number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the', 'chunk_id': 9, 'word_count': 151, 'char_count': 985}, {'content': 'number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the dealerProvide: Lessee s driver s license number ( if individual) Lessee s full legal name and address or Business Lessee s full name and address Lessee s Georgia county name Lessee s phone number E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 12-digit customer identification number Name Address F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. If using a Power of Attorney, attach the Power of Attorney and fill in their: Name Mailing address Phone number E-mail address', 'chunk_id': 10, 'word_count': 152, 'char_count': 919}]
+2025-08-13 15:54:04,754 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8933 characters
+2025-08-13 15:54:06,288 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 15:54:10,756 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 15:54:12,285 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 15:54:12,289 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 15:54:46,879 - src.agents.main_graph - INFO - Processing question: What personal information is needed for the owner(s) on this application, and what penalties are ass...
+2025-08-13 15:54:46,884 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:54:46,892 - src.agents.qa_agent - INFO - Processing question: What personal information is needed for the owner(s) on this application, and what penalties are ass...
+2025-08-13 15:54:46,906 - src.agents.qa_agent - INFO - Prepared retrieval index with 11 chunks
+2025-08-13 15:54:46,908 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:54:48,901 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:54:48,905 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 15:54:48,909 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 15:55:08,400 - src.agents.main_graph - INFO - Processing question: Can you provide me the vechicle details from the document?...
+2025-08-13 15:55:08,406 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:55:08,419 - src.agents.qa_agent - INFO - Processing question: Can you provide me the vechicle details from the document?...
+2025-08-13 15:55:08,442 - src.agents.qa_agent - INFO - Prepared retrieval index with 11 chunks
+2025-08-13 15:55:08,452 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:55:10,464 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:55:10,472 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 15:55:10,474 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 15:56:17,781 - src.agents.main_graph - INFO - Processing question: Also provide me the owner's details....
+2025-08-13 15:56:17,786 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:56:17,795 - src.agents.qa_agent - INFO - Processing question: Also provide me the owner's details....
+2025-08-13 15:56:17,813 - src.agents.qa_agent - INFO - Prepared retrieval index with 11 chunks
+2025-08-13 15:56:17,822 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:56:19,496 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 15:56:19,508 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 15:56:19,521 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 15:56:46,588 - src.agents.main_graph - INFO - Processing question: No means owner's details mentioned in the document....
+2025-08-13 15:56:46,595 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 15:56:46,604 - src.agents.qa_agent - INFO - Processing question: No means owner's details mentioned in the document....
+2025-08-13 15:56:46,618 - src.agents.qa_agent - INFO - Prepared retrieval index with 11 chunks
+2025-08-13 15:56:46,621 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 15:56:48,429 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 15:56:48,430 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 15:56:48,432 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 16:23:48,140 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 16:23:48,975 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 16:23:49,062 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 16:25:49,858 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 16:25:50,328 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 16:25:50,502 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 16:26:04,712 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 16:26:04,712 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 16:26:04,737 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 16:26:04,740 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 16:26:05,089 - src.agents.text_extractor - INFO - Raw Text: 
+MV-1 (Revised 6-2020)
+Georgia Department of Revenue - Motor Vehicle Division  
+Form MV -1 Motor Vehicle Title Application  
+For instructions on how to complete this form se e page 2.
+A VEHICLE INFORMAT ION 
+Vehicle ID (VIN) : _____________________________   Current Title # :  _________________________  _  Year:   ______   _ 
+Make :           _____________________________   Current Title’s State of Issue:   _______________ _  Color:      ______   _ 
+Model :            _____________________________   GA County of Residence:      ________________ _  Cylinders:  ______   _ 
+Body Style :          _____________________________   District #:       __________________________  __  Fuel Type: ______  _ 
+Odometer Exceptions :  EXEMPT   Exceeds Mechanical Limits of Odometer   Not the Actual Mileage, Warning Odometer Discrepancy 
+Odometer Reading :  _____________________________   Date Purchased :  _____________________________    
+COMPLETE FOR ALL COMMERC IAL VEHICLES  
+Gross Vehicle Weight & Load :  __________________________          Straight Truck?  Yes  No           Used for Hire?   Yes  No 
+Type of Trailer Pulled?   _____________________   Product Hauled?  ____________________   Is this a Farm Vehicle?    Yes  No 
+B OWNER INFORMATION  
+Number of Owners: _______                 Leased Vehicle:   No  Yes (If yes, complete Section D)  
+If purchased from an out -of-state business, did you pick up the vehicle out  of state?   Yes  No 
+*Owner’s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious
+name or address or for making a material false statement punishable by fine up to $5,000 or by imprisonment of up to five years, or both that
+the statements contained herein are true and accurate.
+OWNER # 1  
+Full Legal Name:  ____________________________________________  Driver’s License # :  __________________   State :  ____ _ 
+Date of Birth:   ___________   E-mail Address:  __________________________________________  Phone #:  _________________  
+Business Name:   _______________________ _____________________   Name of Agent :  ______________________________  _ 
+Address:  ________ ______________________________________________________________________________________ 
+Mailing Address:  _  _______________________________________________________________________________________  
+*Signature of Owner 1 o r Business Agent:   ___________________________________________________   Date:  ________________
+OWNER # 2 
+Full Legal Name:  ____________________________________________  Driver’s License # :  __________________   State:   ____ _ 
+Date of Birth:  ___________   E-mail Address:  __________________________________________  Phone #:  _________________  
+Business Name:   ____________________________________________   Name of Agent :  ________________________________  
+Address:   ________ ______________________________________________________________________________________  
+Mailing Address:  _  _______________________________________________________________________________________  
+*Signature of Owner 2 o r Business Agent :  ___________________________________________________   Date:  ________________
+C SELLER INFORMATION  D LESSEE INFORMATION  
+GA Dealer’s/Bank’s 12 -Digit Customer ID # (If applicable) : 
+__ __ __ __ __ __ __ __ __ __ __ __   
+Seller’s GA Sales Tax # : 
+__ __ __ __ __ __ __ __ __ 
+Full Legal Name or Business Name and Address : 
+_________________________________________________  
+____ _____________________________________________  
+____ _____________________________________________  
+If Georgia Seller, County Name:  _________________________  
+Directly Financed Dealer Sale:  Yes  No Driver’s License # (If individual ):  ________________________ __ 
+Lessee’s Full Legal Name & Address or Business Lessee’s Full Name 
+& Address:  
+___________________________________________________  
+____ _______________________________________________  
+____ _______________________________________________  
+Lessee’s GA C ounty Name:  ______________________________  
+Lessee’s Phone Number:      ______________________________  
+E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 
+12-Digit ELT ID #:  __ __ __ __ __ __ __ __ __ __ __ __   Name:   _____________________________________________   _
+Address:  _____________________________________________________________________________________________ _
+12-Digit ELT ID # :  __ __ __ __ __ __ __ __ __ __ __ __   Name:   _____________________________________________  _
+Address:   _____________________________________________________________________________________________  _
+F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in  fact. 
+Name:   _    _____________________________________________________________________________________________  
+Mailing Address:  _____ ___________________________________________________________________________________  
+Phone Number:  ___________________________   E-mail Address:   _________________________________________________  
+1FTFW1E68JK456789
+GA99887766
+2018
+Ford
+Black
+F-150
+Fulton
+4
+Pickup Truck
+Gasoline
+58000
+2/8/2025
+1
+Michael Johnson
+GA456789123
+GA
+1975-11-10
+michael.johnson@example.com
+(678) 555-9876
+789 Elm St, Alpharetta, GA 30009
+789 Elm St, Alpharetta, GA 30009
+3
+4
+5
+6
+7
+8
+9
+1
+2
+3
+4
+5
+1
+2
+3
+5
+6
+7
+9
+8
+4
+Atlanta Motors Group
+ 1000 Peachtree St, Atlanta, GA 30309
+Fulton
+3
+7
+6
+5
+4
+3
+2
+1
+0
+9
+8
+7
+6
+Wells Fargo Auto
+321 Bank Blvd, Atlanta, GA 30303
+ 
+ 
+
+Georgia Department of Revenue - Motor Vehicle Division  
+Form MV -1 Motor Vehicle Title Application  
+INSTRUCTION PAGE  
+Purpose of this form:  This form is to be used when applying for a tag and title and must be signed by all owners in Section B.  
+How to submit this form:  This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents 
+to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to 
+https://dor.georgia.gov  to locate the county tag office in your county of residence.  
+A VEHICLE INFORMATON  
+This section must be completed in its entirety.  If you do not know the district in which you live, please check with your county tag office.    
+Include all the requested information: vehicle identification number  (VIN), make of vehicle, model of vehicle, body style, current title number, 
+current title’s state of i ssue, Georgia county of residence, district number  (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and 
+odometer information including whether exempt, exceeds mechanical limits, not actual mileage.   
+Also include odometer reading and date purchase d.  
+COM PLETE FOR ALL COMMERC IAL VEHICL ES 
+This section must be completed for all request s concerning a commercial vehicle.  
+B OWNER INFORMATION  
+List the number of owners, whether the vehicle is leased, and if it was purchased out  of state.  
+All owners listed on the title must sign this form.  By signing this form you are agreeing to the following:  
+*Owner’s signature below warrants: I do solemnly swear or affirm under  criminal penalty of a felony for fraudulent use of a false or fictitious
+name or address or for making a material false statement punishable by fine up to $5,000 or by imprisonment of up to five years, or both
+that the statements contained herein are true  and accurate.
+OWNER # 1   
+For owner number one:  
+•If an individual, provide the full legal name, driver’s license number, state of issuance, date of birth, e-mail address, telephone
+number, address, and mailing address (if applicable).
+•If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable).
+•Signature is required.
+OWNER # 2 
+For owner number two : 
+•If an individual, provide the full legal name, driver’s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable).
+•If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if
+applicable).
+•Signature is required .
+C SELLER INFORMATION D LESSEE INFORMATION  
+Provide:  
+•Georgia dealer’s or b ank’s 12- digit customer identification
+number (if applicable)
+•Seller’s Georgia sales tax number
+•Full legal name or business name and address
+•Georgia county name (if applicable)
+•Whether the vehicle was directly financed by the dealerProvide:  
+•Lessee’s driver’s license number ( if individual)
+•Lessee’s full legal name and address or Business Lessee’s
+full name and address
+•Lessee’s Georgia county name
+•Lessee’s phone number
+E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 
+List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 
+•12-digit customer identification number
+•Name
+•Address
+F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. 
+If using a Power of Attorney, attach the Power of Attorney and fill in their:  
+•Name
+•Mailing address
+•Phone number
+•E-mail address
+2025-08-13 16:26:05,092 - src.agents.text_extractor - INFO - Processed Text: 
+MV-I (Revised 6-2020) Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application For instructions on how to complete this form se e page 2. A VEHICLE INFORMAT ION Vehicle ID (VIN) : _____________________________ Current Title : _________________________ _ Year: ______ _ Make : _____________________________ Current Title s State of Issue: _______________ _ Color: ______ _ Model : _____________________________ GA County of Residence: ________________ _ Cylinders: ______ _ Body Style : _____________________________ District : __________________________ __ Fuel Type: ______ _ Odometer Exceptions : EXEMPT Exceeds Mechanical Limits of Odometer Not the Actual Mileage, Warning Odometer Discrepancy Odometer Reading : _____________________________ Date Purchased : _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled? _____________________ Product Hauled? ____________________ Is this a Farm Vehicle? Yes No B OWNER INFORMATION Number of Owners: _______ Leased Vehicle: No Yes (If yes, complete Section D) If purchased from an out -of-state business, did you pick up the vehicle out of state? Yes No Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: _______________________ _____________________ Name of Agent : ______________________________ _ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner I o r Business Agent: ___________________________________________________ Date: ________________ OWNER 2 Full Legal Name: ____________________________________________ Driver s License : __________________ State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________ Name of Agent : ________________________________ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner 2 o r Business Agent : ___________________________________________________ Date: ________________ C SELLER INFORMATION D LESSEE INFORMATION GA Dealer s Bank s 12 -Digit Customer ID (If applicable) : __ __ __ __ __ __ __ __ __ __ __ __ Seller s GA Sales Tax : __ __ __ __ __ __ __ __ __ Full Legal Name or Business Name and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name: _________________________ Directly Financed Dealer Sale: Yes No Driver s License (If individual ): ________________________ __ Lessee s Full Legal Name Address or Business Lessee s Full Name Address: ___________________________________________________ ____ _______________________________________________ ____ _______________________________________________ Lessee s GA C ounty Name: ______________________________ Lessee s Phone Number: ______________________________ E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in fact. Name: _ _____________________________________________________________________________________________ Mailing Address: _____ ___________________________________________________________________________________ Phone Number: ___________________________ E-mail Address: _________________________________________________ 1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson example.com (678) 555-9876 789 Elm St, Alpharetta, GA 30009 789 Elm St, Alpharetta, GA 30009 3 4 5 6 7 8 9 I 2 3 4 5 I 2 3 5 6 7 9 8 4 Atlanta Motors Group 1000 Peachtree St, Atlanta, GA 30309 Fulton 3 7 6 5 4 3 2 I O 9 8 7 6 Wells Fargo Auto 321 Bank Blvd, Atlanta, GA 30303 Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application INSTRUCTION PAGE Purpose of this form: This form is to be used when applying for a tag and title and must be signed by all owners in Section B. How to submit this form: This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag office in your county of residence. A VEHICLE INFORMATON This section must be completed in its entirety. If you do not know the district in which you live, please check with your county tag office. Include all the requested information: vehicle identification number (VIN), make of vehicle, model of vehicle, body style, current title number, current title s state of i ssue, Georgia county of residence, district number (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and odometer information including whether exempt, exceeds mechanical limits, not actual mileage. Also include odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number of owners, whether the vehicle is leased, and if it was purchased out of state. All owners listed on the title must sign this form. By signing this form you are agreeing to the following: Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I For owner number one: If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable). Signature is required. OWNER 2 For owner number two : If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if applicable). Signature is required . C SELLER INFORMATION D LESSEE INFORMATION Provide: Georgia dealer s or b ank s 12- digit customer identification number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the dealerProvide: Lessee s driver s license number ( if individual) Lessee s full legal name and address or Business Lessee s full name and address Lessee s Georgia county name Lessee s phone number E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 12-digit customer identification number Name Address F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. If using a Power of Attorney, attach the Power of Attorney and fill in their: Name Mailing address Phone number E-mail address
+2025-08-13 16:26:05,094 - src.agents.text_extractor - INFO - Chunks: 
+[{'content': 'MV-I (Revised 6-2020) Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application For instructions on how to complete this form se e page 2. A VEHICLE INFORMAT ION Vehicle ID (VIN) : _____________________________ Current Title : _________________________ _ Year: ______ _ Make : _____________________________ Current Title s State of Issue: _______________ _ Color: ______ _ Model : _____________________________ GA County of Residence: ________________ _ Cylinders: ______ _ Body Style : _____________________________ District : __________________________ __ Fuel Type: ______ _ Odometer Exceptions : EXEMPT Exceeds Mechanical Limits of Odometer Not the Actual Mileage, Warning Odometer Discrepancy Odometer Reading : _____________________________ Date Purchased : _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled?', 'chunk_id': 0, 'word_count': 134, 'char_count': 995}, {'content': ': _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled? _____________________ Product Hauled? ____________________ Is this a Farm Vehicle? Yes No B OWNER INFORMATION Number of Owners: _______ Leased Vehicle: No Yes (If yes, complete Section D) If purchased from an out -of-state business, did you pick up the vehicle out of state? Yes No Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address:', 'chunk_id': 1, 'word_count': 153, 'char_count': 980}, {'content': 'herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: _______________________ _____________________ Name of Agent : ______________________________ _ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner I o r Business Agent: ___________________________________________________ Date: ________________ OWNER 2 Full Legal Name: ____________________________________________ Driver s License : __________________ State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________', 'chunk_id': 2, 'word_count': 85, 'char_count': 996}, {'content': 'State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________ Name of Agent : ________________________________ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner 2 o r Business Agent : ___________________________________________________ Date: ________________ C SELLER INFORMATION D LESSEE INFORMATION GA Dealer s Bank s 12 -Digit Customer ID (If applicable) : __ __ __ __ __ __ __ __ __ __ __ __ Seller s GA Sales Tax : __ __ __ __ __ __ __ __ __ Full Legal Name or Business Name and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name:', 'chunk_id': 3, 'word_count': 104, 'char_count': 982}, {'content': 'and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name: _________________________ Directly Financed Dealer Sale: Yes No Driver s License (If individual ): ________________________ __ Lessee s Full Legal Name Address or Business Lessee s Full Name Address: ___________________________________________________ ____ _______________________________________________ ____ _______________________________________________ Lessee s GA C ounty Name: ______________________________ Lessee s Phone Number: ______________________________ E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID :', 'chunk_id': 4, 'word_count': 98, 'char_count': 997}, {'content': '__ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in fact. Name: _ _____________________________________________________________________________________________ Mailing Address: _____ ___________________________________________________________________________________ Phone Number: ___________________________ E-mail Address: _________________________________________________ 1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson', 'chunk_id': 5, 'word_count': 94, 'char_count': 989}, {'content': '1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson example.com (678) 555-9876 789 Elm St, Alpharetta, GA 30009 789 Elm St, Alpharetta, GA 30009 3 4 5 6 7 8 9 I 2 3 4 5 I 2 3 5 6 7 9 8 4 Atlanta Motors Group 1000 Peachtree St, Atlanta, GA 30309 Fulton 3 7 6 5 4 3 2 I O 9 8 7 6 Wells Fargo Auto 321 Bank Blvd, Atlanta, GA 30303 Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application INSTRUCTION PAGE Purpose of this form: This form is to be used when applying for a tag and title and must be signed by all owners in Section B. How to submit this form: This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag', 'chunk_id': 6, 'word_count': 189, 'char_count': 995}, {'content': 'all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag office in your county of residence. A VEHICLE INFORMATON This section must be completed in its entirety. If you do not know the district in which you live, please check with your county tag office. Include all the requested information: vehicle identification number (VIN), make of vehicle, model of vehicle, body style, current title number, current title s state of i ssue, Georgia county of residence, district number (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and odometer information including whether exempt, exceeds mechanical limits, not actual mileage. Also include odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number', 'chunk_id': 7, 'word_count': 162, 'char_count': 998}, {'content': 'odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number of owners, whether the vehicle is leased, and if it was purchased out of state. All owners listed on the title must sign this form. By signing this form you are agreeing to the following: Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I For owner number one: If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number,', 'chunk_id': 8, 'word_count': 171, 'char_count': 999}, {'content': 'driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable). Signature is required. OWNER 2 For owner number two : If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if applicable). Signature is required . C SELLER INFORMATION D LESSEE INFORMATION Provide: Georgia dealer s or b ank s 12- digit customer identification number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the', 'chunk_id': 9, 'word_count': 151, 'char_count': 985}, {'content': 'number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the dealerProvide: Lessee s driver s license number ( if individual) Lessee s full legal name and address or Business Lessee s full name and address Lessee s Georgia county name Lessee s phone number E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 12-digit customer identification number Name Address F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. If using a Power of Attorney, attach the Power of Attorney and fill in their: Name Mailing address Phone number E-mail address', 'chunk_id': 10, 'word_count': 152, 'char_count': 919}]
+2025-08-13 16:26:05,096 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8933 characters
+2025-08-13 16:26:05,997 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 16:26:08,617 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 16:26:10,980 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 16:26:10,983 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 17:18:13,707 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 17:18:13,950 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 17:18:14,040 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 17:18:27,332 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 17:18:27,334 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 17:18:27,353 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:18:27,362 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 17:18:27,644 - src.agents.text_extractor - INFO - Raw Text: 
+Have a question? Visit our website at http://dor.georgia.gov/motor -vehicles or scan the QR code above for more information.  
+T-7 (Revised 9-2022)
+Web and MV Manual
+Georgia Department of Revenue - Motor Vehicle Division  
+Bill of Sale 
+ANY CORRECTION OR ALTERATION WILL VOID THIS FORM  
+Purpose of this form : This form is to be used to provide evidence that a transaction between the purchaser(s)/transferee(s) and seller(s)/transferor(s) has taken 
+place and that the odometer reading has been declared by the vehicle’s seller (s) and acknowledged by the vehicle’s buyer(s).  
+Completing this form: This  form must be completed in its entirety, legibly printed or typed. 
+Section A: Record the vehicle’s information. Please note:  Federal regulations require the seller(s)/transferor(s) to disclose the odometer reading and the 
+purchaser(s)/transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure 
+requirements. Twenty (20) model years old and older vehicles are exempt from odometer disclosure requirements. If a vehicle is twenty (20) model years old or 
+older, the seller(s)/transferor(s) may enter the word “exempt” in the space provided for the odometer reading. 
+Section B: Complete the seller(s)’/transferor(s)’ information. If a court has ordered the sale of the vehicle, record the court’s case number. If the seller/transferor is a business, provide Georgia Tax Identification Number and Georgia Sales Tax Number. 
+Section C:  Provide the purchaser(s)’/transferee(s)’ information. 
+Section D:  Record, if any, lienholders, security interest holders or encumbrance holders. 
+Section E: Certify all statements are true and accurate.  
+How to submit this form: Submit this form along with required documents and applicable tax to the county tag office in the county where the primary purchaser 
+resides. Please refer to https://mvd.dor.ga.gov/motor/ tagoffices/selecttagoffice.aspx
+ to locate the county tag office in the primary purchaser’s county of 
+residence. 
+Required documents:  A court order is required if a court has ordered the sale of the vehicle. A Georgia certificate of title is required if the vehicle being 
+sold/transferred is a 1986 or newer model year motor vehicle, motorcycle, camper, travel trailer, or car/tow dolly weighing 2,001 pounds or more; or a 1963 or 
+newer model year mobile home. Applicable t ax: If the vehicle requires a title, go to https://dor.georgia.gov/drives -e-services and click on the Title Ad Valorem Tax Estimator link  to get an 
+estimated Title Ad Valorem Tax (TAVT) amount based on the value of the vehicle. Note: Trailers are not subject to TAVT. 
+A VEHICLE INFORMATION  
+Vehicle Identification No. (VIN):  
+Year:   Make: Mode l: 
+Odometer Reading :  (no tenths)  Date of Sale/Transfer:  / / Purchase Price: 
+B SELLER(S)  / TRANSFEROR(S) INFORMATION  
+Court Order Case No.:  
+If Court Ordered SaleGeorgia Tax ID No. : 
+If Business  Georgia Sales Tax No.:  
+If Business  
+Seller(s)’/Transferor(s)’  
+Full Legal Name (s): Primary  Secondary  
+ 
+Mailing Address:  Street No.  Street Name  Apt./Suite No.  
+City:  Sta te: ZIP  Code: Cou nty: 
+C PURCHASER (S) / TRANSFEREE (S) INFORMATION  
+Purchaser (s)’/Transferee(s)’  
+Full Legal Name (s): Primary  Secondary  
+ 
+Mailing Address:  Street No.  Street Name  Apt./Suite No.  
+City:  Sta te: ZIP  Code: Cou nty: 
+D LIENHOLDER OR SECURITY INTEREST HOLDER  INFORMATION  
+Lienholder’s  or Security 
+Interest Holder’s Name:  
+ 
+Mailing Address:  Street No.  Street Name  Apt./Suite No.  
+City:  Sta te: ZIP  Code: Telep hone No.: 
+E CERTIFICATION  
+I/we, the seller(s)/transferor(s)  named in Section B , sold or transferred the vehicle described herein to the buyer(s)/transferee(s) named in Section C. I/we 
+hereby certify that to the best of my/our knowledge the odometer reading reflects the total actual mileage of the vehicle unl ess otherwise indicated. I/we further 
+state that there are no liens, security interests, or encumbrances on this vehicle except as listed in Section D. 
+Seller(s)’/Transferor(s)’ 
+Signature(s) : Primary Date Secondary  Date  
+Buyer(s)’/Transferee(s)’ 
+Signature(s) : Primary Date Secondary  Date  
+ 
+1 F T F W 1 E 6 8 J K 4 5 6 7 8 9
+2018
+Ford
+ F-150
+58,000
+28,000
+Atlanta Motors Group
+1000
+Peachtree St
+Atlanta
+GA
+30309
+Michael T. Johnson
+789
+Elm St
+Alpharetta
+GA
+30009
+Wells Fargo Auto
+321
+Bank Blvd
+Atlanta
+GA
+30303
+
+2025-08-13 17:18:27,646 - src.agents.text_extractor - INFO - Processed Text: 
+Have a question? Visit our website at http: dor.georgia.gov motor -vehicles or scan the QR code above for more information. T-7 (Revised 9-2022) Web and MV Manual Georgia Department of Revenue - Motor Vehicle Division Bill of Sale ANY CORRECTION OR ALTERATION WILL VOID THIS FORM Purpose of this form : This form is to be used to provide evidence that a transaction between the purchaser(s) transferee(s) and seller(s) transferor(s) has taken place and that the odometer reading has been declared by the vehicle s seller (s) and acknowledged by the vehicle s buyer(s). Completing this form: This form must be completed in its entirety, legibly printed or typed. Section A: Record the vehicle s information. Please note: Federal regulations require the seller(s) transferor(s) to disclose the odometer reading and the purchaser(s) transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure requirements. Twenty (20) model years old and older vehicles are exempt from odometer disclosure requirements. If a vehicle is twenty (20) model years old or older, the seller(s) transferor(s) may enter the word exempt in the space provided for the odometer reading. Section B: Complete the seller(s) transferor(s) information. If a court has ordered the sale of the vehicle, record the court s case number. If the seller transferor is a business, provide Georgia Tax Identification Number and Georgia Sales Tax Number. Section C: Provide the purchaser(s) transferee(s) information. Section D: Record, if any, lienholders, security interest holders or encumbrance holders. Section E: Certify all statements are true and accurate. How to submit this form: Submit this form along with required documents and applicable tax to the county tag office in the county where the primary purchaser resides. Please refer to https: mvd.dor.ga.gov motor tagoffices selecttagoffice.aspx to locate the county tag office in the primary purchaser s county of residence. Required documents: A court order is required if a court has ordered the sale of the vehicle. A Georgia certificate of title is required if the vehicle being sold transferred is a 1986 or newer model year motor vehicle, motorcycle, camper, travel trailer, or car tow dolly weighing 2,001 pounds or more; or a 1963 or newer model year mobile home. Applicable t ax: If the vehicle requires a title, go to https: dor.georgia.gov drives -e-services and click on the Title Ad Valorem Tax Estimator link to get an estimated Title Ad Valorem Tax (TAVT) amount based on the value of the vehicle. Note: Trailers are not subject to TAVT. A VEHICLE INFORMATION Vehicle Identification No. (VIN): Year: Make: Mode l: Odometer Reading : (no tenths) Date of Sale Transfer: Purchase Price: B SELLER(S) TRANSFEROR(S) INFORMATION Court Order Case No.: If Court Ordered SaleGeorgia Tax ID No. : If Business Georgia Sales Tax No.: If Business Seller(s) Transferor(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: C PURCHASER (S) TRANSFEREE (S) INFORMATION Purchaser (s) Transferee(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: D LIENHOLDER OR SECURITY INTEREST HOLDER INFORMATION Lienholder s or Security Interest Holder s Name: Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Telep hone No.: E CERTIFICATION I we, the seller(s) transferor(s) named in Section B , sold or transferred the vehicle described herein to the buyer(s) transferee(s) named in Section C. I we hereby certify that to the best of my our knowledge the odometer reading reflects the total actual mileage of the vehicle unl ess otherwise indicated. I we further state that there are no liens, security interests, or encumbrances on this vehicle except as listed in Section D. Seller(s) Transferor(s) Signature(s) : Primary Date Secondary Date Buyer(s) Transferee(s) Signature(s) : Primary Date Secondary Date I F T F W I E 6 8 J K 4 5 6 7 8 9 2018 Ford F-150 58,000 28,000 Atlanta Motors Group 1000 Peachtree St Atlanta GA 30309 Michael T. Johnson 789 Elm St Alpharetta GA 30009 Wells Fargo Auto 321 Bank Blvd Atlanta GA 30303
+2025-08-13 17:18:27,649 - src.agents.text_extractor - INFO - Chunks: 
+[{'content': 'Have a question? Visit our website at http: dor.georgia.gov motor -vehicles or scan the QR code above for more information. T-7 (Revised 9-2022) Web and MV Manual Georgia Department of Revenue - Motor Vehicle Division Bill of Sale ANY CORRECTION OR ALTERATION WILL VOID THIS FORM Purpose of this form : This form is to be used to provide evidence that a transaction between the purchaser(s) transferee(s) and seller(s) transferor(s) has taken place and that the odometer reading has been declared by the vehicle s seller (s) and acknowledged by the vehicle s buyer(s). Completing this form: This form must be completed in its entirety, legibly printed or typed. Section A: Record the vehicle s information. Please note: Federal regulations require the seller(s) transferor(s) to disclose the odometer reading and the purchaser(s) transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure requirements. Twenty (20) model', 'chunk_id': 0, 'word_count': 157, 'char_count': 999}, {'content': 'reading and the purchaser(s) transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure requirements. Twenty (20) model years old and older vehicles are exempt from odometer disclosure requirements. If a vehicle is twenty (20) model years old or older, the seller(s) transferor(s) may enter the word exempt in the space provided for the odometer reading. Section B: Complete the seller(s) transferor(s) information. If a court has ordered the sale of the vehicle, record the court s case number. If the seller transferor is a business, provide Georgia Tax Identification Number and Georgia Sales Tax Number. Section C: Provide the purchaser(s) transferee(s) information. Section D: Record, if any, lienholders, security interest holders or encumbrance holders. Section E: Certify all statements are true and accurate. How to submit this form: Submit this form along with required documents and applicable tax to the', 'chunk_id': 1, 'word_count': 152, 'char_count': 994}, {'content': 'interest holders or encumbrance holders. Section E: Certify all statements are true and accurate. How to submit this form: Submit this form along with required documents and applicable tax to the county tag office in the county where the primary purchaser resides. Please refer to https: mvd.dor.ga.gov motor tagoffices selecttagoffice.aspx to locate the county tag office in the primary purchaser s county of residence. Required documents: A court order is required if a court has ordered the sale of the vehicle. A Georgia certificate of title is required if the vehicle being sold transferred is a 1986 or newer model year motor vehicle, motorcycle, camper, travel trailer, or car tow dolly weighing 2,001 pounds or more; or a 1963 or newer model year mobile home. Applicable t ax: If the vehicle requires a title, go to https: dor.georgia.gov drives -e-services and click on the Title Ad Valorem Tax Estimator link to get an estimated Title Ad Valorem Tax (TAVT) amount based on the value of the', 'chunk_id': 2, 'word_count': 166, 'char_count': 999}, {'content': 'requires a title, go to https: dor.georgia.gov drives -e-services and click on the Title Ad Valorem Tax Estimator link to get an estimated Title Ad Valorem Tax (TAVT) amount based on the value of the vehicle. Note: Trailers are not subject to TAVT. A VEHICLE INFORMATION Vehicle Identification No. (VIN): Year: Make: Mode l: Odometer Reading : (no tenths) Date of Sale Transfer: Purchase Price: B SELLER(S) TRANSFEROR(S) INFORMATION Court Order Case No.: If Court Ordered SaleGeorgia Tax ID No. : If Business Georgia Sales Tax No.: If Business Seller(s) Transferor(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: C PURCHASER (S) TRANSFEREE (S) INFORMATION Purchaser (s) Transferee(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: D LIENHOLDER OR SECURITY INTEREST HOLDER INFORMATION Lienholder s or Security Interest Holder s Name:', 'chunk_id': 3, 'word_count': 159, 'char_count': 994}, {'content': 'Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: D LIENHOLDER OR SECURITY INTEREST HOLDER INFORMATION Lienholder s or Security Interest Holder s Name: Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Telep hone No.: E CERTIFICATION I we, the seller(s) transferor(s) named in Section B , sold or transferred the vehicle described herein to the buyer(s) transferee(s) named in Section C. I we hereby certify that to the best of my our knowledge the odometer reading reflects the total actual mileage of the vehicle unl ess otherwise indicated. I we further state that there are no liens, security interests, or encumbrances on this vehicle except as listed in Section D. Seller(s) Transferor(s) Signature(s) : Primary Date Secondary Date Buyer(s) Transferee(s) Signature(s) : Primary Date Secondary Date I F T F W I E 6 8 J K 4 5 6 7 8 9 2018 Ford F-150 58,000 28,000 Atlanta Motors Group 1000 Peachtree St Atlanta GA', 'chunk_id': 4, 'word_count': 171, 'char_count': 994}, {'content': 'Date Secondary Date Buyer(s) Transferee(s) Signature(s) : Primary Date Secondary Date I F T F W I E 6 8 J K 4 5 6 7 8 9 2018 Ford F-150 58,000 28,000 Atlanta Motors Group 1000 Peachtree St Atlanta GA 30309 Michael T. Johnson 789 Elm St Alpharetta GA 30009 Wells Fargo Auto 321 Bank Blvd Atlanta GA 30303', 'chunk_id': 5, 'word_count': 60, 'char_count': 303}]
+2025-08-13 17:18:27,651 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4293 characters
+2025-08-13 17:18:29,408 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 17:18:36,787 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 17:18:43,720 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 17:18:43,723 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 17:19:02,923 - src.agents.main_graph - INFO - Processing question: Give me vehicle information from the document....
+2025-08-13 17:19:02,928 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:19:02,954 - src.agents.qa_agent - INFO - Processing question: Give me vehicle information from the document....
+2025-08-13 17:19:02,984 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:19:03,000 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 17:19:08,453 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 17:19:08,454 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:19:08,456 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:21:35,274 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 17:21:36,650 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 17:21:36,795 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 17:21:51,117 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 17:21:51,118 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 17:21:51,140 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:21:51,143 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\d073b46dd239fb46ecbe0d1a7ecc3077cbcad71e7fe8c73213a0866150a3b844\198695BILL OF SALE.pdf
+2025-08-13 17:21:51,357 - src.agents.text_extractor - INFO - Raw Text: 
+Have a question? Visit our website at http://dor.georgia.gov/motor -vehicles or scan the QR code above for more information.  
+T-7 (Revised 9-2022)
+Web and MV Manual
+Georgia Department of Revenue - Motor Vehicle Division  
+Bill of Sale 
+ANY CORRECTION OR ALTERATION WILL VOID THIS FORM  
+Purpose of this form : This form is to be used to provide evidence that a transaction between the purchaser(s)/transferee(s) and seller(s)/transferor(s) has taken 
+place and that the odometer reading has been declared by the vehicle’s seller (s) and acknowledged by the vehicle’s buyer(s).  
+Completing this form: This  form must be completed in its entirety, legibly printed or typed. 
+Section A: Record the vehicle’s information. Please note:  Federal regulations require the seller(s)/transferor(s) to disclose the odometer reading and the 
+purchaser(s)/transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure 
+requirements. Twenty (20) model years old and older vehicles are exempt from odometer disclosure requirements. If a vehicle is twenty (20) model years old or 
+older, the seller(s)/transferor(s) may enter the word “exempt” in the space provided for the odometer reading. 
+Section B: Complete the seller(s)’/transferor(s)’ information. If a court has ordered the sale of the vehicle, record the court’s case number. If the seller/transferor is a business, provide Georgia Tax Identification Number and Georgia Sales Tax Number. 
+Section C:  Provide the purchaser(s)’/transferee(s)’ information. 
+Section D:  Record, if any, lienholders, security interest holders or encumbrance holders. 
+Section E: Certify all statements are true and accurate.  
+How to submit this form: Submit this form along with required documents and applicable tax to the county tag office in the county where the primary purchaser 
+resides. Please refer to https://mvd.dor.ga.gov/motor/ tagoffices/selecttagoffice.aspx
+ to locate the county tag office in the primary purchaser’s county of 
+residence. 
+Required documents:  A court order is required if a court has ordered the sale of the vehicle. A Georgia certificate of title is required if the vehicle being 
+sold/transferred is a 1986 or newer model year motor vehicle, motorcycle, camper, travel trailer, or car/tow dolly weighing 2,001 pounds or more; or a 1963 or 
+newer model year mobile home. Applicable t ax: If the vehicle requires a title, go to https://dor.georgia.gov/drives -e-services and click on the Title Ad Valorem Tax Estimator link  to get an 
+estimated Title Ad Valorem Tax (TAVT) amount based on the value of the vehicle. Note: Trailers are not subject to TAVT. 
+A VEHICLE INFORMATION  
+Vehicle Identification No. (VIN):  
+Year:   Make: Mode l: 
+Odometer Reading :  (no tenths)  Date of Sale/Transfer:  / / Purchase Price: 
+B SELLER(S)  / TRANSFEROR(S) INFORMATION  
+Court Order Case No.:  
+If Court Ordered SaleGeorgia Tax ID No. : 
+If Business  Georgia Sales Tax No.:  
+If Business  
+Seller(s)’/Transferor(s)’  
+Full Legal Name (s): Primary  Secondary  
+ 
+Mailing Address:  Street No.  Street Name  Apt./Suite No.  
+City:  Sta te: ZIP  Code: Cou nty: 
+C PURCHASER (S) / TRANSFEREE (S) INFORMATION  
+Purchaser (s)’/Transferee(s)’  
+Full Legal Name (s): Primary  Secondary  
+ 
+Mailing Address:  Street No.  Street Name  Apt./Suite No.  
+City:  Sta te: ZIP  Code: Cou nty: 
+D LIENHOLDER OR SECURITY INTEREST HOLDER  INFORMATION  
+Lienholder’s  or Security 
+Interest Holder’s Name:  
+ 
+Mailing Address:  Street No.  Street Name  Apt./Suite No.  
+City:  Sta te: ZIP  Code: Telep hone No.: 
+E CERTIFICATION  
+I/we, the seller(s)/transferor(s)  named in Section B , sold or transferred the vehicle described herein to the buyer(s)/transferee(s) named in Section C. I/we 
+hereby certify that to the best of my/our knowledge the odometer reading reflects the total actual mileage of the vehicle unl ess otherwise indicated. I/we further 
+state that there are no liens, security interests, or encumbrances on this vehicle except as listed in Section D. 
+Seller(s)’/Transferor(s)’ 
+Signature(s) : Primary Date Secondary  Date  
+Buyer(s)’/Transferee(s)’ 
+Signature(s) : Primary Date Secondary  Date  
+ 
+1 F T F W 1 E 6 8 J K 4 5 6 7 8 9
+2018
+Ford
+ F-150
+58,000
+28,000
+Atlanta Motors Group
+1000
+Peachtree St
+Atlanta
+GA
+30309
+Michael T. Johnson
+789
+Elm St
+Alpharetta
+GA
+30009
+Wells Fargo Auto
+321
+Bank Blvd
+Atlanta
+GA
+30303
+
+2025-08-13 17:21:51,359 - src.agents.text_extractor - INFO - Processed Text: 
+Have a question? Visit our website at http: dor.georgia.gov motor -vehicles or scan the QR code above for more information. T-7 (Revised 9-2022) Web and MV Manual Georgia Department of Revenue - Motor Vehicle Division Bill of Sale ANY CORRECTION OR ALTERATION WILL VOID THIS FORM Purpose of this form : This form is to be used to provide evidence that a transaction between the purchaser(s) transferee(s) and seller(s) transferor(s) has taken place and that the odometer reading has been declared by the vehicle s seller (s) and acknowledged by the vehicle s buyer(s). Completing this form: This form must be completed in its entirety, legibly printed or typed. Section A: Record the vehicle s information. Please note: Federal regulations require the seller(s) transferor(s) to disclose the odometer reading and the purchaser(s) transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure requirements. Twenty (20) model years old and older vehicles are exempt from odometer disclosure requirements. If a vehicle is twenty (20) model years old or older, the seller(s) transferor(s) may enter the word exempt in the space provided for the odometer reading. Section B: Complete the seller(s) transferor(s) information. If a court has ordered the sale of the vehicle, record the court s case number. If the seller transferor is a business, provide Georgia Tax Identification Number and Georgia Sales Tax Number. Section C: Provide the purchaser(s) transferee(s) information. Section D: Record, if any, lienholders, security interest holders or encumbrance holders. Section E: Certify all statements are true and accurate. How to submit this form: Submit this form along with required documents and applicable tax to the county tag office in the county where the primary purchaser resides. Please refer to https: mvd.dor.ga.gov motor tagoffices selecttagoffice.aspx to locate the county tag office in the primary purchaser s county of residence. Required documents: A court order is required if a court has ordered the sale of the vehicle. A Georgia certificate of title is required if the vehicle being sold transferred is a 1986 or newer model year motor vehicle, motorcycle, camper, travel trailer, or car tow dolly weighing 2,001 pounds or more; or a 1963 or newer model year mobile home. Applicable t ax: If the vehicle requires a title, go to https: dor.georgia.gov drives -e-services and click on the Title Ad Valorem Tax Estimator link to get an estimated Title Ad Valorem Tax (TAVT) amount based on the value of the vehicle. Note: Trailers are not subject to TAVT. A VEHICLE INFORMATION Vehicle Identification No. (VIN): Year: Make: Mode l: Odometer Reading : (no tenths) Date of Sale Transfer: Purchase Price: B SELLER(S) TRANSFEROR(S) INFORMATION Court Order Case No.: If Court Ordered SaleGeorgia Tax ID No. : If Business Georgia Sales Tax No.: If Business Seller(s) Transferor(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: C PURCHASER (S) TRANSFEREE (S) INFORMATION Purchaser (s) Transferee(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: D LIENHOLDER OR SECURITY INTEREST HOLDER INFORMATION Lienholder s or Security Interest Holder s Name: Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Telep hone No.: E CERTIFICATION I we, the seller(s) transferor(s) named in Section B , sold or transferred the vehicle described herein to the buyer(s) transferee(s) named in Section C. I we hereby certify that to the best of my our knowledge the odometer reading reflects the total actual mileage of the vehicle unl ess otherwise indicated. I we further state that there are no liens, security interests, or encumbrances on this vehicle except as listed in Section D. Seller(s) Transferor(s) Signature(s) : Primary Date Secondary Date Buyer(s) Transferee(s) Signature(s) : Primary Date Secondary Date I F T F W I E 6 8 J K 4 5 6 7 8 9 2018 Ford F-150 58,000 28,000 Atlanta Motors Group 1000 Peachtree St Atlanta GA 30309 Michael T. Johnson 789 Elm St Alpharetta GA 30009 Wells Fargo Auto 321 Bank Blvd Atlanta GA 30303
+2025-08-13 17:21:51,360 - src.agents.text_extractor - INFO - Chunks: 
+[{'content': 'Have a question? Visit our website at http: dor.georgia.gov motor -vehicles or scan the QR code above for more information. T-7 (Revised 9-2022) Web and MV Manual Georgia Department of Revenue - Motor Vehicle Division Bill of Sale ANY CORRECTION OR ALTERATION WILL VOID THIS FORM Purpose of this form : This form is to be used to provide evidence that a transaction between the purchaser(s) transferee(s) and seller(s) transferor(s) has taken place and that the odometer reading has been declared by the vehicle s seller (s) and acknowledged by the vehicle s buyer(s). Completing this form: This form must be completed in its entirety, legibly printed or typed. Section A: Record the vehicle s information. Please note: Federal regulations require the seller(s) transferor(s) to disclose the odometer reading and the purchaser(s) transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure requirements. Twenty (20) model', 'chunk_id': 0, 'word_count': 157, 'char_count': 999}, {'content': 'reading and the purchaser(s) transferee(s) to acknowledge the odometer reading upon the transfer of ownership of a vehicle that is not exempt from odometer disclosure requirements. Twenty (20) model years old and older vehicles are exempt from odometer disclosure requirements. If a vehicle is twenty (20) model years old or older, the seller(s) transferor(s) may enter the word exempt in the space provided for the odometer reading. Section B: Complete the seller(s) transferor(s) information. If a court has ordered the sale of the vehicle, record the court s case number. If the seller transferor is a business, provide Georgia Tax Identification Number and Georgia Sales Tax Number. Section C: Provide the purchaser(s) transferee(s) information. Section D: Record, if any, lienholders, security interest holders or encumbrance holders. Section E: Certify all statements are true and accurate. How to submit this form: Submit this form along with required documents and applicable tax to the', 'chunk_id': 1, 'word_count': 152, 'char_count': 994}, {'content': 'interest holders or encumbrance holders. Section E: Certify all statements are true and accurate. How to submit this form: Submit this form along with required documents and applicable tax to the county tag office in the county where the primary purchaser resides. Please refer to https: mvd.dor.ga.gov motor tagoffices selecttagoffice.aspx to locate the county tag office in the primary purchaser s county of residence. Required documents: A court order is required if a court has ordered the sale of the vehicle. A Georgia certificate of title is required if the vehicle being sold transferred is a 1986 or newer model year motor vehicle, motorcycle, camper, travel trailer, or car tow dolly weighing 2,001 pounds or more; or a 1963 or newer model year mobile home. Applicable t ax: If the vehicle requires a title, go to https: dor.georgia.gov drives -e-services and click on the Title Ad Valorem Tax Estimator link to get an estimated Title Ad Valorem Tax (TAVT) amount based on the value of the', 'chunk_id': 2, 'word_count': 166, 'char_count': 999}, {'content': 'requires a title, go to https: dor.georgia.gov drives -e-services and click on the Title Ad Valorem Tax Estimator link to get an estimated Title Ad Valorem Tax (TAVT) amount based on the value of the vehicle. Note: Trailers are not subject to TAVT. A VEHICLE INFORMATION Vehicle Identification No. (VIN): Year: Make: Mode l: Odometer Reading : (no tenths) Date of Sale Transfer: Purchase Price: B SELLER(S) TRANSFEROR(S) INFORMATION Court Order Case No.: If Court Ordered SaleGeorgia Tax ID No. : If Business Georgia Sales Tax No.: If Business Seller(s) Transferor(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: C PURCHASER (S) TRANSFEREE (S) INFORMATION Purchaser (s) Transferee(s) Full Legal Name (s): Primary Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: D LIENHOLDER OR SECURITY INTEREST HOLDER INFORMATION Lienholder s or Security Interest Holder s Name:', 'chunk_id': 3, 'word_count': 159, 'char_count': 994}, {'content': 'Secondary Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Cou nty: D LIENHOLDER OR SECURITY INTEREST HOLDER INFORMATION Lienholder s or Security Interest Holder s Name: Mailing Address: Street No. Street Name Apt. Suite No. City: Sta te: ZIP Code: Telep hone No.: E CERTIFICATION I we, the seller(s) transferor(s) named in Section B , sold or transferred the vehicle described herein to the buyer(s) transferee(s) named in Section C. I we hereby certify that to the best of my our knowledge the odometer reading reflects the total actual mileage of the vehicle unl ess otherwise indicated. I we further state that there are no liens, security interests, or encumbrances on this vehicle except as listed in Section D. Seller(s) Transferor(s) Signature(s) : Primary Date Secondary Date Buyer(s) Transferee(s) Signature(s) : Primary Date Secondary Date I F T F W I E 6 8 J K 4 5 6 7 8 9 2018 Ford F-150 58,000 28,000 Atlanta Motors Group 1000 Peachtree St Atlanta GA', 'chunk_id': 4, 'word_count': 171, 'char_count': 994}, {'content': 'Date Secondary Date Buyer(s) Transferee(s) Signature(s) : Primary Date Secondary Date I F T F W I E 6 8 J K 4 5 6 7 8 9 2018 Ford F-150 58,000 28,000 Atlanta Motors Group 1000 Peachtree St Atlanta GA 30309 Michael T. Johnson 789 Elm St Alpharetta GA 30009 Wells Fargo Auto 321 Bank Blvd Atlanta GA 30303', 'chunk_id': 5, 'word_count': 60, 'char_count': 303}]
+2025-08-13 17:21:51,362 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 4293 characters
+2025-08-13 17:21:52,779 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 17:22:00,311 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 17:22:06,669 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 17:22:06,675 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 17:22:35,628 - src.agents.main_graph - INFO - Processing question: Can you please provide me vehicle information from the document?...
+2025-08-13 17:22:35,634 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:22:35,644 - src.agents.qa_agent - INFO - Processing question: Can you please provide me vehicle information from the document?...
+2025-08-13 17:22:35,654 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:22:35,665 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:22:39,802 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:22:39,803 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:22:39,804 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:23:16,532 - src.agents.main_graph - INFO - Processing question: Provide me vechicle information....
+2025-08-13 17:23:16,544 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:23:16,558 - src.agents.qa_agent - INFO - Processing question: Provide me vechicle information....
+2025-08-13 17:23:16,569 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:23:16,585 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 17:23:18,688 - src.agents.qa_agent - INFO - Retrieved 2 relevant chunks for query
+2025-08-13 17:23:18,689 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:23:18,689 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:23:43,838 - src.agents.main_graph - INFO - Processing question: Also owner information....
+2025-08-13 17:23:43,850 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:23:43,861 - src.agents.qa_agent - INFO - Processing question: Also owner information....
+2025-08-13 17:23:43,874 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:23:43,881 - src.agents.qa_agent - INFO - Retrieved 1 relevant chunks for query
+2025-08-13 17:23:46,046 - src.agents.qa_agent - INFO - Retrieved 1 relevant chunks for query
+2025-08-13 17:23:46,047 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:23:46,050 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:24:08,746 - src.agents.main_graph - INFO - Processing question: new owner's details...
+2025-08-13 17:24:08,755 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:24:08,768 - src.agents.qa_agent - INFO - Processing question: new owner's details...
+2025-08-13 17:24:08,794 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:24:08,801 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:24:11,784 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:24:11,784 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:24:11,786 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:24:29,514 - src.agents.main_graph - INFO - Processing question: give me new owner's details...
+2025-08-13 17:24:29,518 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:24:29,537 - src.agents.qa_agent - INFO - Processing question: give me new owner's details...
+2025-08-13 17:24:29,551 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:24:29,556 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:24:31,621 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:24:31,622 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:24:31,623 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:27:10,310 - src.agents.main_graph - INFO - Processing question: give me new owner's details mentioned...
+2025-08-13 17:27:10,317 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:27:10,339 - src.agents.qa_agent - INFO - Processing question: give me new owner's details mentioned...
+2025-08-13 17:27:10,349 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:27:10,359 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:27:12,446 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:27:12,447 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:27:12,448 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:27:26,537 - src.agents.main_graph - INFO - Processing question: give me new vehicle's details...
+2025-08-13 17:27:26,544 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:27:26,558 - src.agents.qa_agent - INFO - Processing question: give me new vehicle's details...
+2025-08-13 17:27:26,578 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:27:26,580 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:28:35,894 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:28:35,895 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:28:35,897 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:29:59,361 - src.agents.main_graph - INFO - Processing question: give me vechicle's details mentioned in the document that is involved in the transaction...
+2025-08-13 17:29:59,365 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:29:59,386 - src.agents.qa_agent - INFO - Processing question: give me vechicle's details mentioned in the document that is involved in the transaction...
+2025-08-13 17:29:59,404 - src.agents.qa_agent - INFO - Prepared retrieval index with 6 chunks
+2025-08-13 17:29:59,407 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:30:01,416 - src.agents.qa_agent - INFO - Retrieved 0 relevant chunks for query
+2025-08-13 17:30:01,420 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:30:01,422 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:34:43,050 - httpx - INFO - HTTP Request: GET https://api.gradio.app/pkg-version "HTTP/1.1 200 OK"
+2025-08-13 17:34:43,939 - httpx - INFO - HTTP Request: GET http://127.0.0.1:7868/gradio_api/startup-events "HTTP/1.1 200 OK"
+2025-08-13 17:34:44,031 - httpx - INFO - HTTP Request: HEAD http://127.0.0.1:7868/ "HTTP/1.1 200 OK"
+2025-08-13 17:35:01,281 - src.ui.gradio_interface - INFO - Processing uploaded file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 17:35:01,282 - src.agents.main_graph - INFO - Starting document processing workflow for: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 17:35:01,310 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:35:01,321 - src.agents.text_extractor - INFO - Extracting text from pdf file: C:\Users\KaranJoshi\AppData\Local\Temp\gradio\cf68ab3449809754cd0e1eb81ed6fbe0453de49a9285749df14fa7130c4110d7\198695GA MV-12020.pdf
+2025-08-13 17:35:01,851 - src.agents.text_extractor - INFO - Raw Text: 
+MV-1 (Revised 6-2020)
+Georgia Department of Revenue - Motor Vehicle Division  
+Form MV -1 Motor Vehicle Title Application  
+For instructions on how to complete this form se e page 2.
+A VEHICLE INFORMAT ION 
+Vehicle ID (VIN) : _____________________________   Current Title # :  _________________________  _  Year:   ______   _ 
+Make :           _____________________________   Current Title’s State of Issue:   _______________ _  Color:      ______   _ 
+Model :            _____________________________   GA County of Residence:      ________________ _  Cylinders:  ______   _ 
+Body Style :          _____________________________   District #:       __________________________  __  Fuel Type: ______  _ 
+Odometer Exceptions :  EXEMPT   Exceeds Mechanical Limits of Odometer   Not the Actual Mileage, Warning Odometer Discrepancy 
+Odometer Reading :  _____________________________   Date Purchased :  _____________________________    
+COMPLETE FOR ALL COMMERC IAL VEHICLES  
+Gross Vehicle Weight & Load :  __________________________          Straight Truck?  Yes  No           Used for Hire?   Yes  No 
+Type of Trailer Pulled?   _____________________   Product Hauled?  ____________________   Is this a Farm Vehicle?    Yes  No 
+B OWNER INFORMATION  
+Number of Owners: _______                 Leased Vehicle:   No  Yes (If yes, complete Section D)  
+If purchased from an out -of-state business, did you pick up the vehicle out  of state?   Yes  No 
+*Owner’s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious
+name or address or for making a material false statement punishable by fine up to $5,000 or by imprisonment of up to five years, or both that
+the statements contained herein are true and accurate.
+OWNER # 1  
+Full Legal Name:  ____________________________________________  Driver’s License # :  __________________   State :  ____ _ 
+Date of Birth:   ___________   E-mail Address:  __________________________________________  Phone #:  _________________  
+Business Name:   _______________________ _____________________   Name of Agent :  ______________________________  _ 
+Address:  ________ ______________________________________________________________________________________ 
+Mailing Address:  _  _______________________________________________________________________________________  
+*Signature of Owner 1 o r Business Agent:   ___________________________________________________   Date:  ________________
+OWNER # 2 
+Full Legal Name:  ____________________________________________  Driver’s License # :  __________________   State:   ____ _ 
+Date of Birth:  ___________   E-mail Address:  __________________________________________  Phone #:  _________________  
+Business Name:   ____________________________________________   Name of Agent :  ________________________________  
+Address:   ________ ______________________________________________________________________________________  
+Mailing Address:  _  _______________________________________________________________________________________  
+*Signature of Owner 2 o r Business Agent :  ___________________________________________________   Date:  ________________
+C SELLER INFORMATION  D LESSEE INFORMATION  
+GA Dealer’s/Bank’s 12 -Digit Customer ID # (If applicable) : 
+__ __ __ __ __ __ __ __ __ __ __ __   
+Seller’s GA Sales Tax # : 
+__ __ __ __ __ __ __ __ __ 
+Full Legal Name or Business Name and Address : 
+_________________________________________________  
+____ _____________________________________________  
+____ _____________________________________________  
+If Georgia Seller, County Name:  _________________________  
+Directly Financed Dealer Sale:  Yes  No Driver’s License # (If individual ):  ________________________ __ 
+Lessee’s Full Legal Name & Address or Business Lessee’s Full Name 
+& Address:  
+___________________________________________________  
+____ _______________________________________________  
+____ _______________________________________________  
+Lessee’s GA C ounty Name:  ______________________________  
+Lessee’s Phone Number:      ______________________________  
+E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 
+12-Digit ELT ID #:  __ __ __ __ __ __ __ __ __ __ __ __   Name:   _____________________________________________   _
+Address:  _____________________________________________________________________________________________ _
+12-Digit ELT ID # :  __ __ __ __ __ __ __ __ __ __ __ __   Name:   _____________________________________________  _
+Address:   _____________________________________________________________________________________________  _
+F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in  fact. 
+Name:   _    _____________________________________________________________________________________________  
+Mailing Address:  _____ ___________________________________________________________________________________  
+Phone Number:  ___________________________   E-mail Address:   _________________________________________________  
+1FTFW1E68JK456789
+GA99887766
+2018
+Ford
+Black
+F-150
+Fulton
+4
+Pickup Truck
+Gasoline
+58000
+2/8/2025
+1
+Michael Johnson
+GA456789123
+GA
+1975-11-10
+michael.johnson@example.com
+(678) 555-9876
+789 Elm St, Alpharetta, GA 30009
+789 Elm St, Alpharetta, GA 30009
+3
+4
+5
+6
+7
+8
+9
+1
+2
+3
+4
+5
+1
+2
+3
+5
+6
+7
+9
+8
+4
+Atlanta Motors Group
+ 1000 Peachtree St, Atlanta, GA 30309
+Fulton
+3
+7
+6
+5
+4
+3
+2
+1
+0
+9
+8
+7
+6
+Wells Fargo Auto
+321 Bank Blvd, Atlanta, GA 30303
+ 
+ 
+
+Georgia Department of Revenue - Motor Vehicle Division  
+Form MV -1 Motor Vehicle Title Application  
+INSTRUCTION PAGE  
+Purpose of this form:  This form is to be used when applying for a tag and title and must be signed by all owners in Section B.  
+How to submit this form:  This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents 
+to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to 
+https://dor.georgia.gov  to locate the county tag office in your county of residence.  
+A VEHICLE INFORMATON  
+This section must be completed in its entirety.  If you do not know the district in which you live, please check with your county tag office.    
+Include all the requested information: vehicle identification number  (VIN), make of vehicle, model of vehicle, body style, current title number, 
+current title’s state of i ssue, Georgia county of residence, district number  (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and 
+odometer information including whether exempt, exceeds mechanical limits, not actual mileage.   
+Also include odometer reading and date purchase d.  
+COM PLETE FOR ALL COMMERC IAL VEHICL ES 
+This section must be completed for all request s concerning a commercial vehicle.  
+B OWNER INFORMATION  
+List the number of owners, whether the vehicle is leased, and if it was purchased out  of state.  
+All owners listed on the title must sign this form.  By signing this form you are agreeing to the following:  
+*Owner’s signature below warrants: I do solemnly swear or affirm under  criminal penalty of a felony for fraudulent use of a false or fictitious
+name or address or for making a material false statement punishable by fine up to $5,000 or by imprisonment of up to five years, or both
+that the statements contained herein are true  and accurate.
+OWNER # 1   
+For owner number one:  
+•If an individual, provide the full legal name, driver’s license number, state of issuance, date of birth, e-mail address, telephone
+number, address, and mailing address (if applicable).
+•If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable).
+•Signature is required.
+OWNER # 2 
+For owner number two : 
+•If an individual, provide the full legal name, driver’s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable).
+•If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if
+applicable).
+•Signature is required .
+C SELLER INFORMATION D LESSEE INFORMATION  
+Provide:  
+•Georgia dealer’s or b ank’s 12- digit customer identification
+number (if applicable)
+•Seller’s Georgia sales tax number
+•Full legal name or business name and address
+•Georgia county name (if applicable)
+•Whether the vehicle was directly financed by the dealerProvide:  
+•Lessee’s driver’s license number ( if individual)
+•Lessee’s full legal name and address or Business Lessee’s
+full name and address
+•Lessee’s Georgia county name
+•Lessee’s phone number
+E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 
+List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 
+•12-digit customer identification number
+•Name
+•Address
+F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. 
+If using a Power of Attorney, attach the Power of Attorney and fill in their:  
+•Name
+•Mailing address
+•Phone number
+•E-mail address
+2025-08-13 17:35:01,857 - src.agents.text_extractor - INFO - Processed Text: 
+MV-I (Revised 6-2020) Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application For instructions on how to complete this form se e page 2. A VEHICLE INFORMAT ION Vehicle ID (VIN) : _____________________________ Current Title : _________________________ _ Year: ______ _ Make : _____________________________ Current Title s State of Issue: _______________ _ Color: ______ _ Model : _____________________________ GA County of Residence: ________________ _ Cylinders: ______ _ Body Style : _____________________________ District : __________________________ __ Fuel Type: ______ _ Odometer Exceptions : EXEMPT Exceeds Mechanical Limits of Odometer Not the Actual Mileage, Warning Odometer Discrepancy Odometer Reading : _____________________________ Date Purchased : _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled? _____________________ Product Hauled? ____________________ Is this a Farm Vehicle? Yes No B OWNER INFORMATION Number of Owners: _______ Leased Vehicle: No Yes (If yes, complete Section D) If purchased from an out -of-state business, did you pick up the vehicle out of state? Yes No Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: _______________________ _____________________ Name of Agent : ______________________________ _ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner I o r Business Agent: ___________________________________________________ Date: ________________ OWNER 2 Full Legal Name: ____________________________________________ Driver s License : __________________ State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________ Name of Agent : ________________________________ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner 2 o r Business Agent : ___________________________________________________ Date: ________________ C SELLER INFORMATION D LESSEE INFORMATION GA Dealer s Bank s 12 -Digit Customer ID (If applicable) : __ __ __ __ __ __ __ __ __ __ __ __ Seller s GA Sales Tax : __ __ __ __ __ __ __ __ __ Full Legal Name or Business Name and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name: _________________________ Directly Financed Dealer Sale: Yes No Driver s License (If individual ): ________________________ __ Lessee s Full Legal Name Address or Business Lessee s Full Name Address: ___________________________________________________ ____ _______________________________________________ ____ _______________________________________________ Lessee s GA C ounty Name: ______________________________ Lessee s Phone Number: ______________________________ E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in fact. Name: _ _____________________________________________________________________________________________ Mailing Address: _____ ___________________________________________________________________________________ Phone Number: ___________________________ E-mail Address: _________________________________________________ 1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson example.com (678) 555-9876 789 Elm St, Alpharetta, GA 30009 789 Elm St, Alpharetta, GA 30009 3 4 5 6 7 8 9 I 2 3 4 5 I 2 3 5 6 7 9 8 4 Atlanta Motors Group 1000 Peachtree St, Atlanta, GA 30309 Fulton 3 7 6 5 4 3 2 I O 9 8 7 6 Wells Fargo Auto 321 Bank Blvd, Atlanta, GA 30303 Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application INSTRUCTION PAGE Purpose of this form: This form is to be used when applying for a tag and title and must be signed by all owners in Section B. How to submit this form: This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag office in your county of residence. A VEHICLE INFORMATON This section must be completed in its entirety. If you do not know the district in which you live, please check with your county tag office. Include all the requested information: vehicle identification number (VIN), make of vehicle, model of vehicle, body style, current title number, current title s state of i ssue, Georgia county of residence, district number (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and odometer information including whether exempt, exceeds mechanical limits, not actual mileage. Also include odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number of owners, whether the vehicle is leased, and if it was purchased out of state. All owners listed on the title must sign this form. By signing this form you are agreeing to the following: Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I For owner number one: If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable). Signature is required. OWNER 2 For owner number two : If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if applicable). Signature is required . C SELLER INFORMATION D LESSEE INFORMATION Provide: Georgia dealer s or b ank s 12- digit customer identification number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the dealerProvide: Lessee s driver s license number ( if individual) Lessee s full legal name and address or Business Lessee s full name and address Lessee s Georgia county name Lessee s phone number E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 12-digit customer identification number Name Address F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. If using a Power of Attorney, attach the Power of Attorney and fill in their: Name Mailing address Phone number E-mail address
+2025-08-13 17:35:01,860 - src.agents.text_extractor - INFO - Chunks: 
+[{'content': 'MV-I (Revised 6-2020) Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application For instructions on how to complete this form se e page 2. A VEHICLE INFORMAT ION Vehicle ID (VIN) : _____________________________ Current Title : _________________________ _ Year: ______ _ Make : _____________________________ Current Title s State of Issue: _______________ _ Color: ______ _ Model : _____________________________ GA County of Residence: ________________ _ Cylinders: ______ _ Body Style : _____________________________ District : __________________________ __ Fuel Type: ______ _ Odometer Exceptions : EXEMPT Exceeds Mechanical Limits of Odometer Not the Actual Mileage, Warning Odometer Discrepancy Odometer Reading : _____________________________ Date Purchased : _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled?', 'chunk_id': 0, 'word_count': 134, 'char_count': 995}, {'content': ': _____________________________ COMPLETE FOR ALL COMMERC IAL VEHICLES Gross Vehicle Weight Load : __________________________ Straight Truck? Yes No Used for Hire? Yes No Type of Trailer Pulled? _____________________ Product Hauled? ____________________ Is this a Farm Vehicle? Yes No B OWNER INFORMATION Number of Owners: _______ Leased Vehicle: No Yes (If yes, complete Section D) If purchased from an out -of-state business, did you pick up the vehicle out of state? Yes No Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address:', 'chunk_id': 1, 'word_count': 153, 'char_count': 980}, {'content': 'herein are true and accurate. OWNER I Full Legal Name: ____________________________________________ Driver s License : __________________ State : ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: _______________________ _____________________ Name of Agent : ______________________________ _ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner I o r Business Agent: ___________________________________________________ Date: ________________ OWNER 2 Full Legal Name: ____________________________________________ Driver s License : __________________ State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________', 'chunk_id': 2, 'word_count': 85, 'char_count': 996}, {'content': 'State: ____ _ Date of Birth: ___________ E-mail Address: __________________________________________ Phone : _________________ Business Name: ____________________________________________ Name of Agent : ________________________________ Address: ________ ______________________________________________________________________________________ Mailing Address: _ _______________________________________________________________________________________ Signature of Owner 2 o r Business Agent : ___________________________________________________ Date: ________________ C SELLER INFORMATION D LESSEE INFORMATION GA Dealer s Bank s 12 -Digit Customer ID (If applicable) : __ __ __ __ __ __ __ __ __ __ __ __ Seller s GA Sales Tax : __ __ __ __ __ __ __ __ __ Full Legal Name or Business Name and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name:', 'chunk_id': 3, 'word_count': 104, 'char_count': 982}, {'content': 'and Address : _________________________________________________ ____ _____________________________________________ ____ _____________________________________________ If Georgia Seller, County Name: _________________________ Directly Financed Dealer Sale: Yes No Driver s License (If individual ): ________________________ __ Lessee s Full Legal Name Address or Business Lessee s Full Name Address: ___________________________________________________ ____ _______________________________________________ ____ _______________________________________________ Lessee s GA C ounty Name: ______________________________ Lessee s Phone Number: ______________________________ E - SECURITY INTEREST OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID :', 'chunk_id': 4, 'word_count': 98, 'char_count': 997}, {'content': '__ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ 12-Digit ELT ID : __ __ __ __ __ __ __ __ __ __ __ __ Name: _____________________________________________ _ Address: _____________________________________________________________________________________________ _ F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if title is to be mailed to attorney in fact. Name: _ _____________________________________________________________________________________________ Mailing Address: _____ ___________________________________________________________________________________ Phone Number: ___________________________ E-mail Address: _________________________________________________ 1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson', 'chunk_id': 5, 'word_count': 94, 'char_count': 989}, {'content': '1FTFW1E68JK456789 GA99887766 2018 Ford Black F-150 Fulton 4 Pickup Truck Gasoline 58000 2 8 2025 I Michael Johnson GA456789123 GA 1975-11-10 michael.johnson example.com (678) 555-9876 789 Elm St, Alpharetta, GA 30009 789 Elm St, Alpharetta, GA 30009 3 4 5 6 7 8 9 I 2 3 4 5 I 2 3 5 6 7 9 8 4 Atlanta Motors Group 1000 Peachtree St, Atlanta, GA 30309 Fulton 3 7 6 5 4 3 2 I O 9 8 7 6 Wells Fargo Auto 321 Bank Blvd, Atlanta, GA 30303 Georgia Department of Revenue - Motor Vehicle Division Form MV -I Motor Vehicle Title Application INSTRUCTION PAGE Purpose of this form: This form is to be used when applying for a tag and title and must be signed by all owners in Section B. How to submit this form: This form must be completed in its entirety, legibly printed or typed, and submitted along with all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag', 'chunk_id': 6, 'word_count': 189, 'char_count': 995}, {'content': 'all required documents to the county tag office in the county where you reside or to the Department of Revenue ( DOR), when applicable. Please refer to https: dor.georgia.gov to locate the county tag office in your county of residence. A VEHICLE INFORMATON This section must be completed in its entirety. If you do not know the district in which you live, please check with your county tag office. Include all the requested information: vehicle identification number (VIN), make of vehicle, model of vehicle, body style, current title number, current title s state of i ssue, Georgia county of residence, district number (if known), year of v ehicle, color, cylinders of vehicle, f uel type, and odometer information including whether exempt, exceeds mechanical limits, not actual mileage. Also include odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number', 'chunk_id': 7, 'word_count': 162, 'char_count': 998}, {'content': 'odometer reading and date purchase d. COM PLETE FOR ALL COMMERC IAL VEHICL ES This section must be completed for all request s concerning a commercial vehicle. B OWNER INFORMATION List the number of owners, whether the vehicle is leased, and if it was purchased out of state. All owners listed on the title must sign this form. By signing this form you are agreeing to the following: Owner s signature below warrants: I do solemnly swear or affirm under criminal penalty of a felony for fraudulent use of a false or fictitious name or address or for making a material false statement punishable by fine up to 5,000 or by imprisonment of up to five years, or both that the statements contained herein are true and accurate. OWNER I For owner number one: If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number,', 'chunk_id': 8, 'word_count': 171, 'char_count': 999}, {'content': 'driver s license number, state of issuance, date of birth, e-mail address, telephone number, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address (ifapplicable). Signature is required. OWNER 2 For owner number two : If an individual, provide the full legal name, driver s license number, state of issuance, date of birth, e-mail address, telephonenumber, address, and mailing address (if applicable). If a business, provide the e-mail address, telephone number, business name, name of the signer, address, and mailing address ( if applicable). Signature is required . C SELLER INFORMATION D LESSEE INFORMATION Provide: Georgia dealer s or b ank s 12- digit customer identification number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the', 'chunk_id': 9, 'word_count': 151, 'char_count': 985}, {'content': 'number (if applicable) Seller s Georgia sales tax number Full legal name or business name and address Georgia county name (if applicable) Whether the vehicle was directly financed by the dealerProvide: Lessee s driver s license number ( if individual) Lessee s full legal name and address or Business Lessee s full name and address Lessee s Georgia county name Lessee s phone number E - SECURITY INTERES T OR LIENHOLDER INFORMATION - Attach any information on additional lienholders. List the following for the first two security interest or lienholders (attach any additional lienholder information to this form) : 12-digit customer identification number Name Address F -- - -- ATTORNEY-IN-FACT INFORMATION - Attach original Po wer of At torney if t itle is to be mailed to attorney in fact. If using a Power of Attorney, attach the Power of Attorney and fill in their: Name Mailing address Phone number E-mail address', 'chunk_id': 10, 'word_count': 152, 'char_count': 919}]
+2025-08-13 17:35:01,861 - src.agents.text_extractor - INFO - Text extraction completed. Extracted 8933 characters
+2025-08-13 17:35:03,812 - src.agents.summarizer - INFO - Generating document summary...
+2025-08-13 17:35:11,397 - src.agents.summarizer - INFO - Generating suggested questions...
+2025-08-13 17:35:17,726 - src.agents.summarizer - INFO - Summary and questions generated successfully. 5 questions created.
+2025-08-13 17:35:17,730 - src.agents.main_graph - INFO - Workflow completed with status: summarized
+2025-08-13 17:35:41,510 - src.agents.main_graph - INFO - Processing question: Give me vehicle's details from the document....
+2025-08-13 17:35:41,514 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:35:41,520 - src.agents.qa_agent - INFO - Processing question: Give me vehicle's details from the document....
+2025-08-13 17:35:41,535 - src.agents.qa_agent - INFO - Prepared retrieval index with 11 chunks
+2025-08-13 17:35:41,542 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:35:45,719 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:35:45,719 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:35:45,721 - src.agents.main_graph - INFO - Question answered successfully
+2025-08-13 17:36:08,025 - src.agents.main_graph - INFO - Processing question: Give me owner's details from the document....
+2025-08-13 17:36:08,031 - src.agents.document_processor - INFO - File processed successfully
+2025-08-13 17:36:08,042 - src.agents.qa_agent - INFO - Processing question: Give me owner's details from the document....
+2025-08-13 17:36:08,060 - src.agents.qa_agent - INFO - Prepared retrieval index with 11 chunks
+2025-08-13 17:36:08,067 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:36:11,552 - src.agents.qa_agent - INFO - Retrieved 3 relevant chunks for query
+2025-08-13 17:36:11,553 - src.agents.qa_agent - INFO - Question processed successfully
+2025-08-13 17:36:11,555 - src.agents.main_graph - INFO - Question answered successfully

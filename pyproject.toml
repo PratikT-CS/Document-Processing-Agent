@@ -5,9 +5,17 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "boto3>=1.40.8",
+    "docx>=0.2.4",
     "dotenv>=0.9.9",
     "gradio>=5.42.0",
+    "langchain-google-vertexai>=2.0.28",
     "langchain[google-genai,openai]>=0.3.27",
     "langgraph>=0.6.4",
     "langsmith>=0.4.14",
+    "opencv-python>=4.12.0.88",
+    "pymupdf>=1.26.3",
+    "pypdf2>=3.0.1",
+    "pytesseract>=0.3.13",
+    "scikit-learn>=1.7.1",
 ]
