@@ -22,7 +22,7 @@ class Config:
     CHUNK_OVERLAP = 200
     
     # LLM settings
-    MODEL_NAME = "google_genai:gemini-2.5-flash"
+    MODEL_NAME = "google_genai:gemini-2.5-flash-lite"
     TEMPERATURE = 0.7
     MAX_TOKENS = 1500
     

@@ -82,9 +82,9 @@ class OCREngine:
             raise
         
         # try:
-        #     doc = fitz.open(stream=file_path, filetype="pdf")
+        #     doc = fitz.open(filename=file_path, filetype="pdf")
         #     for page_num in range(doc.page_count):
-        #         page = doc.load(page_num)
+        #         page = doc.load_page(page_num)
                 
         #         pix = page.get_pixmap(matrix=fitz.Matrix(RENDERING_DPI/72, RENDERING_DPI/72))
         #         image_bytes = pix.tobytes()

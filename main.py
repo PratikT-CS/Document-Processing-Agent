@@ -10,7 +10,8 @@ from pathlib import Path
 src_path = Path(__file__).parent / "src"
 sys.path.insert(0, str(src_path))
 
-from src.ui.gradio_interface import launch_app
+# from src.ui.gradio_interface import launch_app
+from src.ui.multi_file_gradio_interface import launch_app
 from src.config.settings import Config
 
 def setup_logging():
