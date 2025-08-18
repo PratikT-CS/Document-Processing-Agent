@@ -12,6 +12,7 @@ class ProcessingStatus(Enum):
     SUMMARIZED = "summarized"
     READY = "ready"
     ERROR = "error"
+    VECTORIZED = "vectorized"
 
 @dataclass
 class FileInfo:

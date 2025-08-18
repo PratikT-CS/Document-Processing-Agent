@@ -75,12 +75,9 @@ class MultiFileDocumentWorkflow:
     def _decide_after_upload(self, state: MultiFileDocumentState) -> str:
         """Decide next step after file upload"""
         if state.get("overall_status") == ProcessingStatus.ERROR:
-            print(f"Status: {state.get('overall_status')}")
             return "error"
         if state.get("overall_status") == ProcessingStatus.SUMMARIZED:
-            print(f"Status: {state.get('overall_status')}")
             return "answer_question"
-        print(f"Status: {state.get('overall_status')}")
         return "continue"
     
     def _decide_after_ocr(self, state: MultiFileDocumentState) -> str:
