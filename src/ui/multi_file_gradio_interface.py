@@ -172,8 +172,7 @@ class MultiFileDocumentChatInterface:
                         summary_output = gr.Markdown(
                             value="Summary will appear here after processing...",
                             label="Document Summary",
-                            padding=True,
-                            max_height=315
+                            padding=True
                         )
             
             # Suggested questions section (initially hidden)
@@ -181,7 +180,7 @@ class MultiFileDocumentChatInterface:
                 gr.Markdown("## 💡 Suggested Questions")
                 with gr.Row(equal_height=True):
                     question_buttons = []
-                    for i in range(6):
+                    for i in range(8):
                         btn = gr.Button("", visible=False, size="sm")
                         question_buttons.append(btn)
             

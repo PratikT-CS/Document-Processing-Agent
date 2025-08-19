@@ -28,7 +28,7 @@ class Config:
     
     # Gradio settings
     GRADIO_PORT = 7868
-    GRADIO_SHARE = True
+    GRADIO_SHARE = False
     
     @classmethod
     def ensure_directories(cls):
