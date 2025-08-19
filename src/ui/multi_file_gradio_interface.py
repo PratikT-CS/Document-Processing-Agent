@@ -134,20 +134,21 @@ class MultiFileDocumentChatInterface:
         """Create the Gradio interface."""
         
         with gr.Blocks(title="Multi-File Document Chat Assistant", css="style.css") as interface:
-            
-            gr.Markdown("# 📄 Multi-File Document Chat Assistant")
-            gr.Markdown("Upload multiple documents (PDF, Images) and chat with them!")
-            
+    
             with gr.Row():
+                
                 with gr.Column(scale=1):
+                    gr.Markdown("## 📄 Multi-File Document Chat Assistant")
+                    gr.Markdown("Upload multiple documents (PDF, Images) and chat with them!")
                     # File upload section
                     with gr.Group():
-                        gr.Markdown("## 📤 Upload Documents")
+                        gr.Markdown("### 📤 Upload Documents")
                         
                         file_input = gr.File(
                             label="Select Documents",
                             file_types=[".pdf", ".png", ".jpg", ".jpeg"],
-                            file_count="multiple"
+                            file_count="multiple",
+                            height=125
                         )
                         
                         process_btn = gr.Button("Process Documents", variant="primary", size="lg")
@@ -163,44 +164,45 @@ class MultiFileDocumentChatInterface:
                             value="Waiting for files",
                             interactive=False
                         )
-                
-                with gr.Column(scale=2):
-                    # Document summary section
+
                     with gr.Group():
-                        gr.Markdown("## 📋 Document Summary")
+                        gr.Markdown("### 📋 Document Summary")
                         
                         summary_output = gr.Markdown(
                             value="Summary will appear here after processing...",
                             label="Document Summary",
-                            padding=True
+                            padding=True,
+                            max_height=300
                         )
-            
-            # Suggested questions section (initially hidden)
-            with gr.Group(visible=False) as questions_group:
-                gr.Markdown("## 💡 Suggested Questions")
-                with gr.Row(equal_height=True):
-                    question_buttons = []
-                    for i in range(8):
-                        btn = gr.Button("", visible=False, size="sm")
-                        question_buttons.append(btn)
-            
-            # Chat interface (initially hidden)  
-            with gr.Group(visible=False) as chat_group:
-                gr.Markdown("## 💬 Chat with Documents")
                 
-                chatbot = gr.Chatbot(
-                    label="Conversation",
-                    height=400,
-                    show_label=False
-                )
-                
-                with gr.Row():
-                    chat_input = gr.Textbox(
-                        label="Ask a question",
-                        placeholder="Type your question here...",
-                        scale=4
-                    )
-                    send_btn = gr.Button("Send", variant="primary", scale=1)
+                # Suggested questions section (initially hidden)
+                with gr.Column(scale=2):
+                    # Document summary section
+                    with gr.Group(visible=False) as questions_group:
+                        gr.Markdown("### 💡 Suggested Questions")
+                        with gr.Row(equal_height=True):
+                            question_buttons = []
+                            for i in range(4):
+                                btn = gr.Button("", visible=False, size="sm")
+                                question_buttons.append(btn)
+
+                    # Chat interface (initially hidden) 
+                    with gr.Group(visible=False) as chat_group:
+                        gr.Markdown("### 💬 Chat with Documents")
+                        
+                        chatbot = gr.Chatbot(
+                            label="Conversation",
+                            height=320,
+                            show_label=False
+                        )
+                        
+                        with gr.Row():
+                            chat_input = gr.Textbox(
+                                label="Ask a question",
+                                placeholder="Type your question here...",
+                                scale=4
+                            )
+                            send_btn = gr.Button("Send", variant="primary", scale=1)
             
             # Event handlers
             def handle_processing(files):

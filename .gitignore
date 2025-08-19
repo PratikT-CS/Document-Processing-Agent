@@ -4,3 +4,5 @@
 *\__init__
 *\data
 *.log
+.zencoder
+.gradio

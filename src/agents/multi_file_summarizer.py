@@ -40,6 +40,8 @@ class MultiFileDocumentSummarizer:
             4. **Document Relationships**: How the documents relate to each other (complementary, contrasting, etc.)
             5. **Key Findings**: Most important insights from the entire collection
             
+            NOTE: Do not include full file path as file name only include file name in the output 
+            
             Format your response clearly with the sections above.
             """
         )
@@ -62,7 +64,7 @@ class MultiFileDocumentSummarizer:
             4. Include both specific and analytical questions
             5. Range from factual to comparative questions
             
-            Provide exactly 8 questions in this format:
+            Provide exactly 4 questions for any of this format:
             1. [Question about specific document]
             2. [Question comparing documents]
             3. [Question about common themes]

@@ -13,6 +13,7 @@ class ProcessingStatus(Enum):
     READY = "ready"
     ERROR = "error"
     VECTORIZED = "vectorized"
+    BDA_PROCESSED = "bda_processed"
 
 @dataclass
 class FileInfo:
@@ -20,12 +21,14 @@ class FileInfo:
     file_id: str
     file_name: str
     file_path: str
-    file_type: str  # "pdf", "image", "docx"
+    file_type: str  # "pdf", "image"
     file_size: int
     upload_timestamp: float
     
     # Processing status for this file
     processing_status: ProcessingStatus
+    s3_uri: Optional[str] = None
+    extracted_data: Optional[List[dict]] = None
     error_message: Optional[str] = None
     
     # Extracted content
