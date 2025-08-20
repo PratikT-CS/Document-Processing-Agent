@@ -11,7 +11,7 @@ class ProcessingStatus(Enum):
     OCR_COMPLETE = "ocr_complete"
     SUMMARIZED = "summarized"
     READY = "ready"
-    ERROR = "error"
+    ERROR = "error" 
     VECTORIZED = "vectorized"
     BDA_PROCESSED = "bda_processed"
 

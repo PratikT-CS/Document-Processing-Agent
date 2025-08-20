@@ -20,7 +20,7 @@ class MultiFileDocumentSummarizer:
         #     openai_api_key=Config.OPENAI_API_KEY
         # )
 
-        self.llm = init_chat_model(Config.MODEL_NAME)
+        self.llm = init_chat_model(Config.SUMMARIZER_MODEL_NAME)
         
         self.multi_doc_summary_prompt = PromptTemplate(
             input_variables=["documents_info", "combined_text_sample"],
@@ -73,6 +73,8 @@ class MultiFileDocumentSummarizer:
             6. [Question about specific details]
             7. [Question about implications/conclusions]
             8. [Question about document collection as a whole]
+
+            NOTE: RETURN ONLY QUESTIONS.
             """
         )
     

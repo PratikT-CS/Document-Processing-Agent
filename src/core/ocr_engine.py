@@ -60,54 +60,54 @@ class OCREngine:
         """Extract text from PDF file"""
         text_content = []
         
-        try:
-            with open(file_path, 'rb') as file:
-                pdf_reader = PyPDF2.PdfReader(file)
-                
-                for page_num, page in enumerate(pdf_reader.pages):
-                    text = page.extract_text()
-                    if text.strip():
-                        text_content.append(text)
-                    else:
-                        # If no text found, might be scanned PDF - use OCR
-                        logger.warning(f"No text found on page {page_num + 1}, might need OCR")
-            
-            full_text = '\n'.join(text_content)
-            confidence = 1.0 if full_text.strip() else 0.0  # PDF text extraction is reliable
-            
-            return full_text, confidence
-            
-        except Exception as e:
-            logger.error(f"Error reading PDF: {str(e)}")
-            raise
-        
         # try:
-        #     doc = fitz.open(filename=file_path, filetype="pdf")
-        #     for page_num in range(doc.page_count):
-        #         page = doc.load_page(page_num)
+        #     with open(file_path, 'rb') as file:
+        #         pdf_reader = PyPDF2.PdfReader(file)
                 
-        #         pix = page.get_pixmap(matrix=fitz.Matrix(RENDERING_DPI/72, RENDERING_DPI/72))
-        #         image_bytes = pix.tobytes()
-
-        #         if len(image_bytes) > 5 * 1024 * 1024:  # 5MB limit
-        #             print(f"Warning: Page {page_num + 1} image is too large for Textract. Skipping.")
-        #             continue
-
-        #         page_text = self.extract_text_from_page(image_bytes)
-
-        #         if page_text.strip():
-        #                 text_content.append(page_text)
-        #         else:
-        #             # If no text found, might be scanned PDF - use OCR
-        #             logger.warning(f"No text found on page {page_num + 1}")
-
+        #         for page_num, page in enumerate(pdf_reader.pages):
+        #             text = page.extract_text()
+        #             if text.strip():
+        #                 text_content.append(text)
+        #             else:
+        #                 # If no text found, might be scanned PDF - use OCR
+        #                 logger.warning(f"No text found on page {page_num + 1}, might need OCR")
+            
         #     full_text = '\n'.join(text_content)
         #     confidence = 1.0 if full_text.strip() else 0.0  # PDF text extraction is reliable
             
         #     return full_text, confidence
+            
         # except Exception as e:
         #     logger.error(f"Error reading PDF: {str(e)}")
         #     raise
+        
+        try:
+            doc = fitz.open(filename=file_path, filetype="pdf")
+            for page_num in range(doc.page_count):
+                page = doc.load_page(page_num)
+                
+                pix = page.get_pixmap(matrix=fitz.Matrix(RENDERING_DPI/72, RENDERING_DPI/72))
+                image_bytes = pix.tobytes()
+
+                if len(image_bytes) > 5 * 1024 * 1024:  # 5MB limit
+                    print(f"Warning: Page {page_num + 1} image is too large for Textract. Skipping.")
+                    continue
+
+                page_text = self.extract_text_from_page(image_bytes)
+
+                if page_text.strip():
+                        text_content.append(page_text)
+                else:
+                    # If no text found, might be scanned PDF - use OCR
+                    logger.warning(f"No text found on page {page_num + 1}")
+
+            full_text = '\n'.join(text_content)
+            confidence = 1.0 if full_text.strip() else 0.0  # PDF text extraction is reliable
+            
+            return full_text, confidence
+        except Exception as e:
+            logger.error(f"Error reading PDF: {str(e)}")
+            raise
 
     def _extract_from_image(self, file_path: str) -> Tuple[str, float]:
         """Extract text from image using OCR"""

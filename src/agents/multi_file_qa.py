@@ -10,6 +10,7 @@ import numpy as np
 from ..config.settings import Config
 from .multi_file_state import MultiFileDocumentState, ProcessingStatus
 import json
+import gradio as gr
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,7 @@ class MultiFileQAAgent:
         #     openai_api_key=Config.OPENAI_API_KEY
         # )
 
-        self.llm = init_chat_model(Config.MODEL_NAME)
+        self.llm = init_chat_model(Config.QnA_MODEL_NAME)
         
         self.multi_doc_qa_prompt = PromptTemplate(
             input_variables=["question", "relevant_chunks", "collection_summary", "file_list", "combined_text"],
@@ -101,7 +102,7 @@ class MultiFileQAAgent:
                 Combined Text (all documents):
                 {combined_text}
                 
-                Extracted data with information needed to find it in the doocuent like bouningBox, page...
+                Extracted data with information needed to find it in the document like bouningBox, page, file_path...
                 {extracted_data}
 
                 User's Question: {question}
@@ -110,10 +111,10 @@ class MultiFileQAAgent:
                 You provide answer in following json format:
                 {{
                     "text_answer": string [Answer to the question],
-                    "visual_answer": List[Dict] [list of dictionaries containing visual answer from the extracted data information given to you above]
+                    "visual_answer": List[Dict] [list of dictionaries containing visual answer from the extracted data information with 'boundingBox', 'page' and 'file_path' given to you above]
                 }}
                 
-                NOTE: only reply in pure json object nothing else in your reply. No bacticks, no punctuation, no markdown, nothing like ```json ...``` also.
+                NOTE: only reply in pure json object nothing else in your reply. No bacticks, no punctuation, no markdown, nothing like ```json ...``` also. And make sure file_path must be same in your response as you are provided with in extracted data information.
 
             ALSO MAKE SURE IN ANY CASE YOU HAVE TO PROVIDE VISUAL ANSWER AS WELL AND PROVIDE ANSWER OF VISUAL ANSWER MUST BE FROM THE EXTRACTED DATA INFORMATION GIVEN ABOVE.
             Also make sure that you should use bounding box coordinates to show the visual answer.
@@ -232,6 +233,25 @@ class MultiFileQAAgent:
                 )
                 
                 response = self.llm.invoke([HumanMessage(content=prompt)])
+
+                 # Update state
+                state["response"] = response.content.strip()
+                state["relevant_chunks"] = relevant_chunks
+                
+                # Add to chat history
+                if "chat_history" not in state:
+                    state["chat_history"] = []
+                
+                state["chat_history"].append({
+                    "role": "user",
+                    "content": question
+                })
+
+                state["chat_history"].append({
+                    "role": "assistant",
+                    "content": response.content.strip()
+                })
+
                 return response.content.strip()
             
             else:
@@ -246,6 +266,7 @@ class MultiFileQAAgent:
                 extracted_data = []
                 for file_id, file_info in files.items():
                     extracted_data_obj = {file_info.file_name: {}}
+
                     extracted_data_obj[file_info.file_name].update({"data_with_bounding_box": file_info.extracted_data})
                     extracted_data.append(extracted_data_obj)
 
@@ -259,7 +280,32 @@ class MultiFileQAAgent:
                 )
                 
                 response = self.llm.invoke([HumanMessage(content=prompt)])
-                return response.content.strip()
+                
+                info = json.loads(response.content.strip())
+                print(info)
+                info_visual = info["visual_answer"]
+                images = extract_image(info_visual)
+
+                if "chat_history" not in state:
+                    state["chat_history"] = []
+
+                state["chat_history"].append({
+                    "role": "user",
+                    "content": question
+                })
+
+                state["chat_history"].append({
+                    "role": "assistant",
+                    "content": info["text_answer"]
+                })
+
+                for image in images:
+                    state["chat_history"].append({
+                        "role": "assistant",
+                        "content": gr.Image(value=image)
+                    })
+
+                return info["text_answer"]
             
         except Exception as e:
             logger.error(f"Error answering multi-document question: {str(e)}")
@@ -292,25 +338,25 @@ def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileD
         relevant_chunks = qa_agent.retrieve_relevant_chunks(current_query)
         
         # Update state
-        state["response"] = answer
-        state["relevant_chunks"] = relevant_chunks
+        # state["response"] = answer
+        # state["relevant_chunks"] = relevant_chunks
         
         # Add to chat history
-        if "chat_history" not in state:
-            state["chat_history"] = []
+        # if "chat_history" not in state:
+        #     state["chat_history"] = []
         
-        state["chat_history"].append({
-            "role": "user",
-            "content": current_query
-        })
+        # state["chat_history"].append({
+        #     "role": "user",
+        #     "content": current_query
+        # })
 
-        state["chat_history"].append({
-            "role": "assistant",
-            "content": answer
-        })
+        # state["chat_history"].append({
+        #     "role": "assistant",
+        #     "content": answer
+        # })
 
-        if hasattr(qa_agent, 'chunks_with_metadata') and qa_agent.chunks_with_metadata:
-            state["relevant_chunks"] = qa_agent.retrieve_relevant_chunks(current_query)
+        # if hasattr(qa_agent, 'chunks_with_metadata') and qa_agent.chunks_with_metadata:
+        #     state["relevant_chunks"] = qa_agent.retrieve_relevant_chunks(current_query)
         
         logger.info("Question processed successfully")
         
@@ -319,4 +365,46 @@ def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileD
     except Exception as e:
         logger.error(f"Error processing question: {str(e)}")
         state["response"] = f"I apologize, but I encountered an error while processing your question: {str(e)}"
+        if "chat_history" not in state:
+            state["chat_history"] = []
+        state["chat_history"].append({"role": "user", "content": current_query})
+        state["chat_history"].append({"role": "assistant", "content": f"I apologize, but I encountered an error while processing your question: {str(e)}"})
         return state
+    
+import fitz
+from PIL import Image
+import io
+import base64
+
+def extract_image(items):
+    cropped_images = []
+
+    for item in items:
+        file_path = item["file_path"]
+        page_num = item["page"] - 1
+        bbox = item["boundingBox"]
+
+        doc = fitz.open(file_path)
+        page = doc.load_page(page_num)
+
+        rect = page.rect
+        page_width, page_height = rect.width, rect.height
+
+        x0 = bbox["left"] * page_width
+        y0 = bbox["top"] * page_height
+        x1 = x0 + bbox["width"] * page_width
+        y1 = y0 + bbox["height"] * page_height
+
+        # Render page as image
+        pix = page.get_pixmap(matrix=fitz.Matrix(150/72, 150/72))
+        img = Image.open(io.BytesIO(pix.tobytes("png")))
+
+        x0, y0, x1, y1 = [coord * (150/72) for coord in (x0, y0, x1, y1)]
+
+        # Crop image
+        cropped_img = img.crop((x0, y0, x1, y1))
+        cropped_images.append(cropped_img)
+
+        doc.close()
+
+    return cropped_images

@@ -315,8 +315,11 @@ def process_all_files_via_bda(state: MultiFileDocumentState) -> MultiFileDocumen
                             try:
                                 result = read_json_result_from_s3(response['outputConfiguration']['s3Uri'])
                                 result = json.loads(result)
-                                file_info.extracted_data = result["explainability_info"]
-
+                                # file_info.extracted_data = result["explainability_info"]
+                                for file_id, file_info in files.items():
+                                    if key in file_info.s3_uri.lower():
+                                        file_info.extracted_data = result["explainability_info"]
+                                        break
                             except Exception as err:
                                 print(f"Error while extracting or saving result: {err}")
 
@@ -341,14 +344,14 @@ def filter_blueprint(s3_uri):
        
         for name in as_of_now_files:
             if name in file_name:
-                return blueprints.get(name, blueprints.get("mv-1"))
+                return blueprints.get(name)
        
         return blueprints.get("mv-1")
    
     except Exception as e:
         logger.error(f"Error in filter_blueprint: {str(e)}")
         # Return default blueprint if error occurs
-        return blueprints.get("mv-1")
+        return []
 
 def invoke_bda_job(input_uri:str, output_uri:str):
     try: 

@@ -69,40 +69,68 @@ class MultiFileDocumentChatInterface:
             self.processing = False
             return f"Error processing files: {str(e)}", "", "Error", [], False
     
-    def answer_question(self, question: str, chat_history: List[List[str]]) -> Tuple[List[List[str]], str]:
+    def answer_question(self, question: str, chat_history: List[Dict]) -> Tuple[List[Dict], str]:
         """
         Handle user question and return updated chat history.
         Returns: (updated_chat_history, empty_input)
         """
         try:
             if not self.current_state:
-                chat_history.append([question, "Please upload and process documents first."])
+                chat_history.extend([
+                    {
+                        "role": "user",
+                        "content": question 
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Please upload and process documents first." 
+                    }
+                ])
                 return chat_history, ""
             
             if self.current_state.get("overall_status") != ProcessingStatus.SUMMARIZED:
-                chat_history.append([question, "Documents are not ready for questions yet. Please wait for processing to complete."])
+                chat_history.extend([
+                    {
+                        "role": "user",
+                        "content": question 
+                    },
+                    {
+                        "role": "assistant",
+                        "content": "Documents are not ready for questions yet. Please wait for processing to complete." 
+                    }
+                ])
                 return chat_history, ""
             
             # Process question through workflow
             result = self.workflow.ask_question(self.current_state, question)
             
             # Get response
-            response = result.get("response", "I couldn't generate a response.")
+            # response = result.get("response", "I couldn't generate a response.")
+            response = result.get("chat_history", [])
             
             # Update current state
             self.current_state = result
             
             # Add to chat history
-            chat_history.append([question, response])
+            chat_history = response
             
             return chat_history, ""  # Clear input
             
         except Exception as e:
             logger.error(f"Error answering question: {str(e)}")
-            chat_history.append([question, f"Error processing question: {str(e)}"])
+            chat_history.extend([
+                    {
+                        "role": "user",
+                        "content": question 
+                    },
+                    {
+                        "role": "assistant",
+                        "content": f"Error processing question: {str(e)}"
+                    }
+                ])
             return chat_history, ""
     
-    def use_suggested_question(self, question: str, chat_history: List[List[str]]) -> Tuple[List[List[str]], str]:
+    def use_suggested_question(self, question: str, chat_history: List[Dict]) -> Tuple[List[Dict], str]:
         """Handle clicking on suggested question."""
         return self.answer_question(question, chat_history)
     
@@ -133,7 +161,7 @@ class MultiFileDocumentChatInterface:
     def create_interface(self) -> gr.Interface:
         """Create the Gradio interface."""
         
-        with gr.Blocks(title="Multi-File Document Chat Assistant", css="style.css") as interface:
+        with gr.Blocks(title="Multi-File Document Chat Assistant", css=""".chat-bot{height: 88px;}""") as interface:
     
             with gr.Row():
                 
@@ -158,12 +186,6 @@ class MultiFileDocumentChatInterface:
                             value="Ready to upload files",
                             interactive=False
                         )
-                        
-                        progress_output = gr.Textbox(
-                            label="Progress", 
-                            value="Waiting for files",
-                            interactive=False
-                        )
 
                     with gr.Group():
                         gr.Markdown("### 📋 Document Summary")
@@ -175,9 +197,28 @@ class MultiFileDocumentChatInterface:
                             max_height=300
                         )
                 
-                # Suggested questions section (initially hidden)
                 with gr.Column(scale=2):
-                    # Document summary section
+                    # Chat interface (initially hidden) 
+                    with gr.Group(visible=False) as chat_group:
+                        gr.Markdown("### 💬 Chat with Documents")
+                        
+                        chatbot = gr.Chatbot(
+                            label="Conversation",
+                            height=380,
+                            show_label=False,
+                            type="messages"
+                        )
+                        
+                        with gr.Row():
+                            chat_input = gr.Textbox(
+                                label="Ask a question",
+                                placeholder="Type your question here...",
+                                scale=4,
+                                elem_classes="chat-bot"
+                            )
+                            send_btn = gr.Button("Send", variant="primary", scale=1, elem_classes="chat-bot")
+
+                    # Suggested questions (initially hidden)
                     with gr.Group(visible=False) as questions_group:
                         gr.Markdown("### 💡 Suggested Questions")
                         with gr.Row(equal_height=True):
@@ -185,25 +226,6 @@ class MultiFileDocumentChatInterface:
                             for i in range(4):
                                 btn = gr.Button("", visible=False, size="sm")
                                 question_buttons.append(btn)
-
-                    # Chat interface (initially hidden) 
-                    with gr.Group(visible=False) as chat_group:
-                        gr.Markdown("### 💬 Chat with Documents")
-                        
-                        chatbot = gr.Chatbot(
-                            label="Conversation",
-                            height=320,
-                            show_label=False
-                        )
-                        
-                        with gr.Row():
-                            chat_input = gr.Textbox(
-                                label="Ask a question",
-                                placeholder="Type your question here...",
-                                scale=4
-                            )
-                            send_btn = gr.Button("Send", variant="primary", scale=1)
-            
             # Event handlers
             def handle_processing(files):
                 result = self.upload_and_process_files(files)
@@ -224,8 +246,7 @@ class MultiFileDocumentChatInterface:
                         ])
                 
                 return [
-                    status,  # status_output
-                    progress,  # progress_output  
+                    status,  # status_output 
                     summary,  # summary_output
                     gr.Group(visible=bool(questions)),  # questions_group
                     gr.Group(visible=chat_visible),  # chat_group
@@ -236,8 +257,7 @@ class MultiFileDocumentChatInterface:
                 fn=handle_processing,
                 inputs=[file_input],
                 outputs=[
-                    status_output,
-                    progress_output, 
+                    status_output, 
                     summary_output,
                     questions_group,
                     chat_group
