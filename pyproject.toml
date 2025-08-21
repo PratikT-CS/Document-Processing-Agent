@@ -18,6 +18,7 @@ dependencies = [
     "pgvector>=0.4.1",
     "psycopg2-binary>=2.9.10",
     "pymupdf>=1.26.3",
+    "pypdf>=6.0.0",
     "pypdf2>=3.0.1",
     "pytesseract>=0.3.13",
     "scikit-learn>=1.7.1",
