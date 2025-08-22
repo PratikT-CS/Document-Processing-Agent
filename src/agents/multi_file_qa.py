@@ -11,6 +11,10 @@ from ..config.settings import Config
 from .multi_file_state import MultiFileDocumentState, ProcessingStatus
 import json
 import gradio as gr
+from .vector_store import vector_store
+import fitz
+from PIL import Image
+import io
 
 logger = logging.getLogger(__name__)
 
@@ -28,7 +32,7 @@ class MultiFileQAAgent:
         self.llm = init_chat_model(Config.QnA_MODEL_NAME)
         
         self.multi_doc_qa_prompt = PromptTemplate(
-            input_variables=["question", "relevant_chunks", "collection_summary", "file_list", "combined_text"],
+            input_variables=["question", "relevant_context", "collection_summary", "file_list", "combined_text"],
             template="""
             You are answering questions about a collection of {num_files} documents. Use the provided context to give comprehensive answers.
             
@@ -38,8 +42,8 @@ class MultiFileQAAgent:
             Collection Summary:
             {collection_summary}
             
-            Combined Text (all documents):
-            {combined_text}
+            Relevant Text from Documents:
+            {relevant_context}
             
             User Question: {question}
             
@@ -91,7 +95,7 @@ class MultiFileQAAgent:
         )
 
         self.answer_visual_question_prompt = PromptTemplate(
-            input_variables=["question", "file_list", "num_files", "combined_text", "extracted_data"],
+            input_variables=["question", "file_list", "num_files", "combined_text", "extracted_data", "relevant_context"],
             template="""
                 You are answering user's question about a collection of {num_files} documents for those questions that needs textual anwer with visual anwer as well.
 
@@ -99,8 +103,8 @@ class MultiFileQAAgent:
                 Document Collection: 
                 {file_list}
                 
-                Combined Text (all documents):
-                {combined_text}
+                Relevant text from Documents:
+                {relevant_context}
                 
                 Extracted data with information needed to find it in the document like bouningBox, page, file_path...
                 {extracted_data}
@@ -120,79 +124,10 @@ class MultiFileQAAgent:
             Also make sure that you should use bounding box coordinates to show the visual answer.
             """
         )
-        
-        # TF-IDF vectorizer for retrieval across all documents
-        self.vectorizer = TfidfVectorizer(
-            max_features=2000,
-            stop_words='english', 
-            ngram_range=(1, 2)
-        )
-        self.chunk_vectors = None
-        self.chunks_with_metadata = None
-    
-    def prepare_multi_file_index(self, state: MultiFileDocumentState) -> None:
-        """Prepare retrieval index from all document chunks"""
-        try:
-            combined_chunks = state.get("combined_chunks", [])
-            if not combined_chunks:
-                logger.warning("No combined chunks available for indexing")
-                return
-            
-            # Extract chunk content for vectorization
-            chunk_contents = [chunk["content"] for chunk in combined_chunks]
-            self.chunks_with_metadata = combined_chunks
-            
-            # Create TF-IDF vectors
-            self.chunk_vectors = self.vectorizer.fit_transform(chunk_contents)
-            
-            logger.info(f"Prepared multi-file retrieval index with {len(combined_chunks)} chunks from {len(state['files'])} documents")
-            
-        except Exception as e:
-            logger.error(f"Error preparing multi-file index: {str(e)}")
-    
-    def retrieve_relevant_chunks(self, query: str, top_k: int = 5) -> List[Dict[str, Any]]:
-        """Retrieve most relevant chunks across all documents"""
-        try:
-            if not self.chunks_with_metadata or self.chunk_vectors is None:
-                logger.warning("No multi-file index available")
-                return []
-            
-            # Vectorize query
-            query_vector = self.vectorizer.transform([query])
-            
-            # Calculate similarities
-            similarities = cosine_similarity(query_vector, self.chunk_vectors).flatten()
-            
-            # Get top k most similar chunks
-            top_indices = np.argsort(similarities)[::-1][:top_k]
-            
-            relevant_chunks = []
-            for idx in top_indices:
-                if similarities[idx] > 0.1:  # Minimum similarity threshold
-                    chunk_data = self.chunks_with_metadata[idx].copy()
-                    chunk_data["similarity_score"] = similarities[idx]
-                    relevant_chunks.append(chunk_data)
-            
-            # Sort by similarity score
-            relevant_chunks.sort(key=lambda x: x["similarity_score"], reverse=True)
-            
-            logger.info(f"Retrieved {len(relevant_chunks)} relevant chunks from multiple documents")
-            return relevant_chunks
-            
-        except Exception as e:
-            logger.error(f"Error retrieving chunks: {str(e)}")
-            return []
     
     def answer_multi_document_question(self, question: str, state: MultiFileDocumentState) -> str:
         """Generate answer using context from all documents"""
         try:
-            # Prepare index if not already done
-            if not self.chunks_with_metadata:
-                self.prepare_multi_file_index(state)
-            
-            # Retrieve relevant chunks
-            relevant_chunks = self.retrieve_relevant_chunks(question, top_k=6)
-
             prompt = self.visual_op_decider_prompt.format(
                 question=question
             )
@@ -203,17 +138,12 @@ class MultiFileQAAgent:
 
 
             if not response["visual_output_needed"]:
-                # Prepare context from relevant chunks
-                context_parts = []
-                for chunk in relevant_chunks:
-                    source_info = f"[From: {chunk['file_name']}]"
-                    context_parts.append(f"{source_info}\n{chunk['content']}")
+                retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
                 
-                relevant_context = "\n\n".join(context_parts) if context_parts else "No specific relevant context found."
-                
-                # Limit context length
-                if len(relevant_context) > 4000:
-                    relevant_context = relevant_context[:4000] + "\n\n[Context truncated...]"
+                relevant_context = f"===\n"
+                for retrieved_doc in retrieved_docs_text:
+                    relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
+                relevant_context += "==="
                 
                 # Prepare file list
                 files = state["files"]
@@ -225,7 +155,7 @@ class MultiFileQAAgent:
                 # Generate answer
                 prompt = self.multi_doc_qa_prompt.format(
                     question=question,
-                    relevant_chunks=relevant_context,
+                    relevant_context=relevant_context,
                     collection_summary=state.get("combined_summary", "No summary available."),
                     file_list=file_list,
                     num_files=len(file_names),
@@ -236,7 +166,7 @@ class MultiFileQAAgent:
 
                  # Update state
                 state["response"] = response.content.strip()
-                state["relevant_chunks"] = relevant_chunks
+                # state["relevant_chunks"] = relevant_chunks
                 
                 # Add to chat history
                 if "chat_history" not in state:
@@ -263,12 +193,34 @@ class MultiFileQAAgent:
                             if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
                 file_list = "\n".join(file_names)
                 
+                retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
+                
+                relevant_context = f"===\n"
+                for retrieved_doc in retrieved_docs_text:
+                    relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
+                relevant_context += "==="
+                
+                retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=8)
+                
                 extracted_data = []
-                for file_id, file_info in files.items():
-                    extracted_data_obj = {file_info.file_name: {}}
-
-                    extracted_data_obj[file_info.file_name].update({"data_with_bounding_box": file_info.extracted_data})
+                
+                for retrieved_doc in retrieved_docs_visual:
+                    extracted_data_obj = {retrieved_doc.metadata["source"]: {}}
+                    
+                    extracted_data_obj[retrieved_doc.metadata["source"]].update({"data_with_bounding_box": 
+                        {
+                            "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
+                            "page": retrieved_doc.metadata["page"],
+                            "file_path": retrieved_doc.metadata["source"]
+                        }  
+                    })
                     extracted_data.append(extracted_data_obj)
+                
+                # for file_id, file_info in files.items():
+                #     extracted_data_obj = {file_info.file_name: {}}
+
+                #     extracted_data_obj[file_info.file_name].update({"data_with_bounding_box": file_info.extracted_data})
+                #     extracted_data.append(extracted_data_obj)
 
                 # Generate answer
                 prompt = self.answer_visual_question_prompt.format(
@@ -276,7 +228,8 @@ class MultiFileQAAgent:
                     file_list=file_list,
                     num_files=len(file_names),
                     combined_text=state.get("combined_text"),
-                    extracted_data=extracted_data
+                    extracted_data=extracted_data,
+                    relevant_context=relevant_context
                 )
                 
                 response = self.llm.invoke([HumanMessage(content=prompt)])
@@ -323,7 +276,7 @@ def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileD
             return state
         
         # Check if documents are ready
-        if state.get("overall_status") != ProcessingStatus.SUMMARIZED:
+        if state.get("overall_status") != ProcessingStatus.VECTORIZED:
             state["response"] = "Documents are not ready for questions yet. Please wait for processing to complete."
             return state
         
@@ -333,30 +286,6 @@ def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileD
         # Generate answer
         logger.info(f"Processing multi-document question: {current_query[:100]}...")
         answer = qa_agent.answer_multi_document_question(current_query, state)
-        
-        # Get relevant chunks for reference
-        relevant_chunks = qa_agent.retrieve_relevant_chunks(current_query)
-        
-        # Update state
-        # state["response"] = answer
-        # state["relevant_chunks"] = relevant_chunks
-        
-        # Add to chat history
-        # if "chat_history" not in state:
-        #     state["chat_history"] = []
-        
-        # state["chat_history"].append({
-        #     "role": "user",
-        #     "content": current_query
-        # })
-
-        # state["chat_history"].append({
-        #     "role": "assistant",
-        #     "content": answer
-        # })
-
-        # if hasattr(qa_agent, 'chunks_with_metadata') and qa_agent.chunks_with_metadata:
-        #     state["relevant_chunks"] = qa_agent.retrieve_relevant_chunks(current_query)
         
         logger.info("Question processed successfully")
         
@@ -371,11 +300,6 @@ def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileD
         state["chat_history"].append({"role": "assistant", "content": f"I apologize, but I encountered an error while processing your question: {str(e)}"})
         return state
     
-import fitz
-from PIL import Image
-import io
-import base64
-
 def extract_image(items):
     cropped_images = []
 

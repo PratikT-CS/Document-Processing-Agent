@@ -5,6 +5,7 @@ from .multi_file_state import MultiFileDocumentState, ProcessingStatus
 from .multi_file_processor import upload_multiple_files, process_all_files_ocr
 from .multi_file_summarizer import generate_multi_document_summary
 from .multi_file_qa import process_multi_document_question
+from .store_embeddings import store_embeddings
 
 logger = logging.getLogger(__name__)
 
@@ -25,6 +26,7 @@ class MultiFileDocumentWorkflow:
         workflow.add_node("upload_files", upload_multiple_files)
         workflow.add_node("process_ocr", process_all_files_ocr)
         workflow.add_node("generate_summary", generate_multi_document_summary)
+        workflow.add_node("store_embeddings", store_embeddings)
         workflow.add_node("answer_question", process_multi_document_question)
         
         # Define entry point
@@ -55,6 +57,15 @@ class MultiFileDocumentWorkflow:
             "generate_summary",
             self._decide_after_summarization,
             {
+                "ready": "store_embeddings",
+                "error": END
+            }
+        )
+        
+        workflow.add_conditional_edges(
+            "store_embeddings",
+            self._decide_after_embedding_store,
+            {
                 "ready": END,
                 "error": END
             }
@@ -76,7 +87,7 @@ class MultiFileDocumentWorkflow:
         """Decide next step after file upload"""
         if state.get("overall_status") == ProcessingStatus.ERROR:
             return "error"
-        if state.get("overall_status") == ProcessingStatus.SUMMARIZED:
+        if state.get("overall_status") == ProcessingStatus.VECTORIZED:
             return "answer_question"
         return "continue"
     
@@ -88,6 +99,12 @@ class MultiFileDocumentWorkflow:
     
     def _decide_after_summarization(self, state: MultiFileDocumentState) -> str:
         """Decide next step after summarization"""
+        if state.get("overall_status") == "error":
+            return "error"
+        return "ready"
+    
+    def _decide_after_embedding_store(self, state: MultiFileDocumentState) -> str:
+        """Decide next step after embedding store"""
         if state.get("overall_status") == "error":
             return "error"
         return "ready"

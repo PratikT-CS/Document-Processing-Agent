@@ -44,7 +44,7 @@ class MultiFileDocumentChatInterface:
                 self.processing = False
                 return f"Error: {error_msg}", "", "Error occurred", [], False
             
-            elif result.get("overall_status") == ProcessingStatus.SUMMARIZED:
+            elif result.get("overall_status") == ProcessingStatus.VECTORIZED:
                 summary = result.get("combined_summary", "No summary available")
                 questions = result.get("suggested_questions", [])
                 
@@ -88,7 +88,7 @@ class MultiFileDocumentChatInterface:
                 ])
                 return chat_history, ""
             
-            if self.current_state.get("overall_status") != ProcessingStatus.SUMMARIZED:
+            if self.current_state.get("overall_status") != ProcessingStatus.VECTORIZED:
                 chat_history.extend([
                     {
                         "role": "user",
@@ -199,7 +199,7 @@ class MultiFileDocumentChatInterface:
                 
                 with gr.Column(scale=2):
                     # Chat interface (initially hidden) 
-                    with gr.Group(visible=False) as chat_group:
+                    with gr.Group(visible=True) as chat_group:
                         gr.Markdown("### 💬 Chat with Documents")
                         
                         chatbot = gr.Chatbot(
@@ -219,7 +219,7 @@ class MultiFileDocumentChatInterface:
                             send_btn = gr.Button("Send", variant="primary", scale=1, elem_classes="chat-bot")
 
                     # Suggested questions (initially hidden)
-                    with gr.Group(visible=False) as questions_group:
+                    with gr.Group(visible=True) as questions_group:
                         gr.Markdown("### 💡 Suggested Questions")
                         with gr.Row(equal_height=True):
                             question_buttons = []

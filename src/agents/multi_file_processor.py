@@ -22,7 +22,7 @@ def upload_multiple_files(state: MultiFileDocumentState) -> MultiFileDocumentSta
     """
     LangGraph node: Handle multiple file uploads
     """
-    if state["overall_status"] == ProcessingStatus.SUMMARIZED:
+    if state["overall_status"] == ProcessingStatus.VECTORIZED:
         return state
     try:
         state["overall_status"] = ProcessingStatus.UPLOADING

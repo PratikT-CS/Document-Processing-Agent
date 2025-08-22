@@ -29,7 +29,7 @@ class Config:
     MAX_TOKENS = 1500
     
     # Gradio settings
-    GRADIO_PORT = 7868
+    GRADIO_PORT = 7869
     GRADIO_SHARE = False
     
     @classmethod
