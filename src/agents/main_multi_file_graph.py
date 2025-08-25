@@ -6,6 +6,8 @@ from .multi_file_processor import upload_multiple_files, process_all_files_ocr
 from .multi_file_summarizer import generate_multi_document_summary
 from .multi_file_qa import process_multi_document_question
 from .store_embeddings import store_embeddings
+from langgraph.prebuilt import ToolNode, tools_condition
+from .multi_file_qa import tools
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +30,7 @@ class MultiFileDocumentWorkflow:
         workflow.add_node("generate_summary", generate_multi_document_summary)
         workflow.add_node("store_embeddings", store_embeddings)
         workflow.add_node("answer_question", process_multi_document_question)
+        workflow.add_node("tools", ToolNode(tools=tools))
         
         # Define entry point
         workflow.set_entry_point("upload_files")
@@ -72,6 +75,9 @@ class MultiFileDocumentWorkflow:
         )
         
         # QA node can be called separately
+        workflow.add_conditional_edges("answer_question", tools_condition, "tools")
+        workflow.add_edge("tools", "answer_question")
+        
         workflow.add_edge("answer_question", END)
 
         import webbrowser

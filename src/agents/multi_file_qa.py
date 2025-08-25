@@ -15,8 +15,90 @@ from .vector_store import vector_store
 import fitz
 from PIL import Image
 import io
+from langchain.agents import Tool
+import boto3
+import uuid
 
 logger = logging.getLogger(__name__)
+
+def extract_image(inputs: dict):
+    """
+    Extract images from bounding box info using bounding box details and store back extracted image to S3.
+    
+    Args:
+    inputs(dict):{
+        "file_path": str - path of uploaded file
+        "page": int - page number where image is located
+        "boundingBox": {
+            "top": float
+            "left": float
+            "width": float
+            "height": float
+        } - bounding box details of image location in the page
+    }
+    Returns:
+    outputs(list):{
+        s3_url: str - s3uri of uploaded image
+    }
+    """
+    try:
+        if isinstance(inputs, str):
+            try:
+                inputs = json.loads(inputs)
+            except Exception as e:
+                return {"error": f"Error: Failed to parse inputs as JSON: {e}"}
+            
+        file_path = inputs["file_path"]
+        page_num = inputs["page"]
+        bbox = inputs["boundingBox"]
+        
+        if not file_path or not page_num or not bbox:
+            return {"error": f"Error: Missing parameters in inputs"}
+
+        doc = fitz.open(file_path)
+        page = doc.load_page(page_num)
+
+        rect = page.rect
+        page_width, page_height = rect.width, rect.height
+
+        x0 = bbox["left"] * page_width
+        y0 = bbox["top"] * page_height
+        x1 = x0 + bbox["width"] * page_width
+        y1 = y0 + bbox["height"] * page_height
+
+        # Render page as image
+        x0, y0, x1, y1 = [coord * (150/72) for coord in (x0, y0, x1, y1)]
+        rect = fitz.Rect(x0, y0, x1, y1)
+        pix = page.get_pixmap(matrix=fitz.Matrix(150/72, 150/72), clip=rect)
+        img_bytes = pix.tobytes("png")
+        # img = Image.open(io.BytesIO(pix.tobytes("png")))
+        # cropped_img = img.crop((x0, y0, x1, y1))
+        
+        doc.close()
+        
+        s3 = boto3.client('s3')
+        bucket = "doc-processing-agent-test-k"
+        img_key = f"cropped_imgs/{str(uuid.uuid4())}.png" 
+        
+        s3.put_object(Bucket="doc-processing-agent-test-k", Key=img_key, Body=img_bytes, ContentType="image/png")
+        
+        s3_url = f"https://{bucket}.s3.amazonaws.com/{img_key}"
+        
+        return {
+            "s3Url": s3_url
+        }        
+
+    except Exception as e:
+        logger.error(f"Error: Something went wrong during extracting image {e}")
+        return {"error": str(e)}
+
+tool_extract_image = Tool(
+    name="extract_image",
+    description="To extract image for provided info if visual output is required. It takes file_path, page and boundingBox information as input.",
+    func=extract_image,
+)
+
+tools = [tool_extract_image]
 
 class MultiFileQAAgent:
     """Question answering agent for multiple documents"""
@@ -127,150 +209,297 @@ class MultiFileQAAgent:
             Also make sure that you should use bounding box coordinates to show the visual answer.
             """
         )
+        
+        self.generalized_prompt = PromptTemplate(
+            input_variables=["file_list", "collection_summary", "extracted_structured_data", "extracted_data", "extracted_data", "question"],
+            template="""
+                You are an intelligent assistant who is answering user's questions and queries about a collectio of documents. Your task is to anwer user's question in a clear and concise manner from the provided context from the documents.
+                The context includes summaries of the documents, relevant context from the documents for user's question, structured key-value pairs extracted from the documents, and information of extracted data like file_path, boundingBox and page from the documents.
+                
+                You answer user's question by executing tasks in following order:
+                1. You first decide whether user's questions requires any visual output or not.
+                2. If requires visual output you use tool given to you for extracting image by providing file_path, page and boundingBox information from the context and return text answer with s3 url you got from tool.
+                3. If doesn't require visual output then just anwer user's question using provided context of documents.
+                
+                Document Collection:
+                {file_list}
+                
+                Collection Summary:
+                {collection_summary}
+                
+                Structured Data Extracted From Documents:
+                {extracted_structured_data}
+                
+                Extracted data with information needed to find it in the document like bouningBox, page, file_path...
+                {extracted_data}
+                
+                Relevant Text from Documents:
+                {extracted_data}
+                
+                User Question: {question}
+            
+                Stricly follow following rules:
+                1. Answer based on the provided context from the documents
+                2. When referencing information, mention which specific document(s) it comes from
+                3. If the question involves comparing documents, clearly contrast the different sources
+                4. If information is missing, specify which documents were checked
+                5. Provide a clear and consice answer that leverages the full document collection
+                6. Use specific details and quotes when available
+                
+                ALSO MAKE SURE IN ANY CASE YOU HAVE TO PROVIDE VISUAL ANSWER THEN ANSWER OF VISUAL ANSWER MUST BE FROM THE EXTRACTED DATA INFORMATION GIVEN ABOVE.
+                Also make sure that you should use bounding box coordinates with tool to show the visual answer.
+            """
+        )
+    
+    # def answer_multi_document_question(self, question: str, state: MultiFileDocumentState) -> str:
+    #     """Generate answer using context from all documents"""
+    #     try:
+    #         prompt = self.visual_op_decider_prompt.format(
+    #             question=question
+    #         )
+
+    #         response = self.llm.invoke([HumanMessage(content=prompt)])
+    #         logger.info(f"Decider response: {response.content.strip()}")
+    #         response = json.loads(response.content.strip())
+
+
+    #         if not response["visual_output_needed"]:
+    #             retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
+                
+    #             relevant_context = f"===\n"
+    #             for retrieved_doc in retrieved_docs_text:
+    #                 relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
+    #             relevant_context += "==="
+                
+    #             # Prepare file list
+    #             files = state["files"]
+    #             file_names = [f"- {files[file_id].file_name} ({files[file_id].file_type.upper()})" 
+    #                         for file_id in state["file_upload_order"] 
+    #                         if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
+    #             file_list = "\n".join(file_names)
+                
+    #             structured_extracted_data = "===\n"
+    #             for file_id, file_info in files.items():
+    #                 structured_extracted_data += f"From {file_info.file_name}: \n {file_info.extracted_data_structured}\n\n"
+    #             structured_extracted_data += "==="
+                
+    #             # Generate answer
+    #             prompt = self.multi_doc_qa_prompt.format(
+    #                 question=question,
+    #                 relevant_context=relevant_context,
+    #                 collection_summary=state.get("combined_summary", "No summary available."),
+    #                 file_list=file_list,
+    #                 num_files=len(file_names),
+    #                 combined_text=state.get("combined_text"),
+    #                 extracted_structured_data=structured_extracted_data
+    #             )
+                
+    #             response = self.llm.invoke([HumanMessage(content=prompt)])
+
+    #              # Update state
+    #             state["response"] = response.content.strip()
+    #             # state["relevant_chunks"] = relevant_chunks
+                
+    #             # Add to chat history
+    #             if "chat_history" not in state:
+    #                 state["chat_history"] = []
+                
+    #             state["chat_history"].append({
+    #                 "role": "user",
+    #                 "content": question
+    #             })
+
+    #             state["chat_history"].append({
+    #                 "role": "assistant",
+    #                 "content": response.content.strip()
+    #             })
+
+    #             return response.content.strip()
+            
+    #         else:
+    #             logger.info(f"Visual info needed {question}")
+    #             # Prepare file list
+    #             files = state["files"]
+    #             file_names = [f"- {files[file_id].file_name} ({files[file_id].file_type.upper()})" 
+    #                         for file_id in state["file_upload_order"] 
+    #                         if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
+    #             file_list = "\n".join(file_names)
+                
+    #             retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=3)
+                
+    #             relevant_context = f"===\n"
+    #             for retrieved_doc in retrieved_docs_text:
+    #                 relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
+    #             relevant_context += "==="
+                
+    #             retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=8)
+                
+    #             extracted_data = []
+                
+    #             for retrieved_doc in retrieved_docs_visual:
+    #                 extracted_data_obj = {'data_with_bounding_box': {}}
+                    
+    #                 extracted_data_obj['data_with_bounding_box'].update({
+    #                     f"{retrieved_doc.metadata['key']}": {
+    #                         "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
+    #                         "page": retrieved_doc.metadata["page"],
+    #                         "file_path": retrieved_doc.metadata["source"]
+    #                     }}
+    #                 )
+    #                 extracted_data.append(extracted_data_obj)
+                
+    #             # for file_id, file_info in files.items():
+    #             #     extracted_data_obj = {file_info.file_name: {}}
+
+    #             #     extracted_data_obj[file_info.file_name].update({"data_with_bounding_box": file_info.extracted_data})
+    #             #     extracted_data.append(extracted_data_obj)
+
+    #             # Generate answer
+    #             prompt = self.answer_visual_question_prompt.format(
+    #                 question=question,
+    #                 file_list=file_list,
+    #                 num_files=len(file_names),
+    #                 combined_text=state.get("combined_text"),
+    #                 extracted_data=extracted_data,
+    #                 relevant_context=relevant_context
+    #             )
+                
+    #             response = self.llm.invoke([HumanMessage(content=prompt)])
+                
+    #             info = json.loads(response.content.strip())
+    #             print(info)
+    #             info_visual = info["visual_answer"]
+    #             images = extract_image(info_visual)
+
+    #             if "chat_history" not in state:
+    #                 state["chat_history"] = []
+
+    #             state["chat_history"].append({
+    #                 "role": "user",
+    #                 "content": question
+    #             })
+
+    #             state["chat_history"].append({
+    #                 "role": "assistant",
+    #                 "content": info["text_answer"]
+    #             })
+
+    #             for image in images:
+    #                 state["chat_history"].append({
+    #                     "role": "assistant",
+    #                     "content": gr.Image(value=image)
+    #                 })
+
+    #             return info["text_answer"]
+            
+    #     except Exception as e:
+    #         logger.error(f"Error answering multi-document question: {str(e)}")
+    #         return f"I apologize, but I encountered an error while processing your question about the document collection: {str(e)}"
     
     def answer_multi_document_question(self, question: str, state: MultiFileDocumentState) -> str:
         """Generate answer using context from all documents"""
         try:
-            prompt = self.visual_op_decider_prompt.format(
-                question=question
+            retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
+                
+            relevant_context = f"===\n"
+            for retrieved_doc in retrieved_docs_text:
+                relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
+            relevant_context += "==="
+            
+            #Prepare file list
+            files = state["files"]
+            file_names = [f"- {files[file_id].file_name} ({files[file_id].file_type.upper()})" 
+                        for file_id in state["file_upload_order"] 
+                        if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
+            file_list = "\n".join(file_names)
+            
+            structured_extracted_data = "===\n"
+            for file_id, file_info in files.items():
+                structured_extracted_data += f"From {file_info.file_name}: \n {file_info.extracted_data_structured}\n\n"
+            structured_extracted_data += "==="
+            
+            retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=8)
+                
+            extracted_data = []
+            
+            for retrieved_doc in retrieved_docs_visual:
+                extracted_data_obj = {'data_with_bounding_box': {}}
+                
+                extracted_data_obj['data_with_bounding_box'].update({
+                    f"{retrieved_doc.metadata['key']}": {
+                        "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
+                        "page": retrieved_doc.metadata["page"],
+                        "file_path": retrieved_doc.metadata["source"]
+                    }}
+                )
+                extracted_data.append(extracted_data_obj)
+            
+            prompt = self.generalized_prompt.format(
+                question=question,
+                file_list=file_list,
+                relevant_context=relevant_context,
+                extracted_data=extracted_data,
+                extracted_structured_data=structured_extracted_data,
+                collection_summary=state.get("combined_summary", "No summary available.")
             )
-
-            response = self.llm.invoke([HumanMessage(content=prompt)])
-            logger.info(f"Decider response: {response.content.strip()}")
-            response = json.loads(response.content.strip())
-
-
-            if not response["visual_output_needed"]:
-                retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
-                
-                relevant_context = f"===\n"
-                for retrieved_doc in retrieved_docs_text:
-                    relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
-                relevant_context += "==="
-                
-                # Prepare file list
-                files = state["files"]
-                file_names = [f"- {files[file_id].file_name} ({files[file_id].file_type.upper()})" 
-                            for file_id in state["file_upload_order"] 
-                            if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
-                file_list = "\n".join(file_names)
-                
-                structured_extracted_data = "===\n"
-                for file_id, file_info in files.items():
-                    structured_extracted_data += f"From {file_info.file_name}: \n {file_info.extracted_data_structured}\n\n"
-                structured_extracted_data += "==="
-                
-                # Generate answer
-                prompt = self.multi_doc_qa_prompt.format(
-                    question=question,
-                    relevant_context=relevant_context,
-                    collection_summary=state.get("combined_summary", "No summary available."),
-                    file_list=file_list,
-                    num_files=len(file_names),
-                    combined_text=state.get("combined_text"),
-                    extracted_structured_data=structured_extracted_data
-                )
-                
-                response = self.llm.invoke([HumanMessage(content=prompt)])
-
-                 # Update state
-                state["response"] = response.content.strip()
-                # state["relevant_chunks"] = relevant_chunks
-                
-                # Add to chat history
-                if "chat_history" not in state:
-                    state["chat_history"] = []
-                
-                state["chat_history"].append({
-                    "role": "user",
-                    "content": question
-                })
-
-                state["chat_history"].append({
-                    "role": "assistant",
-                    "content": response.content.strip()
-                })
-
-                return response.content.strip()
             
-            else:
-                logger.info(f"Visual info needed {question}")
-                # Prepare file list
-                files = state["files"]
-                file_names = [f"- {files[file_id].file_name} ({files[file_id].file_type.upper()})" 
-                            for file_id in state["file_upload_order"] 
-                            if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
-                file_list = "\n".join(file_names)
-                
-                retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=3)
-                
-                relevant_context = f"===\n"
-                for retrieved_doc in retrieved_docs_text:
-                    relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
-                relevant_context += "==="
-                
-                retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=8)
-                
-                extracted_data = []
-                
-                for retrieved_doc in retrieved_docs_visual:
-                    extracted_data_obj = {'data_with_bounding_box': {}}
-                    
-                    extracted_data_obj['data_with_bounding_box'].update({
-                        f"{retrieved_doc.metadata['key']}": {
-                            "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
-                            "page": retrieved_doc.metadata["page"],
-                            "file_path": retrieved_doc.metadata["source"]
-                        }}
-                    )
-                    extracted_data.append(extracted_data_obj)
-                
-                # for file_id, file_info in files.items():
-                #     extracted_data_obj = {file_info.file_name: {}}
-
-                #     extracted_data_obj[file_info.file_name].update({"data_with_bounding_box": file_info.extracted_data})
-                #     extracted_data.append(extracted_data_obj)
-
-                # Generate answer
-                prompt = self.answer_visual_question_prompt.format(
-                    question=question,
-                    file_list=file_list,
-                    num_files=len(file_names),
-                    combined_text=state.get("combined_text"),
-                    extracted_data=extracted_data,
-                    relevant_context=relevant_context
-                )
-                
-                response = self.llm.invoke([HumanMessage(content=prompt)])
-                
-                info = json.loads(response.content.strip())
-                print(info)
-                info_visual = info["visual_answer"]
-                images = extract_image(info_visual)
-
-                if "chat_history" not in state:
-                    state["chat_history"] = []
-
-                state["chat_history"].append({
-                    "role": "user",
-                    "content": question
-                })
-
-                state["chat_history"].append({
-                    "role": "assistant",
-                    "content": info["text_answer"]
-                })
-
-                for image in images:
-                    state["chat_history"].append({
-                        "role": "assistant",
-                        "content": gr.Image(value=image)
-                    })
-
-                return info["text_answer"]
+            response = self.llm.bind_tools(tools).invoke([HumanMessage(content=prompt)])
             
+            if "chat_history" not in state:
+                state["chat_history"] = []
+
+            state["chat_history"].append({
+                "role": "user",
+                "content": question
+            })
+
+            state["chat_history"].append({
+                "role": "assistant",
+                "content": response.content.strip()
+            })
+            
+            if "messages" not in state:
+                state["messages"] = []
+
+            state["messages"].append({
+                "role": "user",
+                "content": question
+            })
+
+            state["messages"].append({
+                "role": "assistant",
+                "content": response.content.strip()
+            })
+            
+            # logger.info(f"RESPONSE: {response.content.strip()}")
+            return response.content.strip()
         except Exception as e:
             logger.error(f"Error answering multi-document question: {str(e)}")
+            if "chat_history" not in state:
+                state["chat_history"] = []
+
+            state["chat_history"].append({
+                "role": "user",
+                "content": question
+            })
+
+            state["chat_history"].append({
+                "role": "assistant",
+                "content": f"I apologize, but I encountered an error while processing your question about the document collection: {str(e)}"
+            })
+            
+            if "messages" not in state:
+                state["messages"] = []
+
+            state["messages"].append({
+                "role": "user",
+                "content": question
+            })
+
+            state["messages"].append({
+                "role": "assistant",
+                "content": f"I apologize, but I encountered an error while processing your question about the document collection: {str(e)}"
+            })
             return f"I apologize, but I encountered an error while processing your question about the document collection: {str(e)}"
 
 def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileDocumentState:
