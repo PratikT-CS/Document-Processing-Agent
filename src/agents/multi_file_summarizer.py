@@ -30,7 +30,7 @@ class MultiFileDocumentSummarizer:
             Document Collection Overview:
             {documents_info}
             
-            Combined Content Sample (first 4000 characters):
+            Combined Content Sample:
             {combined_text_sample}
             
             Please provide:
@@ -100,7 +100,7 @@ class MultiFileDocumentSummarizer:
                     )
             
             documents_info = "\n".join(docs_info)
-            combined_text_sample = combined_text[:4000] if len(combined_text) > 4000 else combined_text
+            combined_text_sample = combined_text
             
             # Generate summary
             prompt = self.multi_doc_summary_prompt.format(
@@ -141,6 +141,18 @@ class MultiFileDocumentSummarizer:
             
             # Parse questions
             questions = self._parse_questions(response.content)
+            if not len(questions) > 0:
+                return [
+                    "What are the main topics covered across all documents?",
+                    "How do these documents relate to each other?",
+                    "What are the key findings from this document collection?",
+                    "Which document provides the most detailed information on [topic]?",
+                    "Are there any contradictions between the documents?",
+                    "What common themes appear in multiple documents?",
+                    "What unique insights does each document provide?",
+                    "What conclusions can be drawn from this collection?"
+                ]
+            
             return questions
             
         except Exception as e:
@@ -163,7 +175,7 @@ class MultiFileDocumentSummarizer:
         
         for line in lines:
             line = line.strip()
-            if line and (line[0].isdigit() or line.startswith('-') or line.startswith('•')):
+            if line:
                 # Remove numbering and clean up
                 question = line.split('.', 1)[-1].strip() if '.' in line else line.lstrip('- •1234567890').strip()
                 if question and ('?' in question or len(question) > 10):
