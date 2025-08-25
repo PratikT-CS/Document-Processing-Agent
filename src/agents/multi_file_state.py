@@ -27,9 +27,11 @@ class FileInfo:
     
     # Processing status for this file
     processing_status: ProcessingStatus
+    
     s3_uri: Optional[str] = None
     extracted_data: Optional[List[dict]] = None
     error_message: Optional[str] = None
+    extracted_data_structured: Optional[Any] = None
     
     # Extracted content
     raw_text: Optional[str] = None

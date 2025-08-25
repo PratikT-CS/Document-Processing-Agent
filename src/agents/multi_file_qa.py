@@ -32,15 +32,18 @@ class MultiFileQAAgent:
         self.llm = init_chat_model(Config.QnA_MODEL_NAME)
         
         self.multi_doc_qa_prompt = PromptTemplate(
-            input_variables=["question", "relevant_context", "collection_summary", "file_list", "combined_text"],
+            input_variables=["question", "relevant_context", "collection_summary", "file_list", "combined_text", "extracted_structured_data"],
             template="""
-            You are answering questions about a collection of {num_files} documents. Use the provided context to give comprehensive answers.
+            You are answering questions about a collection of {num_files} documents. Use the provided context to give clear and concise answers.
             
             Document Collection:
             {file_list}
             
             Collection Summary:
             {collection_summary}
+            
+            Structured Data Extracted From Documents:
+            {extracted_structured_data}
             
             Relevant Text from Documents:
             {relevant_context}
@@ -52,7 +55,7 @@ class MultiFileQAAgent:
             2. When referencing information, mention which specific document(s) it comes from
             3. If the question involves comparing documents, clearly contrast the different sources
             4. If information is missing, specify which documents were checked
-            5. Provide a comprehensive answer that leverages the full document collection
+            5. Provide a clear and consice answer that leverages the full document collection
             6. Use specific details and quotes when available
             7. Do not include full file path as file name only include file name in the output 
             
@@ -152,6 +155,11 @@ class MultiFileQAAgent:
                             if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
                 file_list = "\n".join(file_names)
                 
+                structured_extracted_data = "===\n"
+                for file_id, file_info in files.items():
+                    structured_extracted_data += f"From {file_info.file_name}: \n {file_info.extracted_data_structured}\n\n"
+                structured_extracted_data += "==="
+                
                 # Generate answer
                 prompt = self.multi_doc_qa_prompt.format(
                     question=question,
@@ -159,7 +167,8 @@ class MultiFileQAAgent:
                     collection_summary=state.get("combined_summary", "No summary available."),
                     file_list=file_list,
                     num_files=len(file_names),
-                    combined_text=state.get("combined_text")
+                    combined_text=state.get("combined_text"),
+                    extracted_structured_data=structured_extracted_data
                 )
                 
                 response = self.llm.invoke([HumanMessage(content=prompt)])
@@ -193,7 +202,7 @@ class MultiFileQAAgent:
                             if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
                 file_list = "\n".join(file_names)
                 
-                retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
+                retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=3)
                 
                 relevant_context = f"===\n"
                 for retrieved_doc in retrieved_docs_text:
@@ -205,15 +214,15 @@ class MultiFileQAAgent:
                 extracted_data = []
                 
                 for retrieved_doc in retrieved_docs_visual:
-                    extracted_data_obj = {retrieved_doc.metadata["source"]: {}}
+                    extracted_data_obj = {'data_with_bounding_box': {}}
                     
-                    extracted_data_obj[retrieved_doc.metadata["source"]].update({"data_with_bounding_box": 
-                        {
+                    extracted_data_obj['data_with_bounding_box'].update({
+                        f"{retrieved_doc.metadata['key']}": {
                             "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
                             "page": retrieved_doc.metadata["page"],
                             "file_path": retrieved_doc.metadata["source"]
-                        }  
-                    })
+                        }}
+                    )
                     extracted_data.append(extracted_data_obj)
                 
                 # for file_id, file_info in files.items():

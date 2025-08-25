@@ -52,11 +52,13 @@ def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
         for file_id, file_info in files.items():    
             flatten_extracted_data = flatten_kv_items(file_info.extracted_data)
             
+            all_extracted_fields = {}
             for item in flatten_extracted_data:
                 for key, value in item.items():
                     if isinstance(value, list):
                         continue
                     if "geometry" in value.keys() and len(value["geometry"]) > 0:
+                        all_extracted_fields[key] = value["value"]
                         docs_splits.append(Document(
                             page_content=f"{key} is {value['value'] if not isinstance(value['value'], bool) else 'present' if value['value'] == True else 'not present'}",
                             id=str(uuid.uuid4()),
@@ -70,7 +72,9 @@ def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
                                 "type-value": value["type"]
                             }
                         ))
-                        
+        
+            file_info.extracted_data_structured = all_extracted_fields
+                      
         _ = vector_store.add_documents(documents=docs_splits)
         
         state["overall_status"] = ProcessingStatus.VECTORIZED
