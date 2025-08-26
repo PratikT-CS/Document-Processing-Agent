@@ -1,5 +1,6 @@
-from typing import TypedDict, List, Optional, Dict, Any
+from typing import Annotated, TypedDict, List, Optional, Dict, Any
 from langchain_core.messages import BaseMessage
+from langgraph.graph.message import add_messages
 from dataclasses import dataclass
 from enum import Enum
 
@@ -82,7 +83,7 @@ class MultiFileDocumentState(TypedDict):
     topic_analysis: Dict[str, Any]  # Common topics across documents
     
     # Chat functionality
-    messages: List[BaseMessage]
+    messages: Annotated[List, add_messages]
     current_query: Optional[str]
     response: Optional[str]
     chat_history: List[Dict[str, str]]

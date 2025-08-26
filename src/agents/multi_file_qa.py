@@ -44,20 +44,24 @@ def extract_image(inputs: dict):
     try:
         if isinstance(inputs, str):
             try:
+                inputs = inputs.replace('\\', '\\\\')
                 inputs = json.loads(inputs)
             except Exception as e:
-                return {"error": f"Error: Failed to parse inputs as JSON: {e}"}
+                logger.info(f"error: Error: Failed to parse inputs as JSON: {e}")
+                return {"error": f"Something went wrong. Please try after sometime!"}
             
         file_path = inputs["file_path"]
-        page_num = inputs["page"]
+        page_num = inputs["page"] - 1
         bbox = inputs["boundingBox"]
-        
-        if not file_path or not page_num or not bbox:
-            return {"error": f"Error: Missing parameters in inputs"}
+        print(f"INFO: {inputs["file_path"]}")
+        print(f"INFO: {inputs["page"]}")
+        print(f"INFO: {inputs["boundingBox"]}")
+        if not all(key in inputs.keys() for key in ["file_path", "page", "boundingBox"]):
+            logger.info(f"error: Error: Missing parameters in inputs")
+            return {"error": f"Something went wrong. Please try after sometime!"}
 
         doc = fitz.open(file_path)
         page = doc.load_page(page_num)
-
         rect = page.rect
         page_width, page_height = rect.width, rect.height
 
@@ -67,12 +71,17 @@ def extract_image(inputs: dict):
         y1 = y0 + bbox["height"] * page_height
 
         # Render page as image
+        pix = page.get_pixmap(matrix=fitz.Matrix(150/72, 150/72))
+        # img_bytes = pix.tobytes("png")
+        img = Image.open(io.BytesIO(pix.tobytes("png")))
+        
         x0, y0, x1, y1 = [coord * (150/72) for coord in (x0, y0, x1, y1)]
-        rect = fitz.Rect(x0, y0, x1, y1)
-        pix = page.get_pixmap(matrix=fitz.Matrix(150/72, 150/72), clip=rect)
-        img_bytes = pix.tobytes("png")
-        # img = Image.open(io.BytesIO(pix.tobytes("png")))
-        # cropped_img = img.crop((x0, y0, x1, y1))
+        cropped_img = img.crop((x0, y0, x1, y1))
+        
+        buffer = io.BytesIO()
+        cropped_img.save(buffer, format='PNG')
+        buffer.seek(0)
+        img_bytes = buffer.getvalue()
         
         doc.close()
         
@@ -89,8 +98,8 @@ def extract_image(inputs: dict):
         }        
 
     except Exception as e:
-        logger.error(f"Error: Something went wrong during extracting image {e}")
-        return {"error": str(e)}
+        logger.info(f"Error: Something went wrong during extracting image {e}")
+        return {"error": "Please try after sometime!"}
 
 tool_extract_image = Tool(
     name="extract_image",
@@ -104,12 +113,6 @@ class MultiFileQAAgent:
     """Question answering agent for multiple documents"""
     
     def __init__(self):
-        # self.llm = ChatOpenAI(
-        #     model=Config.MODEL_NAME,
-        #     temperature=Config.TEMPERATURE,
-        #     max_tokens=Config.MAX_TOKENS,
-        #     openai_api_key=Config.OPENAI_API_KEY
-        # )
 
         self.llm = init_chat_model(Config.QnA_MODEL_NAME)
         
@@ -245,156 +248,9 @@ class MultiFileQAAgent:
                 4. If information is missing, specify which documents were checked
                 5. Provide a clear and consice answer that leverages the full document collection
                 6. Use specific details and quotes when available
-                
-                ALSO MAKE SURE IN ANY CASE YOU HAVE TO PROVIDE VISUAL ANSWER THEN ANSWER OF VISUAL ANSWER MUST BE FROM THE EXTRACTED DATA INFORMATION GIVEN ABOVE.
-                Also make sure that you should use bounding box coordinates with tool to show the visual answer.
+                7. Only use tool if user question requires visual output otherwise don't use tool.
             """
         )
-    
-    # def answer_multi_document_question(self, question: str, state: MultiFileDocumentState) -> str:
-    #     """Generate answer using context from all documents"""
-    #     try:
-    #         prompt = self.visual_op_decider_prompt.format(
-    #             question=question
-    #         )
-
-    #         response = self.llm.invoke([HumanMessage(content=prompt)])
-    #         logger.info(f"Decider response: {response.content.strip()}")
-    #         response = json.loads(response.content.strip())
-
-
-    #         if not response["visual_output_needed"]:
-    #             retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
-                
-    #             relevant_context = f"===\n"
-    #             for retrieved_doc in retrieved_docs_text:
-    #                 relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
-    #             relevant_context += "==="
-                
-    #             # Prepare file list
-    #             files = state["files"]
-    #             file_names = [f"- {files[file_id].file_name} ({files[file_id].file_type.upper()})" 
-    #                         for file_id in state["file_upload_order"] 
-    #                         if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
-    #             file_list = "\n".join(file_names)
-                
-    #             structured_extracted_data = "===\n"
-    #             for file_id, file_info in files.items():
-    #                 structured_extracted_data += f"From {file_info.file_name}: \n {file_info.extracted_data_structured}\n\n"
-    #             structured_extracted_data += "==="
-                
-    #             # Generate answer
-    #             prompt = self.multi_doc_qa_prompt.format(
-    #                 question=question,
-    #                 relevant_context=relevant_context,
-    #                 collection_summary=state.get("combined_summary", "No summary available."),
-    #                 file_list=file_list,
-    #                 num_files=len(file_names),
-    #                 combined_text=state.get("combined_text"),
-    #                 extracted_structured_data=structured_extracted_data
-    #             )
-                
-    #             response = self.llm.invoke([HumanMessage(content=prompt)])
-
-    #              # Update state
-    #             state["response"] = response.content.strip()
-    #             # state["relevant_chunks"] = relevant_chunks
-                
-    #             # Add to chat history
-    #             if "chat_history" not in state:
-    #                 state["chat_history"] = []
-                
-    #             state["chat_history"].append({
-    #                 "role": "user",
-    #                 "content": question
-    #             })
-
-    #             state["chat_history"].append({
-    #                 "role": "assistant",
-    #                 "content": response.content.strip()
-    #             })
-
-    #             return response.content.strip()
-            
-    #         else:
-    #             logger.info(f"Visual info needed {question}")
-    #             # Prepare file list
-    #             files = state["files"]
-    #             file_names = [f"- {files[file_id].file_name} ({files[file_id].file_type.upper()})" 
-    #                         for file_id in state["file_upload_order"] 
-    #                         if files[file_id].processing_status == ProcessingStatus.OCR_COMPLETE]
-    #             file_list = "\n".join(file_names)
-                
-    #             retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=3)
-                
-    #             relevant_context = f"===\n"
-    #             for retrieved_doc in retrieved_docs_text:
-    #                 relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
-    #             relevant_context += "==="
-                
-    #             retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=8)
-                
-    #             extracted_data = []
-                
-    #             for retrieved_doc in retrieved_docs_visual:
-    #                 extracted_data_obj = {'data_with_bounding_box': {}}
-                    
-    #                 extracted_data_obj['data_with_bounding_box'].update({
-    #                     f"{retrieved_doc.metadata['key']}": {
-    #                         "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
-    #                         "page": retrieved_doc.metadata["page"],
-    #                         "file_path": retrieved_doc.metadata["source"]
-    #                     }}
-    #                 )
-    #                 extracted_data.append(extracted_data_obj)
-                
-    #             # for file_id, file_info in files.items():
-    #             #     extracted_data_obj = {file_info.file_name: {}}
-
-    #             #     extracted_data_obj[file_info.file_name].update({"data_with_bounding_box": file_info.extracted_data})
-    #             #     extracted_data.append(extracted_data_obj)
-
-    #             # Generate answer
-    #             prompt = self.answer_visual_question_prompt.format(
-    #                 question=question,
-    #                 file_list=file_list,
-    #                 num_files=len(file_names),
-    #                 combined_text=state.get("combined_text"),
-    #                 extracted_data=extracted_data,
-    #                 relevant_context=relevant_context
-    #             )
-                
-    #             response = self.llm.invoke([HumanMessage(content=prompt)])
-                
-    #             info = json.loads(response.content.strip())
-    #             print(info)
-    #             info_visual = info["visual_answer"]
-    #             images = extract_image(info_visual)
-
-    #             if "chat_history" not in state:
-    #                 state["chat_history"] = []
-
-    #             state["chat_history"].append({
-    #                 "role": "user",
-    #                 "content": question
-    #             })
-
-    #             state["chat_history"].append({
-    #                 "role": "assistant",
-    #                 "content": info["text_answer"]
-    #             })
-
-    #             for image in images:
-    #                 state["chat_history"].append({
-    #                     "role": "assistant",
-    #                     "content": gr.Image(value=image)
-    #                 })
-
-    #             return info["text_answer"]
-            
-    #     except Exception as e:
-    #         logger.error(f"Error answering multi-document question: {str(e)}")
-    #         return f"I apologize, but I encountered an error while processing your question about the document collection: {str(e)}"
     
     def answer_multi_document_question(self, question: str, state: MultiFileDocumentState) -> str:
         """Generate answer using context from all documents"""
@@ -443,7 +299,23 @@ class MultiFileQAAgent:
                 collection_summary=state.get("combined_summary", "No summary available.")
             )
             
-            response = self.llm.bind_tools(tools).invoke([HumanMessage(content=prompt)])
+            if len(state["messages"]) == 0:
+                state["messages"].append(HumanMessage(content=prompt))
+                
+            print("1 ==================================")
+            if len(state["messages"]) > 1:
+                print("2 ==================================")
+                last_msg = state["messages"][-1]
+                print(f"LAST MESSAGE: {last_msg}")
+                if hasattr(last_msg, "response_metadata"):
+                    if last_msg.response_metadata["finish_reason"].lower() == "stop":
+                        print("3 ==================================")
+                        state["messages"].append(HumanMessage(content=prompt))
+            print("4 ==================================")
+
+            messages = state["messages"]
+            
+            response = self.llm.bind_tools(tools).invoke(messages)
             
             if "chat_history" not in state:
                 state["chat_history"] = []
@@ -461,15 +333,7 @@ class MultiFileQAAgent:
             if "messages" not in state:
                 state["messages"] = []
 
-            state["messages"].append({
-                "role": "user",
-                "content": question
-            })
-
-            state["messages"].append({
-                "role": "assistant",
-                "content": response.content.strip()
-            })
+            state["messages"].append(response)
             
             # logger.info(f"RESPONSE: {response.content.strip()}")
             return response.content.strip()
@@ -537,36 +401,3 @@ def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileD
         state["chat_history"].append({"role": "user", "content": current_query})
         state["chat_history"].append({"role": "assistant", "content": f"I apologize, but I encountered an error while processing your question: {str(e)}"})
         return state
-    
-def extract_image(items):
-    cropped_images = []
-
-    for item in items:
-        file_path = item["file_path"]
-        page_num = item["page"] - 1
-        bbox = item["boundingBox"]
-
-        doc = fitz.open(file_path)
-        page = doc.load_page(page_num)
-
-        rect = page.rect
-        page_width, page_height = rect.width, rect.height
-
-        x0 = bbox["left"] * page_width
-        y0 = bbox["top"] * page_height
-        x1 = x0 + bbox["width"] * page_width
-        y1 = y0 + bbox["height"] * page_height
-
-        # Render page as image
-        pix = page.get_pixmap(matrix=fitz.Matrix(150/72, 150/72))
-        img = Image.open(io.BytesIO(pix.tobytes("png")))
-
-        x0, y0, x1, y1 = [coord * (150/72) for coord in (x0, y0, x1, y1)]
-
-        # Crop image
-        cropped_img = img.crop((x0, y0, x1, y1))
-        cropped_images.append(cropped_img)
-
-        doc.close()
-
-    return cropped_images

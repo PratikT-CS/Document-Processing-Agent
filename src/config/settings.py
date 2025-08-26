@@ -23,7 +23,7 @@ class Config:
     
     # LLM settings
     SUMMARIZER_MODEL_NAME = "google_genai:gemini-2.5-flash-lite"
-    QnA_MODEL_NAME = "google_genai:gemini-2.5-flash"
+    QnA_MODEL_NAME = "google_genai:gemini-2.0-flash"
 
     TEMPERATURE = 0.7
     MAX_TOKENS = 1500

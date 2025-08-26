@@ -42,7 +42,7 @@ class MultiFileDocumentWorkflow:
             self._decide_after_upload,
             {
                 "continue": "process_ocr",
-                "answer_question": "answer_question",
+                "question_answer": "answer_question",
                 "error": END
             }
         )
@@ -75,7 +75,7 @@ class MultiFileDocumentWorkflow:
         )
         
         # QA node can be called separately
-        workflow.add_conditional_edges("answer_question", tools_condition, "tools")
+        workflow.add_conditional_edges("answer_question", self._decide_for_tools, { "tool_call": "tools", "END": END})
         workflow.add_edge("tools", "answer_question")
         
         workflow.add_edge("answer_question", END)
@@ -94,7 +94,7 @@ class MultiFileDocumentWorkflow:
         if state.get("overall_status") == ProcessingStatus.ERROR:
             return "error"
         if state.get("overall_status") == ProcessingStatus.VECTORIZED:
-            return "answer_question"
+            return "question_answer"
         return "continue"
     
     def _decide_after_ocr(self, state: MultiFileDocumentState) -> str:
@@ -114,6 +114,16 @@ class MultiFileDocumentWorkflow:
         if state.get("overall_status") == "error":
             return "error"
         return "ready"
+    
+    def _decide_for_tools(self, state: MultiFileDocumentState) -> str:
+        """Decide tools call is present or not"""
+        messages = state.get("messages", [])
+        logger.info(f"Last message: {messages[-1]}")
+        last_msg = messages[-1]
+        if last_msg.tool_calls:
+            return "tool_call"
+        else:
+            return "END"
     
     def process_documents(self, uploaded_files: List[Tuple[str, str]]) -> Dict[str, Any]:
         """
@@ -152,7 +162,7 @@ class MultiFileDocumentWorkflow:
             logger.info(f"Processing question: {question}...")
             
             # Run QA node directly
-            result = self.app.invoke(state, config={"configurable": {"start": "answer_question"}})
+            result = self.app.invoke(state, config={"configurable": {"start": "answer_question", "recursion_limit": 4}})
             
             logger.info("Question answered successfully")
             
