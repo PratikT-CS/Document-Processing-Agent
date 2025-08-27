@@ -99,6 +99,7 @@ class MultiFileDocumentState(TypedDict):
     
     def __init__(self):
         return {
+            "uploaded_file_paths": [],
             "overall_status": ProcessingStatus.IDLE,
             "current_step": "upload",
             "processing_progress": Dict({"overall": 0}),

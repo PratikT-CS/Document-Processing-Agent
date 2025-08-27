@@ -78,6 +78,7 @@ def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
         _ = vector_store.add_documents(documents=docs_splits)
         
         state["overall_status"] = ProcessingStatus.VECTORIZED
+        state["uploaded_file_paths"] = []
         
         return state
     

@@ -8,19 +8,28 @@ def respond_with_file(message, history, file):
         response = f"I received your message: '{message}' and your file: {file_info}"
     else:
         print("File NOT Present")
-        response = f"I received your message: '{message}' (no file uploaded)"
+        response = {
+                "role": "assistant",
+                "content": gr.Image(
+                    value=-"https://doc-processing-agent-test-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png",
+                    label="MV-1.pdf",
+                    show_label=True    
+                )
+            }
+        
     
     return response
 
 # Create the chat interface with file upload
-demo = gr.ChatInterface(
-    respond_with_file,
-    additional_inputs=[
-        gr.File(label="Upload a file", file_count="multiple")
-    ],
-    title="Chat with File Upload",
-    multimodal=True,
-    # examples=["Hey, There!", "I want you to assist me on my tasks today."]
-)
+with gr.Blocks(title="Document Processing Agent",css=".btn {height : 60px;}") as demo:
+    gr.Markdown("# LangGraph Document Agent")
+    gr.Markdown('''
+        **Text**
+        Label
+        ![Extracted Img](https://doc-processing-agent-test-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")
+        
+        Label
+        ![Extracted Img](https://doc-processing-agent-test-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")
+    ''')
 
 demo.launch()

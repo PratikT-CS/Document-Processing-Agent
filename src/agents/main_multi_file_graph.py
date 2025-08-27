@@ -1,10 +1,10 @@
 import logging
 from typing import Dict, List, Tuple, Any
-from langgraph.graph import StateGraph, END
+from langgraph.graph import StateGraph, END, START
 from .multi_file_state import MultiFileDocumentState, ProcessingStatus
 from .multi_file_processor import upload_multiple_files, process_all_files_ocr
 from .multi_file_summarizer import generate_multi_document_summary
-from .multi_file_qa import process_multi_document_question
+from .multi_file_qa import process_multi_document_question, format_response_for_gradio
 from .store_embeddings import store_embeddings
 from langgraph.prebuilt import ToolNode, tools_condition
 from .multi_file_qa import tools
@@ -31,9 +31,18 @@ class MultiFileDocumentWorkflow:
         workflow.add_node("store_embeddings", store_embeddings)
         workflow.add_node("answer_question", process_multi_document_question)
         workflow.add_node("tools", ToolNode(tools=tools))
+        workflow.add_node("format_response", format_response_for_gradio)
         
         # Define entry point
-        workflow.set_entry_point("upload_files")
+        # workflow.set_entry_point("upload_files")
+        workflow.add_conditional_edges(
+            START,
+            self._decide_for_process,
+            {
+                "process": "upload_files",
+                "QnA": "answer_question"
+            }
+        )
         
         # Add conditional edges based on processing status
 
@@ -75,10 +84,9 @@ class MultiFileDocumentWorkflow:
         )
         
         # QA node can be called separately
-        workflow.add_conditional_edges("answer_question", self._decide_for_tools, { "tool_call": "tools", "END": END})
+        workflow.add_conditional_edges("answer_question", self._decide_for_tools, { "tool_call": "tools", "END": "format_response"})
         workflow.add_edge("tools", "answer_question")
-        
-        workflow.add_edge("answer_question", END)
+        workflow.add_edge("format_response", END)
 
         import webbrowser
         compiled_workflow = workflow.compile()
@@ -88,6 +96,15 @@ class MultiFileDocumentWorkflow:
         webbrowser.open("workflow_multi_file.png")  # Will open in default image viewer
         
         return workflow
+    
+    def _decide_for_process(self, state: MultiFileDocumentState) -> str:
+        """Decide whether to proceed with processing or go straight to Q&A"""
+        if state.get("uploaded_file_paths") == []:
+            print("QnA")
+            return "QnA"
+        else:
+            print("process")
+            return "process"
     
     def _decide_after_upload(self, state: MultiFileDocumentState) -> str:
         """Decide next step after file upload"""

@@ -53,9 +53,7 @@ def extract_image(inputs: dict):
         file_path = inputs["file_path"]
         page_num = inputs["page"] - 1
         bbox = inputs["boundingBox"]
-        print(f"INFO: {inputs["file_path"]}")
-        print(f"INFO: {inputs["page"]}")
-        print(f"INFO: {inputs["boundingBox"]}")
+    
         if not all(key in inputs.keys() for key in ["file_path", "page", "boundingBox"]):
             logger.info(f"error: Error: Missing parameters in inputs")
             return {"error": f"Something went wrong. Please try after sometime!"}
@@ -214,10 +212,11 @@ class MultiFileQAAgent:
         )
         
         self.generalized_prompt = PromptTemplate(
-            input_variables=["file_list", "collection_summary", "extracted_structured_data", "extracted_data", "extracted_data", "question"],
+            input_variables=["file_list", "collection_summary", "extracted_structured_data", "extracted_data", "relevant_context", "question"],
             template="""
-                You are an intelligent assistant who is answering user's questions and queries about a collectio of documents. Your task is to anwer user's question in a clear and concise manner from the provided context from the documents.
-                The context includes summaries of the documents, relevant context from the documents for user's question, structured key-value pairs extracted from the documents, and information of extracted data like file_path, boundingBox and page from the documents.
+                You are an intelligent assistant who is answering user's questions and queries about a collectio of documents. Your task is to anwer user's question in a clear and comprehensive way from the provided context from the documents.
+                
+                The context includes relevant context from the documents for user's question, structured key-value pairs extracted from the documents, and information of extracted data like file_path, boundingBox and page from the documents.
                 
                 You answer user's question by executing tasks in following order:
                 1. You first decide whether user's questions requires any visual output or not.
@@ -227,9 +226,6 @@ class MultiFileQAAgent:
                 Document Collection:
                 {file_list}
                 
-                Collection Summary:
-                {collection_summary}
-                
                 Structured Data Extracted From Documents:
                 {extracted_structured_data}
                 
@@ -237,26 +233,27 @@ class MultiFileQAAgent:
                 {extracted_data}
                 
                 Relevant Text from Documents:
-                {extracted_data}
-                
-                User Question: {question}
+                {relevant_context}
             
                 Stricly follow following rules:
                 1. Answer based on the provided context from the documents
                 2. When referencing information, mention which specific document(s) it comes from
                 3. If the question involves comparing documents, clearly contrast the different sources
                 4. If information is missing, specify which documents were checked
-                5. Provide a clear and consice answer that leverages the full document collection
+                5. Provide a clear and comprehensive answer that leverages the full document collection
                 6. Use specific details and quotes when available
                 7. Only use tool if user question requires visual output otherwise don't use tool.
+                8. Image extraction tool requires file_path, page and boundingBox information from the context.
+                
+                User Question: {question}
             """
         )
     
     def answer_multi_document_question(self, question: str, state: MultiFileDocumentState) -> str:
         """Generate answer using context from all documents"""
         try:
-            retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=7)
-                
+            retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=5)
+            
             relevant_context = f"===\n"
             for retrieved_doc in retrieved_docs_text:
                 relevant_context += f"From {retrieved_doc.metadata['source']}:\n {retrieved_doc.page_content} \n\n"
@@ -274,7 +271,7 @@ class MultiFileQAAgent:
                 structured_extracted_data += f"From {file_info.file_name}: \n {file_info.extracted_data_structured}\n\n"
             structured_extracted_data += "==="
             
-            retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=8)
+            retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=6)
                 
             extracted_data = []
             
@@ -302,16 +299,13 @@ class MultiFileQAAgent:
             if len(state["messages"]) == 0:
                 state["messages"].append(HumanMessage(content=prompt))
                 
-            print("1 ==================================")
             if len(state["messages"]) > 1:
-                print("2 ==================================")
                 last_msg = state["messages"][-1]
-                print(f"LAST MESSAGE: {last_msg}")
+                # print(f"LAST MESSAGE: {last_msg}")
                 if hasattr(last_msg, "response_metadata"):
-                    if last_msg.response_metadata["finish_reason"].lower() == "stop":
-                        print("3 ==================================")
-                        state["messages"].append(HumanMessage(content=prompt))
-            print("4 ==================================")
+                    if "finish_reason" in last_msg.response_metadata:
+                        if last_msg.response_metadata["finish_reason"].lower() == "stop":
+                            state["messages"].append(HumanMessage(content=prompt))
 
             messages = state["messages"]
             
@@ -319,7 +313,7 @@ class MultiFileQAAgent:
             
             if "chat_history" not in state:
                 state["chat_history"] = []
-
+            
             state["chat_history"].append({
                 "role": "user",
                 "content": question
@@ -329,13 +323,16 @@ class MultiFileQAAgent:
                 "role": "assistant",
                 "content": response.content.strip()
             })
-            
-            if "messages" not in state:
-                state["messages"] = []
 
+            # format chat history to reduce content size
+            for message in messages:
+                if isinstance(message, HumanMessage):
+                    user_question = [line.strip() for line in message.content.strip().splitlines() if line.strip().startswith("User Question:")][0]
+                    message.content = user_question
+                    
+            state["messages"] = messages
             state["messages"].append(response)
             
-            # logger.info(f"RESPONSE: {response.content.strip()}")
             return response.content.strip()
         except Exception as e:
             logger.error(f"Error answering multi-document question: {str(e)}")
@@ -401,3 +398,88 @@ def process_multi_document_question(state: MultiFileDocumentState) -> MultiFileD
         state["chat_history"].append({"role": "user", "content": current_query})
         state["chat_history"].append({"role": "assistant", "content": f"I apologize, but I encountered an error while processing your question: {str(e)}"})
         return state
+    
+def format_response_for_gradio(state: MultiFileDocumentState) -> MultiFileDocumentState:
+    """Format response for Gradio UI."""
+    try:
+        last_response = state["messages"][-1]
+        chat_history = state["chat_history"]
+        last_message = chat_history.pop()
+        
+        print(f"Response: {last_response}")
+        print(f"Last Message: {last_message}")
+        
+        if not last_message["content"] or last_response.content == "":
+            raise (f"No response content or last message content ia available")
+
+        prompt_for_format_response = PromptTemplate(
+            input_variables=["question", "llm_responnse"],
+            template="""
+            You are an intelligent assistant who helps format reponse from LLM into json format for UI.
+            You are provided with the user question and response from LLM. You need to extract textual answer and valid s3 uris from the LLM response. You can ignore any other urls other than valid s3 uris in the LLM response. Also note that s3 uris are present only if user's question requires any visual output.
+            
+            You need to format the response in following json format:
+            {{
+                "text_answer": string [textual anwer for user question],
+                "s3_uris": List[Dict] [list of valid s3 URIs in the LLM reponse for user's question with their labels to show in the UI.]
+            }}
+            
+            Example response:
+            {{
+                "text_answer": "Here are the signatures from the documents.",
+                "s3_uris": [
+                    {{"label": "Image 1", "s3_uri": "https://example.com/image1.jpg"}},
+                    {{"label": "Image 2", "s3_uri": "https://example.com/image2.jpg"}}
+                ]
+            }}
+
+            User's question: {question}
+            
+            LLM response: {llm_response}
+            
+            NOTE: Only reply in pure json object's string value, nothing else in your reply. No bacticks, no punctuation, no markdown, nothing like maerkdown json also. And do not include full file path as file name if present, only include file name in the text_answer field.
+            """
+        )
+        
+        llm = init_chat_model(Config.QnA_MODEL_NAME)
+        
+        response = llm.invoke(prompt_for_format_response.format(question=state["current_query"], llm_response=last_response.content.strip()))
+        
+        if response.content.startswith("```json"):
+            formatted_response = response.content.replace('```json', '').replace('```', '')
+            formatted_response = json.loads(formatted_response.strip())
+        elif response.content.startswith("{"):
+            formatted_response = json.loads(response.content.strip())
+        else: 
+            raise ValueError("Invalid JSON format in response.")
+        
+        chat_history.append({
+            "role": "assistant",
+            "content": formatted_response["text_answer"]
+        })
+        
+        for s3_uri in formatted_response["s3_uris"]:
+            chat_history.append({
+                "role": "assistant",
+                "content": f"Image: {s3_uri['label']}"
+            })
+            chat_history.append({
+                "role": "assistant",
+                "content": gr.Image(
+                    value=s3_uri["s3_uri"],
+                    label=s3_uri["label"],
+                    show_label=True
+                )
+            })
+        
+        logger.info(f"Response formatted and added to chat history.")
+        return state
+        
+    except Exception as e:
+        logger.error(f"Error formatting response for Gradio UI: {str(e)}")
+        chat_history.append({
+            "role": "assistant",
+            "content": f"I apologize, but I encountered an error while formatting the response for Gradio UI: {str(e)}"
+        })
+        return state    
+         
