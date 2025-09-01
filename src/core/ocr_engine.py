@@ -90,7 +90,7 @@ class OCREngine:
                 image_bytes = pix.tobytes()
 
                 if len(image_bytes) > 5 * 1024 * 1024:  # 5MB limit
-                    print(f"Warning: Page {page_num + 1} image is too large for Textract. Skipping.")
+                    logger.warning(f"Warning: Page {page_num + 1} image is too large for Textract. Skipping.")
                     continue
 
                 page_text = self.extract_text_from_page(image_bytes)

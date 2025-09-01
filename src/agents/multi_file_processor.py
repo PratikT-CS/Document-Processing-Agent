@@ -22,7 +22,6 @@ def upload_multiple_files(state: MultiFileDocumentState) -> MultiFileDocumentSta
     """
     LangGraph node: Handle multiple file uploads
     """
-    print("=========================== 1")
     if state["overall_status"] == ProcessingStatus.VECTORIZED:
         return state
     try:
@@ -40,8 +39,6 @@ def upload_multiple_files(state: MultiFileDocumentState) -> MultiFileDocumentSta
         
         # Initialize file handler
         file_handler = FileHandler(Config.UPLOAD_DIR, Config.PROCESSED_DIR)
-        
-        print(len(uploaded_files))
 
         state["total_files"] = len(uploaded_files)
         state["files_completed"] = 0
@@ -114,9 +111,8 @@ def upload_multiple_files(state: MultiFileDocumentState) -> MultiFileDocumentSta
 
 def upload_file_to_s3(file_path: str) -> Dict:
     s3_client = boto3.client('s3')
-    bucket_name = 'doc-processing-agent-test-k'
+    bucket_name = 'doc-processing-agent-k'
     try:
-        print(file_path)
         key = f"uploads/{file_path.split('\\')[-1].split('_', 9)[-1]}"
         response = s3_client.put_object(
             Bucket=bucket_name,
@@ -153,7 +149,7 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
         if not files:
             raise Exception("No files to process")
 
-        logger.info(f"Total Files: {len(files)}")
+        # logger.info(f"Total Files: {len(files)}")
 
         # Initialize processors
         ocr_engine = OCREngine(Config.TESSERACT_CONFIG)
@@ -284,11 +280,11 @@ def process_all_files_via_bda(state: MultiFileDocumentState) -> MultiFileDocumen
         if not files: 
             raise Exception("No files to process")
         
-        logger.info(f"Total Files: {len(files)}")
+        # logger.info(f"Total Files: {len(files)}")
 
         invocation_arns = []
         files_to_process_as_of_now = ["bill of sale", "compliance pack", "mv-1", "store pack"]
-        bucket_name = 'doc-processing-agent-test-k'
+        bucket_name = 'doc-processing-agent-k'
         for file_id, file_info in files.items():
             for name in files_to_process_as_of_now:
                 if name in file_info.s3_uri.lower():
@@ -322,7 +318,7 @@ def process_all_files_via_bda(state: MultiFileDocumentState) -> MultiFileDocumen
                                         file_info.extracted_data = result["explainability_info"]
                                         break
                             except Exception as err:
-                                print(f"Error while extracting or saving result: {err}")
+                                logger.info(f"Error while extracting or saving result: {err}")
 
         state["overall_status"] = ProcessingStatus.BDA_PROCESSED
         return state
@@ -359,7 +355,7 @@ def invoke_bda_job(input_uri:str, output_uri:str):
 
         bda_runtime_client = boto3.client(
                 "bedrock-data-automation-runtime"
-            )
+        )
 
         filtered_blueprint = filter_blueprint(input_uri)
         profile_arn = os.getenv("DATA_AUTOMATION_PROFILE_ARN")

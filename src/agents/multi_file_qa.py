@@ -84,10 +84,10 @@ def extract_image(inputs: dict):
         doc.close()
         
         s3 = boto3.client('s3')
-        bucket = "doc-processing-agent-test-k"
+        bucket = "doc-processing-agent-k"
         img_key = f"cropped_imgs/{str(uuid.uuid4())}.png" 
         
-        s3.put_object(Bucket="doc-processing-agent-test-k", Key=img_key, Body=img_bytes, ContentType="image/png")
+        s3.put_object(Bucket="doc-processing-agent-k", Key=img_key, Body=img_bytes, ContentType="image/png")
         
         s3_url = f"https://{bucket}.s3.amazonaws.com/{img_key}"
         
@@ -99,16 +99,83 @@ def extract_image(inputs: dict):
         logger.info(f"Error: Something went wrong during extracting image {e}")
         return {"error": "Please try after sometime!"}
 
+def compare_signatures(s3_urls):
+    """Compare two signature images referenced by S3 URLs using an LLM prompt.
+
+    This function validates two provided S3 URL strings, constructs a comparison
+    prompt asking the model to analyze visual similarities/differences between
+    the signatures, and requests a JSON-only response containing similarity and
+    confidence scores.
+
+    Args:
+        s3_urls (Dict): A dictionary containing exactly two S3 URL strings
+            pointing to signature images, e.g., {"s3_url_1": "https://bucket.s3.amazonaws.com/a.png", "s3_url_2": "https://bucket.s3.amazonaws.com/b.png"}.
+
+    Returns:
+        Dict[str, Any] | str:
+            - On success: a dictionary with key "comparison_result" whose value
+              is the raw JSON string returned by the model (expected keys:
+              "similarity_score", "confidence_score").
+            - On failure: a string error message describing what went wrong.
+
+    Raises:
+        ValueError: If the input list is missing or does not contain exactly two
+            URLs.
+    """
+    try:
+        try:
+            if isinstance(s3_urls, str):
+                s3_urls = json.loads(s3_urls)
+        except Exception as e:
+            logger.info(f"error: Error: Failed to parse inputs as JSON: {e}")
+            return {"error": f"Something went wrong. Please try after sometime!"}
+        
+        if not s3_urls or not isinstance(s3_urls, dict):
+            logger.info("Invalid Input. Please provide exactly two S3 URLs.")
+            raise ValueError("Invalid input. Please provide exactly two S3 URLs in a dictionary form.")
+        
+        llm = init_chat_model(model=Config.QnA_MODEL_NAME)
+        
+        prompt = f"""
+        Compare the two signatures from the following image URLs and describe their similarities and differences: {s3_urls['s3_url_1']} and {s3_urls['s3_url_2']} 
+        
+        Give me matching score and confidence score for the result.
+        
+        Provide only final response in JSON format with keys 'similarity_score' and 'confidence_score'. Do not include any other text in your response.
+        
+        EXAMPLE:
+        {{
+            "similarity_score": "85%",
+            "confidence_score": "98%"
+        }}
+        """
+        
+        response = llm.invoke([{"role": "user", "content": prompt}])
+        
+        print(f"RESPONSE: \n{response.content}")
+        
+        return {"comparison_result": response.content}
+        
+    except Exception as e:
+        logger.info(f"Error: Something went wrong during extracting image {e}")
+        return f"Please try after sometime! \nError: {str(e)}"
+
 tool_extract_image = Tool(
     name="extract_image",
     description="To extract image for provided info if visual output is required. It takes file_path, page and boundingBox information as input.",
     func=extract_image,
 )
 
-tools = [tool_extract_image]
+tool_signature_comparison = Tool(
+    name="compare_signature",
+    description="To compare two signatures from S3 URLs and determine their similarity. It takes dictionary with keys 's3_url_1' and 's3_url_2' and keys being string of s3 urls.",
+    func=compare_signatures,
+)
+
+tools = [tool_extract_image, tool_signature_comparison]
 
 class MultiFileQAAgent:
-    """Question answering agent for multiple documents"""
+    """Question answering agent for multiple documents."""
     
     def __init__(self):
 
@@ -214,36 +281,55 @@ class MultiFileQAAgent:
         self.generalized_prompt = PromptTemplate(
             input_variables=["file_list", "collection_summary", "extracted_structured_data", "extracted_data", "relevant_context", "question"],
             template="""
-                You are an intelligent assistant who is answering user's questions and queries about a collectio of documents. Your task is to anwer user's question in a clear and comprehensive way from the provided context from the documents.
+                You are an intelligent assistant who is answering user's questions and queries about a collection of documents. Your task is to answer the user's question in a clear and comprehensive way from the provided context from the documents.
                 
-                The context includes relevant context from the documents for user's question, structured key-value pairs extracted from the documents, and information of extracted data like file_path, boundingBox and page from the documents.
+                The context includes relevant text from the documents for the user's question, structured key-value pairs extracted from the documents, and information of extracted data like file_path, boundingBox, and page from the documents.
                 
-                You answer user's question by executing tasks in following order:
-                1. You first decide whether user's questions requires any visual output or not.
-                2. If requires visual output you use tool given to you for extracting image by providing file_path, page and boundingBox information from the context and return text answer with s3 url you got from tool.
-                3. If doesn't require visual output then just anwer user's question using provided context of documents.
+                You answer the user's question by executing tasks in the following order:
+                1. Determine whether the user's question requires any visual output.
+                2. If visual output is required, use the image extraction tool by providing file_path, page, and boundingBox information from the context. Return the text answer along with S3 URLs of images obtained from the tool.
+                3. If the user wants to compare signatures across documents:
+                   - First, identify the two relevant signatures from the provided extracted data information (use file_path, page, and boundingBox for each).
+                   - Use the image extraction tool to extract both signatures and collect their S3 URLs.
+                   - Then use the signature comparison tool by passing the two S3 URLs in A LIST to compare the signatures.
+                   - EXAMPLE: Call comapare signnature comparison tool with args like the following:
+                    [{{
+                        "s3_url_1": "https://bucket.s3.amazon.com/signature1.png", 
+                        "s3_url_2": "https://bucket.s3.amazon.com/signature2.png"  
+                    }}]
+                   - Finally, answer the user with a concise message that includes the comparison outcome (similarity_score and confidence_score), referencing which signature came from which document.
+                4. If visual output is not required and it's not a signature comparison request, answer the question using only the provided document context.
                 
                 Document Collection:
                 {file_list}
                 
+                Collection Summary:
+                {collection_summary}
+                
                 Structured Data Extracted From Documents:
                 {extracted_structured_data}
                 
-                Extracted data with information needed to find it in the document like bouningBox, page, file_path...
+                Extracted data with information needed to find it in the document like boundingBox, page, file_path...
                 {extracted_data}
                 
                 Relevant Text from Documents:
                 {relevant_context}
             
-                Stricly follow following rules:
-                1. Answer based on the provided context from the documents
-                2. When referencing information, mention which specific document(s) it comes from
-                3. If the question involves comparing documents, clearly contrast the different sources
-                4. If information is missing, specify which documents were checked
-                5. Provide a clear and comprehensive answer that leverages the full document collection
-                6. Use specific details and quotes when available
-                7. Only use tool if user question requires visual output otherwise don't use tool.
-                8. Image extraction tool requires file_path, page and boundingBox information from the context.
+                Strictly follow the following rules:
+                1. Answer based on the provided context from the documents.
+                2. When referencing information, mention which specific document(s) it comes from.
+                3. If the question involves comparing documents, clearly contrast the different sources.
+                4. If information is missing, specify which documents were checked.
+                5. Provide a clear and comprehensive answer that leverages the full document collection.
+                6. Use specific details and quotes when available.
+                7. Use tools only when required by the user's question (e.g., visual output or signature comparison).
+                8. The image extraction tool requires file_path, page, and boundingBox information from the context.
+                9. Always mention which extracted image belongs to which document in your response.
+                10. For signature comparison, always extract signatures first to get S3 URLs, then run the signature comparison tool with those two URLs, and include the resulting similarity_score and confidence_score in the final answer.
+                11. And you must call signature comparison tool in the given format: [{{
+                    "s3_url_1": "https://bucket.s3.amazon.com/signature1.png",
+                    "s3_url_2": "https://bucket.s3.amazon.com/signature2.png"
+                }}]
                 
                 User Question: {question}
             """
@@ -293,7 +379,7 @@ class MultiFileQAAgent:
                 relevant_context=relevant_context,
                 extracted_data=extracted_data,
                 extracted_structured_data=structured_extracted_data,
-                collection_summary=state.get("combined_summary", "No summary available.")
+                collection_summary=state.get("combined_summary", "No summary available.")[:1000]
             )
             
             if len(state["messages"]) == 0:
@@ -314,15 +400,16 @@ class MultiFileQAAgent:
             if "chat_history" not in state:
                 state["chat_history"] = []
             
-            state["chat_history"].append({
-                "role": "user",
-                "content": question
-            })
-
-            state["chat_history"].append({
-                "role": "assistant",
-                "content": response.content.strip()
-            })
+            if hasattr(response, "additional_kwargs"):
+                if response.additional_kwargs == {}:
+                    state["chat_history"].append({
+                        "role": "user",
+                        "content": question
+                    })
+                    state["chat_history"].append({
+                        "role": "assistant",
+                        "content": response.content.strip()
+                    })
 
             # format chat history to reduce content size
             for message in messages:
@@ -406,8 +493,8 @@ def format_response_for_gradio(state: MultiFileDocumentState) -> MultiFileDocume
         chat_history = state["chat_history"]
         last_message = chat_history.pop()
         
-        print(f"Response: {last_response}")
-        print(f"Last Message: {last_message}")
+        # print(f"Response: {last_response}")
+        # print(f"Last Message: {last_message}")
         
         if not last_message["content"] or last_response.content == "":
             raise (f"No response content or last message content ia available")

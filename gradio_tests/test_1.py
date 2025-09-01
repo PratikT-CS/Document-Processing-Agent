@@ -11,7 +11,7 @@ def respond_with_file(message, history, file):
         response = {
                 "role": "assistant",
                 "content": gr.Image(
-                    value=-"https://doc-processing-agent-test-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png",
+                    value=-"https://doc-processing-agent-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png",
                     label="MV-1.pdf",
                     show_label=True    
                 )
@@ -26,10 +26,10 @@ with gr.Blocks(title="Document Processing Agent",css=".btn {height : 60px;}") as
     gr.Markdown('''
         **Text**
         Label
-        ![Extracted Img](https://doc-processing-agent-test-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")
+        ![Extracted Img](https://doc-processing-agent-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")
         
         Label
-        ![Extracted Img](https://doc-processing-agent-test-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")
+        ![Extracted Img](https://doc-processing-agent-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")
     ''')
 
 demo.launch()

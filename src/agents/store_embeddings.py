@@ -22,6 +22,22 @@ def flatten_kv_items(data):
                     final_data.append({skey: svalue})
     return final_data
 
+def merge_bounding_boxes(bboxes):
+    if not bboxes:
+        return None  # no input
+    
+    left = min(b["left"] for b in bboxes)
+    top = min(b["top"] for b in bboxes)
+    right = max(b["left"] + b["width"] for b in bboxes)
+    bottom = max(b["top"] + b["height"] for b in bboxes)
+    
+    return {
+        "left": left,
+        "top": top,
+        "width": right - left,
+        "height": bottom - top
+    }
+
 def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
     """
     store embeddings of documents and visual outputs in vector store with metadata.
@@ -59,13 +75,20 @@ def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
                         continue
                     if "geometry" in value.keys() and len(value["geometry"]) > 0:
                         all_extracted_fields[key] = value["value"]
+                        
+                        bboxes = []
+                        for item in value["geometry"]:
+                            bboxes.append(item["boundingBox"])
+                        
+                        bbox =  merge_bounding_boxes(bboxes)  
+                        
                         docs_splits.append(Document(
                             page_content=f"{key} is {value['value'] if not isinstance(value['value'], bool) else 'present' if value['value'] == True else 'not present'}",
                             id=str(uuid.uuid4()),
                             metadata={
                                 "type": "key-value",
                                 "source": file_info.file_name,
-                                "bounding_box": json.dumps(value["geometry"][0]["boundingBox"]),
+                                "bounding_box": json.dumps(bbox),
                                 "page": value["geometry"][0]["page"],
                                 "key": str(key),
                                 "value": value["value"],

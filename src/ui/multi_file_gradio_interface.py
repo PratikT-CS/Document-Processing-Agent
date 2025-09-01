@@ -69,37 +69,35 @@ class MultiFileDocumentChatInterface:
             self.processing = False
             return f"Error processing files: {str(e)}", "", "Error", [], False
     
-    def answer_question(self, question: str, chat_history: List[Dict]) -> Tuple[List[Dict], str]:
+    def answer_question(self, question: str, chat_history: List[Dict]):
         """
         Handle user question and return updated chat history.
-        Returns: (updated_chat_history, empty_input)
+        Yields: (updated_chat_history, empty_input)
         """
         try:
+            chat_history.extend([{"role": "user", "content": question}])
+            yield chat_history, ""
+            
             if not self.current_state:
                 chat_history.extend([
-                    {
-                        "role": "user",
-                        "content": question 
-                    },
                     {
                         "role": "assistant",
                         "content": "Please upload and process documents first." 
                     }
                 ])
-                return chat_history, ""
+                yield chat_history, ""
             
             if self.current_state.get("overall_status") != ProcessingStatus.VECTORIZED:
                 chat_history.extend([
-                    {
-                        "role": "user",
-                        "content": question 
-                    },
                     {
                         "role": "assistant",
                         "content": "Documents are not ready for questions yet. Please wait for processing to complete." 
                     }
                 ])
-                return chat_history, ""
+                yield chat_history, ""
+            
+            chat_history.append({"role": "assistant", "content": "🤔 Thinking..."})
+            yield chat_history, ""
             
             # Process question through workflow
             result = self.workflow.ask_question(self.current_state, question)
@@ -114,25 +112,24 @@ class MultiFileDocumentChatInterface:
             # Add to chat history
             chat_history = response
             
-            return chat_history, ""  # Clear input
+            yield chat_history, ""  # Clear input
             
         except Exception as e:
             logger.error(f"Error answering question: {str(e)}")
             chat_history.extend([
                     {
-                        "role": "user",
-                        "content": question 
-                    },
-                    {
                         "role": "assistant",
                         "content": f"Error processing question: {str(e)}"
                     }
                 ])
-            return chat_history, ""
+            yield chat_history, ""
     
-    def use_suggested_question(self, question: str, chat_history: List[Dict]) -> Tuple[List[Dict], str]:
-        """Handle clicking on suggested question."""
-        return self.answer_question(question, chat_history)
+    def use_suggested_question(self, question: str, chat_history: List[Dict]):
+        # Get the final result from the generator
+        result = None
+        for result in self.answer_question(question, chat_history):
+            pass  # Keep iterating to get the final result
+        return result if result else (chat_history, "")
     
     def _format_summary(self, summary: str) -> str:
         """Format summary for better display."""

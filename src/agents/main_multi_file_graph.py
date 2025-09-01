@@ -51,7 +51,6 @@ class MultiFileDocumentWorkflow:
             self._decide_after_upload,
             {
                 "continue": "process_ocr",
-                "question_answer": "answer_question",
                 "error": END
             }
         )
@@ -100,18 +99,14 @@ class MultiFileDocumentWorkflow:
     def _decide_for_process(self, state: MultiFileDocumentState) -> str:
         """Decide whether to proceed with processing or go straight to Q&A"""
         if state.get("uploaded_file_paths") == []:
-            print("QnA")
             return "QnA"
         else:
-            print("process")
             return "process"
     
     def _decide_after_upload(self, state: MultiFileDocumentState) -> str:
         """Decide next step after file upload"""
         if state.get("overall_status") == ProcessingStatus.ERROR:
             return "error"
-        if state.get("overall_status") == ProcessingStatus.VECTORIZED:
-            return "question_answer"
         return "continue"
     
     def _decide_after_ocr(self, state: MultiFileDocumentState) -> str:
@@ -179,7 +174,7 @@ class MultiFileDocumentWorkflow:
             logger.info(f"Processing question: {question}...")
             
             # Run QA node directly
-            result = self.app.invoke(state, config={"configurable": {"start": "answer_question", "recursion_limit": 4}})
+            result = self.app.invoke(state, config={"recursion_limit": 10})
             
             logger.info("Question answered successfully")
             
