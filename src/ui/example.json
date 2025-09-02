@@ -1,0 +1,28 @@
+[
+    "inference_result": {
+        "extracted-field-name": "extracted-value",
+        "extracted-field-name": "extracted-value",
+        "extracted-field-name": "extracted-value",
+        "extracted-field-name": "extracted-value",
+        "extracted-field-name": "extracted-value",
+        ...
+    },
+    "explainability_info": [
+        {
+            "extracted-field-name": {
+                "confidence": 0.8907656,
+                 "geometry": [
+                    {
+                        "boundingBox": {
+                            "top": 0.4176075175286932,
+                            "left": 0.08517699237685425,
+                            "width": 0.032483604450668835,
+                            "height": 0.009036147698840258
+                        },
+                        "page": 1
+                    } 
+            }
+        },
+        ...
+    ]
+]

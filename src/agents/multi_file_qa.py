@@ -338,7 +338,7 @@ class MultiFileQAAgent:
     def answer_multi_document_question(self, question: str, state: MultiFileDocumentState) -> str:
         """Generate answer using context from all documents"""
         try:
-            retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=5)
+            retrieved_docs_text = vector_store.similarity_search(question, filter={"type": "text"}, k=3)
             
             relevant_context = f"===\n"
             for retrieved_doc in retrieved_docs_text:
@@ -379,7 +379,7 @@ class MultiFileQAAgent:
                 relevant_context=relevant_context,
                 extracted_data=extracted_data,
                 extracted_structured_data=structured_extracted_data,
-                collection_summary=state.get("combined_summary", "No summary available.")[:1000]
+                collection_summary=state.get("combined_summary", "No summary available.")[:300]
             )
             
             if len(state["messages"]) == 0:
@@ -524,7 +524,9 @@ def format_response_for_gradio(state: MultiFileDocumentState) -> MultiFileDocume
             
             LLM response: {llm_response}
             
-            NOTE: Only reply in pure json object's string value, nothing else in your reply. No bacticks, no punctuation, no markdown, nothing like maerkdown json also. And do not include full file path as file name if present, only include file name in the text_answer field.
+            NOTE: 
+            - Only reply in pure json object's string value, nothing else in your reply. No bacticks, no punctuation, no markdown, nothing like maerkdown json also. And do not include full file path as file name if present, only include file name in the text_answer field.
+            - Do not completely modify original LLM response, only extract valid s3 uris and text answer for user's question.
             """
         )
         

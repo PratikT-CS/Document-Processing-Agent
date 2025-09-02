@@ -8,6 +8,7 @@ from .multi_file_qa import process_multi_document_question, format_response_for_
 from .store_embeddings import store_embeddings
 from langgraph.prebuilt import ToolNode, tools_condition
 from .multi_file_qa import tools
+from enum import Enum
 
 logger = logging.getLogger(__name__)
 
@@ -34,10 +35,9 @@ class MultiFileDocumentWorkflow:
         workflow.add_node("format_response", format_response_for_gradio)
         
         # Define entry point
-        # workflow.set_entry_point("upload_files")
         workflow.add_conditional_edges(
             START,
-            self._decide_for_process,
+            self._route_initial_request,
             {
                 "process": "upload_files",
                 "QnA": "answer_question"
@@ -45,10 +45,9 @@ class MultiFileDocumentWorkflow:
         )
         
         # Add conditional edges based on processing status
-
         workflow.add_conditional_edges(
             "upload_files",
-            self._decide_after_upload,
+            self._route_on_status,
             {
                 "continue": "process_ocr",
                 "error": END
@@ -57,7 +56,7 @@ class MultiFileDocumentWorkflow:
         
         workflow.add_conditional_edges(
             "process_ocr", 
-            self._decide_after_ocr,
+            self._route_on_status,
             {
                 "continue": "generate_summary",
                 "error": END
@@ -66,76 +65,60 @@ class MultiFileDocumentWorkflow:
         
         workflow.add_conditional_edges(
             "generate_summary",
-            self._decide_after_summarization,
+            self._route_on_status,
             {
-                "ready": "store_embeddings",
+                "continue": "store_embeddings",
                 "error": END
             }
         )
         
         workflow.add_conditional_edges(
             "store_embeddings",
-            self._decide_after_embedding_store,
+            self._route_on_status,
             {
-                "ready": END,
+                "continue": END,
                 "error": END
             }
         )
         
-        # QA node can be called separately
-        workflow.add_conditional_edges("answer_question", self._decide_for_tools, { "tool_call": "tools", "END": "format_response"})
+        workflow.add_conditional_edges(
+            "answer_question", 
+            self._check_tool_calls, 
+            {
+                "tool_call": "tools", 
+                "end": "format_response"
+            }
+        )
         workflow.add_edge("tools", "answer_question")
         workflow.add_edge("format_response", END)
 
-        import webbrowser
         compiled_workflow = workflow.compile()
         with open("workflow_multi_file.png", "wb") as f:
             f.write(compiled_workflow.get_graph().draw_mermaid_png())
         
-        webbrowser.open("workflow_multi_file.png")  # Will open in default image viewer
-        
         return workflow
     
-    def _decide_for_process(self, state: MultiFileDocumentState) -> str:
+    def _route_initial_request(self, state: MultiFileDocumentState) -> str:
         """Decide whether to proceed with processing or go straight to Q&A"""
         if state.get("uploaded_file_paths") == []:
             return "QnA"
         else:
             return "process"
-    
-    def _decide_after_upload(self, state: MultiFileDocumentState) -> str:
-        """Decide next step after file upload"""
+        
+    def _route_on_status(self, state: MultiFileDocumentState) -> str:
+        """Decide which branch of the workflow to take based on overall status"""
         if state.get("overall_status") == ProcessingStatus.ERROR:
             return "error"
         return "continue"
     
-    def _decide_after_ocr(self, state: MultiFileDocumentState) -> str:
-        """Decide next step after OCR processing"""
-        if state.get("overall_status") == "error":
-            return "error"
-        return "continue"
-    
-    def _decide_after_summarization(self, state: MultiFileDocumentState) -> str:
-        """Decide next step after summarization"""
-        if state.get("overall_status") == "error":
-            return "error"
-        return "ready"
-    
-    def _decide_after_embedding_store(self, state: MultiFileDocumentState) -> str:
-        """Decide next step after embedding store"""
-        if state.get("overall_status") == "error":
-            return "error"
-        return "ready"
-    
-    def _decide_for_tools(self, state: MultiFileDocumentState) -> str:
+    def _check_tool_calls(self, state: MultiFileDocumentState) -> str:
         """Decide tools call is present or not"""
         messages = state.get("messages", [])
-        logger.info(f"Last message: {messages[-1]}")
         last_msg = messages[-1]
         if last_msg.tool_calls:
             return "tool_call"
         else:
-            return "END"
+            return "end"
     
     def process_documents(self, uploaded_files: List[Tuple[str, str]]) -> Dict[str, Any]:
         """
@@ -168,6 +151,12 @@ class MultiFileDocumentWorkflow:
         Ask a question about the processed documents
         """
         try:
+            if not question.strip():
+                raise ValueError("Question cannot be empty")
+            
+            if not state.get("overall_status") == ProcessingStatus.VECTORIZED:
+                raise ("Documents must be processed before asking questions")
+            
             # Update state with question
             state["current_query"] = question
             

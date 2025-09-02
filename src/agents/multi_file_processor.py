@@ -2,17 +2,18 @@ import logging
 import time
 import uuid
 from typing import List, Dict, Any, Tuple
-from pathlib import Path
 from ..core.file_handler import FileHandler
 from ..core.ocr_engine import OCREngine
 from ..core.text_processor import TextProcessor
 from ..config.settings import Config
 from .multi_file_state import MultiFileDocumentState, FileInfo, ProcessingStatus
-import boto3
-import fitz
 from .blueprints import blueprints
 import os
 from dotenv import load_dotenv
+import boto3
+import json
+from urllib.parse import urlparse
+import time
 
 load_dotenv(override=True)
 
@@ -86,9 +87,6 @@ def upload_multiple_files(state: MultiFileDocumentState) -> MultiFileDocumentSta
                 state["files"][file_id] = file_info
                 state["file_upload_order"].append(file_id)
                 
-
-                logger.info(f"File uploaded successfully: {file_name} ({file_type})")
-                
             except Exception as e:
                 logger.error(f"Error uploading file {file_name}: {str(e)}")
                 continue
@@ -149,7 +147,6 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
         if not files:
             raise Exception("No files to process")
 
-        # logger.info(f"Total Files: {len(files)}")
 
         # Initialize processors
         ocr_engine = OCREngine(Config.TESSERACT_CONFIG)
@@ -160,8 +157,6 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
         def process_single_file(file_id: str, file_info: FileInfo) -> Tuple[str, FileInfo]:
             """Process a single file's OCR"""
             try:
-                logger.info(f"Processing OCR for file: {file_info.file_name}")
-                
                 # Update file status
                 file_info.processing_status = ProcessingStatus.PROCESSING
                 
@@ -198,9 +193,7 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
                 file_info.error_message = str(e)
                 return file_id, file_info
         
-        upt_state = process_all_files_via_bda(state)
-
-        logger.info(f"=======================\nState after bda processed: {state}\n=============================\n")
+        updated_state = process_all_files_via_bda(state)
 
         # Process files sequentially (no ThreadPool)
         completed_files = 0
@@ -236,26 +229,13 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
 
         # Combine all processed text
         combined_texts = []
-        combined_chunks = []
         
         for file_info in successful_files:
             # Add file text
             if file_info.processed_text:
                 combined_texts.append(f"=== {file_info.file_name} ===\n{file_info.processed_text}")
-            
-            # Add chunks with file metadata
-            for i, chunk in enumerate(file_info.document_chunks):
-                combined_chunks.append({
-                    "content": chunk,
-                    "file_id": file_info.file_id,
-                    "file_name": file_info.file_name,
-                    "file_type": file_info.file_type,
-                    "chunk_index": i,
-                    "metadata": file_info.chunk_metadata[i] if i < len(file_info.chunk_metadata) else {}
-                })
         
         state["combined_text"] = "\n\n".join(combined_texts)
-        state["combined_chunks"] = combined_chunks
         state["files_completed"] = len(successful_files)
         state["overall_status"] = ProcessingStatus.OCR_COMPLETE
         state["processing_progress"]["overall"] = 80
@@ -296,11 +276,11 @@ def process_all_files_via_bda(state: MultiFileDocumentState) -> MultiFileDocumen
 
                     invocation_arns.append(invocation_arns_obj)
 
-        logger.info(f"#### BDA Imvoked for all files")
+        logger.info(f"Bedrock Data Automation invoked for all files. Waiting for results...")
 
         invocation_results = []
 
-         # Wait for processing to complete
+        # Wait for processing to complete
         while len(invocation_results) != len(invocation_arns):
             for document in invocation_arns:
                 for key, value in document.items():
@@ -348,7 +328,7 @@ def filter_blueprint(s3_uri):
     except Exception as e:
         logger.error(f"Error in filter_blueprint: {str(e)}")
         # Return default blueprint if error occurs
-        return []
+        return blueprints.get("mv-1")
 
 def invoke_bda_job(input_uri:str, output_uri:str):
     try: 
@@ -379,9 +359,6 @@ def invoke_bda_job(input_uri:str, output_uri:str):
         logger.error(f"S3 URI: {input_uri}, Output URI: {output_uri}")
         raise
 
-import time
-import boto3
-
 def get_invocation_result(invocation_arn):
     """
     Function to get the result of a BDA job invocation.
@@ -403,11 +380,6 @@ def get_invocation_result(invocation_arn):
         
         time.sleep(5)
     return response
-
-import boto3
-import json
-from urllib.parse import urlparse
-import anyio
 
 def read_json_result_from_s3(s3_url: str):
     trimmed_url = s3_url.rsplit('/', 1)[0]

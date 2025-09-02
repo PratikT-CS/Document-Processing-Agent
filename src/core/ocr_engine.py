@@ -39,6 +39,7 @@ class OCREngine:
     
     def extract_text_from_page(self, page_image_bytes: bytes) -> str:
         textract_client = boto3.client('textract')
+        
         try:
             response = textract_client.detect_document_text(
                 Document={'Bytes': page_image_bytes}
