@@ -383,11 +383,11 @@ def get_invocation_result(invocation_arn):
     bda_runtime_client = boto3.client("bedrock-data-automation-runtime")
     
     bda_runtime_client.tag_resource(
-        ResourceArn=invocation_arn,
-        Tags={
+        resourceARN=invocation_arn,
+        tags=[{
             "key": "Project",
             "value": "Doc-Processing-Agent"
-        }
+        }]
     )
 
     while True:

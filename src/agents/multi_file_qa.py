@@ -45,6 +45,7 @@ def extract_image(inputs: dict):
         if isinstance(inputs, str):
             try:
                 inputs = inputs.replace('\\', '\\\\')
+                inputs = inputs.replace("'", '"')
                 inputs = json.loads(inputs)
             except Exception as e:
                 logger.info(f"error: Error: Failed to parse inputs as JSON: {e}")
@@ -67,6 +68,16 @@ def extract_image(inputs: dict):
         y0 = bbox["top"] * page_height
         x1 = x0 + bbox["width"] * page_width
         y1 = y0 + bbox["height"] * page_height
+        
+        width = x1 - x0
+        height = y1 - y0
+        padding_x = width * 0.01
+        padding_y = height * 0.5
+
+        x0 = max(0, x0 - padding_x)
+        y0 = max(0, y0 - padding_y)
+        x1 = min(page_width, x1 + padding_x)
+        y1 = min(page_height, y1 + padding_y)
 
         # Render page as image
         pix = page.get_pixmap(matrix=fitz.Matrix(150/72, 150/72))
