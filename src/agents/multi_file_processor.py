@@ -14,6 +14,7 @@ import boto3
 import json
 from urllib.parse import urlparse
 import time
+from .textract_extract_keyvalue import extract_kvs
 
 load_dotenv(override=True)
 
@@ -251,7 +252,7 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
         return state
 
 def process_all_files_via_bda(state: MultiFileDocumentState) -> MultiFileDocumentState:
-    """Process all  files through BDA (Bedrock Data Automation) for extracting structured data"""
+    """Process all files through BDA (Bedrock Data Automation) for extracting structured data"""
     try:
         state["overall_status"] = ProcessingStatus.PROCESSING
         state["current_step"] = "bda"
@@ -259,53 +260,65 @@ def process_all_files_via_bda(state: MultiFileDocumentState) -> MultiFileDocumen
         files = state["files"]
         if not files: 
             raise Exception("No files to process")
-        
-        # logger.info(f"Total Files: {len(files)}")
 
         invocation_arns = []
         files_to_process_as_of_now = ["bill of sale", "compliance pack", "mv-1", "store pack"]
         bucket_name = 'doc-processing-agent-k'
+        
         for file_id, file_info in files.items():
-            for name in files_to_process_as_of_now:
-                if name in file_info.s3_uri.lower():
-                    invocation_arns_obj = {name: {}}
-                    s3_input_uri = file_info.s3_uri
-                    s3_output_uri = f"s3://{bucket_name}/output/{file_info.s3_uri.rsplit('/', 1)[1].replace('.pdf', '')}"
-                    response = invoke_bda_job(s3_input_uri, s3_output_uri)
-                    invocation_arns_obj[name].update({'invocationArn': response['invocationArn']})
-
-                    invocation_arns.append(invocation_arns_obj)
+            # Check if file name is in files_to_process_as_of_now
+            should_process_with_bda = any(name in file_info.file_name.lower() for name in files_to_process_as_of_now)
+            
+            if should_process_with_bda:
+                # Process with BDA (existing logic)
+                for name in files_to_process_as_of_now:
+                    if name in file_info.s3_uri.lower():
+                        invocation_arns_obj = {name: {}}
+                        s3_input_uri = file_info.s3_uri
+                        s3_output_uri = f"s3://{bucket_name}/output/{file_info.s3_uri.rsplit('/', 1)[1].replace('.pdf', '')}"
+                        response = invoke_bda_job(s3_input_uri, s3_output_uri)
+                        invocation_arns_obj[name].update({'invocationArn': response['invocationArn']})
+                        invocation_arns.append(invocation_arns_obj)
+            else:
+                # Process with extract_kvs
+                try:
+                    file_info.extracted_data = extract_kvs(file_info.file_path)
+                    logger.info(f"Key-value extraction completed for {file_info.file_name}")
+                except Exception as e:
+                    logger.error(f"Error extracting key-values from {file_info.file_name}: {str(e)}")
 
         logger.info(f"Bedrock Data Automation invoked for all files. Waiting for results...")
 
         invocation_results = []
 
-        # Wait for processing to complete
-        while len(invocation_results) != len(invocation_arns):
-            for document in invocation_arns:
-                for key, value in document.items():
-                    response = get_invocation_result(value['invocationArn'])
-                    if response is not None and response not in invocation_results:
-                        invocation_results.append(response)
+        # Wait for processing to complete (only for BDA files)
+        logger.info(f"INVOVCATION ARNs: \n{invocation_arns}")
+        logger.info(f"INVOVCATION RESULTs: \n{invocation_results}")
+        if len(invocation_arns) > 0:
+            while len(invocation_results) != len(invocation_arns):
+                for document in invocation_arns:
+                    for key, value in document.items():
+                        response = get_invocation_result(value['invocationArn'])
+                        if response is not None and response not in invocation_results:
+                            invocation_results.append(response)
 
-                        if response['status'] == "Success":
-                            try:
-                                result = read_json_result_from_s3(response['outputConfiguration']['s3Uri'])
-                                result = json.loads(result)
-                                # file_info.extracted_data = result["explainability_info"]
-                                for file_id, file_info in files.items():
-                                    if key in file_info.s3_uri.lower():
-                                        file_info.extracted_data = result["explainability_info"]
-                                        break
-                            except Exception as err:
-                                logger.info(f"Error while extracting or saving result: {err}")
+                            if response['status'] == "Success":
+                                try:
+                                    result = read_json_result_from_s3(response['outputConfiguration']['s3Uri'])
+                                    result = json.loads(result)
+                                    for file_id, file_info in files.items():
+                                        if key in file_info.s3_uri.lower():
+                                            file_info.extracted_data = result["explainability_info"]
+                                            break
+                                except Exception as err:
+                                    logger.info(f"Error while extracting or saving result: {err}")
 
         state["overall_status"] = ProcessingStatus.BDA_PROCESSED
         return state
     except Exception as e:
         logger.error(f"Error processing BDA: {e}")
         raise
-
+    
 def filter_blueprint(s3_uri):
     """
     Function to filter blueprint based on the S3 URI.
@@ -368,6 +381,14 @@ def get_invocation_result(invocation_arn):
     """
 
     bda_runtime_client = boto3.client("bedrock-data-automation-runtime")
+    
+    bda_runtime_client.tag_resource(
+        ResourceArn=invocation_arn,
+        Tags={
+            "key": "Project",
+            "value": "Doc-Processing-Agent"
+        }
+    )
 
     while True:
         response = bda_runtime_client.get_data_automation_status(

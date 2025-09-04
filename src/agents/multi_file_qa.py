@@ -357,21 +357,24 @@ class MultiFileQAAgent:
                 structured_extracted_data += f"From {file_info.file_name}: \n {file_info.extracted_data_structured}\n\n"
             structured_extracted_data += "==="
             
-            retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=6)
+            # retrieved_docs_visual = vector_store.similarity_search(question, filter={"type": "key-value"}, k=6)
                 
             extracted_data = []
             
-            for retrieved_doc in retrieved_docs_visual:
-                extracted_data_obj = {'data_with_bounding_box': {}}
+            # for retrieved_doc in retrieved_docs_visual:
+            #     extracted_data_obj = {'data_with_bounding_box': {}}
                 
-                extracted_data_obj['data_with_bounding_box'].update({
-                    f"{retrieved_doc.metadata['key']}": {
-                        "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
-                        "page": retrieved_doc.metadata["page"],
-                        "file_path": retrieved_doc.metadata["source"]
-                    }}
-                )
-                extracted_data.append(extracted_data_obj)
+            #     extracted_data_obj['data_with_bounding_box'].update({
+            #         f"{retrieved_doc.metadata['key']}": {
+            #             "boundingBox": json.loads(retrieved_doc.metadata["bounding_box"]),
+            #             "page": retrieved_doc.metadata["page"],
+            #             "file_path": retrieved_doc.metadata["source"]
+            #         }}
+            #     )
+            #     extracted_data.append(extracted_data_obj)
+            
+            for file_id, file_info in files.items():
+                extracted_data.extend(file_info.extracted_data)
             
             prompt = self.generalized_prompt.format(
                 question=question,

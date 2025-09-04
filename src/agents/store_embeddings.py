@@ -65,10 +65,15 @@ def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
             
         docs_splits = text_splitter.split_documents(docs)
         
-        for file_id, file_info in files.items():    
-            flatten_extracted_data = flatten_kv_items(file_info.extracted_data)
+        for file_id, file_info in files.items():
+            if len(file_info.extracted_data) > 1:
+                flatten_extracted_data = file_info.extracted_data
+            else:
+                flatten_extracted_data = flatten_kv_items(file_info.extracted_data)
+                file_info.extracted_data = flatten_extracted_data
             
             all_extracted_fields = {}
+            logger.info(f"Extracted Data: {flatten_extracted_data}")
             for item in flatten_extracted_data:
                 for key, value in item.items():
                     if isinstance(value, list):
