@@ -1,8 +1,15 @@
+from operator import add
 from typing import Annotated, TypedDict, List, Optional, Dict, Any
 from langchain_core.messages import BaseMessage
 from langgraph.graph.message import add_messages
 from dataclasses import dataclass
 from enum import Enum
+
+def custom_reducer(current: Dict, updated: Dict) -> Dict:
+    file_ids = updated.keys()
+    for file_id in file_ids:
+        current[file_id] = updated[file_id]
+    return current
 
 class ProcessingStatus(Enum):
     IDLE = "idle"
@@ -67,10 +74,12 @@ class MultiFileDocumentState(TypedDict):
     error_message: Optional[str]
     
     # File management
-    files: Dict[str, FileInfo]  # file_id -> FileInfo
+    files: Annotated[Dict[str, FileInfo], custom_reducer]  # file_id -> FileInfo
     file_upload_order: List[str]  # Order of file uploads
     total_files: int
     files_completed: int
+    
+    bda_processed_files: Annotated[List[str], add]
     
     # Combined document content (after OCR completion)
     combined_text: Optional[str]
@@ -124,3 +133,4 @@ class MultiFileDocumentState(TypedDict):
             "temperature": 0.7,
             "max_files": 10
         }
+        

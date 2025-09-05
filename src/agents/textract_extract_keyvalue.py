@@ -17,6 +17,13 @@ DEFAULT_BBOX = [
     }
 ]
 
+def extract_raw_text(response):
+    text_lines = []
+    for block in response['Blocks']:
+        if block['BlockType'] == 'LINE':
+            text_lines.append(block['Text'])
+    return "\n".join(text_lines) 
+
 def merge_bounding_boxes(bboxes):
     if not bboxes:
         return None  # no input
@@ -132,6 +139,8 @@ def extract_kvs(file_path:str):
             
             analyze_doc_response = textract_client.analyze_document(Document={'Bytes': img_bytes}, FeatureTypes=['FORMS'], )
             
+            raw_text = extract_raw_text(analyze_doc_response)
+            
             key_map, val_map, block_map = get_kv_map(analyze_doc_response)
             page_kvs = get_kv_relationship(key_map, val_map, block_map, page_num+1)
             
@@ -152,7 +161,7 @@ def extract_kvs(file_path:str):
                 
         logger.info(f"Extracted KVs: \n\n{extracted_data}\n\n")
         logger.info(f"Key-Value pairs extracted successfully.")
-        return extracted_data
+        return extracted_data, raw_text
     except Exception as e:
         logger.info(f"An error occured during extracting key-value pairs from {file_path}")
         logger.info(f"Error: {e}")

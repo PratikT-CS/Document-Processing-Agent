@@ -70,6 +70,8 @@ def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
                 flatten_extracted_data = file_info.extracted_data
             else:
                 flatten_extracted_data = flatten_kv_items(file_info.extracted_data)
+                logger.info(f"FLATTEN EXTRACTED DATA: {flatten_extracted_data}\n\n\n")
+                [value['geometry'][0].pop('vertices') for pair in flatten_extracted_data for (key, value) in pair.items() if not isinstance(value, list) and "geometry" in value.keys()]
                 file_info.extracted_data = flatten_extracted_data
             
             all_extracted_fields = {}

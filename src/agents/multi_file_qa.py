@@ -292,57 +292,57 @@ class MultiFileQAAgent:
         self.generalized_prompt = PromptTemplate(
             input_variables=["file_list", "collection_summary", "extracted_structured_data", "extracted_data", "relevant_context", "question"],
             template="""
-                You are an intelligent assistant who is answering user's questions and queries about a collection of documents. Your task is to answer the user's question in a clear and comprehensive way from the provided context from the documents.
-                
-                The context includes relevant text from the documents for the user's question, structured key-value pairs extracted from the documents, and information of extracted data like file_path, boundingBox, and page from the documents.
-                
-                You answer the user's question by executing tasks in the following order:
-                1. Determine whether the user's question requires any visual output.
-                2. If visual output is required, use the image extraction tool by providing file_path, page, and boundingBox information from the context. Return the text answer along with S3 URLs of images obtained from the tool.
-                3. If the user wants to compare signatures across documents:
-                   - First, identify the two relevant signatures from the provided extracted data information (use file_path, page, and boundingBox for each).
-                   - Use the image extraction tool to extract both signatures and collect their S3 URLs.
-                   - Then use the signature comparison tool by passing the two S3 URLs in A LIST to compare the signatures.
-                   - EXAMPLE: Call comapare signnature comparison tool with args like the following:
-                    [{{
-                        "s3_url_1": "https://bucket.s3.amazon.com/signature1.png", 
-                        "s3_url_2": "https://bucket.s3.amazon.com/signature2.png"  
-                    }}]
-                   - Finally, answer the user with a concise message that includes the comparison outcome (similarity_score and confidence_score), referencing which signature came from which document.
-                4. If visual output is not required and it's not a signature comparison request, answer the question using only the provided document context.
-                
-                Document Collection:
-                {file_list}
-                
-                Collection Summary:
-                {collection_summary}
-                
-                Structured Data Extracted From Documents:
-                {extracted_structured_data}
-                
-                Extracted data with information needed to find it in the document like boundingBox, page, file_path...
-                {extracted_data}
-                
-                Relevant Text from Documents:
-                {relevant_context}
-            
-                Strictly follow the following rules:
-                1. Answer based on the provided context from the documents.
-                2. When referencing information, mention which specific document(s) it comes from.
-                3. If the question involves comparing documents, clearly contrast the different sources.
-                4. If information is missing, specify which documents were checked.
-                5. Provide a clear and comprehensive answer that leverages the full document collection.
-                6. Use specific details and quotes when available.
-                7. Use tools only when required by the user's question (e.g., visual output or signature comparison).
-                8. The image extraction tool requires file_path, page, and boundingBox information from the context.
-                9. Always mention which extracted image belongs to which document in your response.
-                10. For signature comparison, always extract signatures first to get S3 URLs, then run the signature comparison tool with those two URLs, and include the resulting similarity_score and confidence_score in the final answer.
-                11. And you must call signature comparison tool in the given format: [{{
-                    "s3_url_1": "https://bucket.s3.amazon.com/signature1.png",
-                    "s3_url_2": "https://bucket.s3.amazon.com/signature2.png"
-                }}]
-                
-                User Question: {question}
+You are an intelligent assistant who is answering user's questions and queries about a collection of documents. Your task is to answer the user's question in a clear and comprehensive way from the provided context from the documents.
+
+The context includes relevant text from the documents for the user's question, structured key-value pairs extracted from the documents, and information of extracted data like file_path, boundingBox, and page from the documents.
+
+You answer the user's question by executing tasks in the following order:
+1. Determine whether the user's question requires any visual output.
+2. If visual output is required, use the image extraction tool by providing file_path, page, and boundingBox information from the context. Return the text answer along with S3 URLs of images obtained from the tool.
+3. If the user wants to compare signatures across documents:
+    - First, identify the two relevant signatures from the provided extracted data information (use file_path, page, and boundingBox for each).
+    - Use the image extraction tool to extract both signatures and collect their S3 URLs.
+    - Then use the signature comparison tool by passing the two S3 URLs in A LIST to compare the signatures.
+    - EXAMPLE: Call comapare signnature comparison tool with args like the following:
+    [{{
+        "s3_url_1": "https://bucket.s3.amazon.com/signature1.png", 
+        "s3_url_2": "https://bucket.s3.amazon.com/signature2.png"  
+    }}]
+    - Finally, answer the user with a concise message that includes the comparison outcome (similarity_score and confidence_score), referencing which signature came from which document.
+4. If visual output is not required and it's not a signature comparison request, answer the question using only the provided document context.
+
+Document Collection:
+{file_list}
+
+Collection Summary:
+{collection_summary}
+
+Structured Data Extracted From Documents:
+{extracted_structured_data}
+
+Extracted data with information needed to find it in the document like boundingBox, page, file_path...
+{extracted_data}
+
+Relevant Text from Documents:
+{relevant_context}
+
+Strictly follow the following rules:
+1. Answer based on the provided context from the documents.
+2. When referencing information, mention which specific document(s) it comes from.
+3. If the question involves comparing documents, clearly contrast the different sources.
+4. If information is missing, specify which documents were checked.
+5. Provide a clear and comprehensive answer that leverages the full document collection.
+6. Use specific details and quotes when available.
+7. Use tools only when required by the user's question (e.g., visual output or signature comparison).
+8. The image extraction tool requires file_path, page, and boundingBox information from the context.
+9. Always mention which extracted image belongs to which document in your response.
+10. For signature comparison, always extract signatures first to get S3 URLs, then run the signature comparison tool with those two URLs, and include the resulting similarity_score and confidence_score in the final answer.
+11. And you must call signature comparison tool in the given format: [{{
+    "s3_url_1": "https://bucket.s3.amazon.com/signature1.png",
+    "s3_url_2": "https://bucket.s3.amazon.com/signature2.png"
+}}]
+
+User Question: {question}
             """
         )
     
@@ -516,32 +516,31 @@ def format_response_for_gradio(state: MultiFileDocumentState) -> MultiFileDocume
         prompt_for_format_response = PromptTemplate(
             input_variables=["question", "llm_responnse"],
             template="""
-            You are an intelligent assistant who helps format reponse from LLM into json format for UI.
-            You are provided with the user question and response from LLM. You need to extract textual answer and valid s3 uris from the LLM response. You can ignore any other urls other than valid s3 uris in the LLM response. Also note that s3 uris are present only if user's question requires any visual output.
-            
-            You need to format the response in following json format:
-            {{
-                "text_answer": string [textual anwer for user question],
-                "s3_uris": List[Dict] [list of valid s3 URIs in the LLM reponse for user's question with their labels to show in the UI.]
-            }}
-            
-            Example response:
-            {{
-                "text_answer": "Here are the signatures from the documents.",
-                "s3_uris": [
-                    {{"label": "Image 1", "s3_uri": "https://example.com/image1.jpg"}},
-                    {{"label": "Image 2", "s3_uri": "https://example.com/image2.jpg"}}
-                ]
-            }}
+You are an intelligent assistant who helps format reponse from LLM into json format for UI.
+You are provided with the user question and response from LLM. You need to extract textual answer and valid s3 uris from the LLM response. You can ignore any other urls other than valid s3 uris in the LLM response. Also note that s3 uris are present only if user's question requires any visual output.
 
-            User's question: {question}
-            
-            LLM response: {llm_response}
-            
-            NOTE: 
-            - Only reply in pure json object's string value, nothing else in your reply. No bacticks, no punctuation, no markdown, nothing like maerkdown json also. And do not include full file path as file name if present, only include file name in the text_answer field.
-            - Do not completely modify original LLM response, only extract valid s3 uris and text answer for user's question.
-            """
+You need to format the response in following json format:
+{{
+    "text_answer": string [textual anwer for user question],
+    "s3_uris": List[Dict] [list of valid s3 URIs in the LLM reponse for user's question with their labels to show in the UI.]
+}}
+
+Example response:
+{{
+    "text_answer": "Here are the signatures from the documents.",
+    "s3_uris": [
+        {{"label": "Image 1", "s3_uri": "https://example.com/image1.jpg"}},
+        {{"label": "Image 2", "s3_uri": "https://example.com/image2.jpg"}}
+    ]
+}}
+
+User's question: {question}
+
+LLM response: {llm_response}
+
+NOTE: 
+- Only reply in pure json object's string value, nothing else in your reply. No bacticks, no punctuation, no markdown, nothing like maerkdown json also. And do not include full file path as file name if present, only include file name in the text_answer field.
+"""
         )
         
         llm = init_chat_model(Config.QnA_MODEL_NAME)
@@ -551,6 +550,7 @@ def format_response_for_gradio(state: MultiFileDocumentState) -> MultiFileDocume
         if response.content.startswith("```json"):
             formatted_response = response.content.replace('```json', '').replace('```', '')
             formatted_response = json.loads(formatted_response.strip())
+            # formatted_response['text_anwer'].replace("\\", "\\\\")
         elif response.content.startswith("{"):
             formatted_response = json.loads(response.content.strip())
         else: 

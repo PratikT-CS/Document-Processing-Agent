@@ -2,13 +2,13 @@ import logging
 from typing import Dict, List, Tuple, Any
 from langgraph.graph import StateGraph, END, START
 from .multi_file_state import MultiFileDocumentState, ProcessingStatus
-from .multi_file_processor import upload_multiple_files, process_all_files_ocr
+from .multi_file_processor import collect_bda_results, process_single_bda, upload_multiple_files, process_all_files_ocr
 from .multi_file_summarizer import generate_multi_document_summary
 from .multi_file_qa import process_multi_document_question, format_response_for_gradio
 from .store_embeddings import store_embeddings
 from langgraph.prebuilt import ToolNode, tools_condition
 from .multi_file_qa import tools
-from enum import Enum
+from langgraph.types import Send
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +33,8 @@ class MultiFileDocumentWorkflow:
         workflow.add_node("answer_question", process_multi_document_question)
         workflow.add_node("tools", ToolNode(tools=tools))
         workflow.add_node("format_response", format_response_for_gradio)
+        workflow.add_node("process_single_bda", process_single_bda)
+        workflow.add_node("collect_bda_results", collect_bda_results)
         
         # Define entry point
         workflow.add_conditional_edges(
@@ -56,12 +58,15 @@ class MultiFileDocumentWorkflow:
         
         workflow.add_conditional_edges(
             "process_ocr", 
-            self._route_on_status,
+            self._route_bda,
             {
-                "continue": "generate_summary",
+                "continue": "collect_bda_results",
                 "error": END
             }
         )
+        
+        workflow.add_edge("process_single_bda", "collect_bda_results")
+        workflow.add_edge("collect_bda_results", "generate_summary")
         
         workflow.add_conditional_edges(
             "generate_summary",
@@ -110,6 +115,28 @@ class MultiFileDocumentWorkflow:
         if state.get("overall_status") == ProcessingStatus.ERROR:
             return "error"
         return "continue"
+    
+    def _route_bda(self, state:MultiFileDocumentState) -> str:
+        """Route after OCR - either to BDA processing or directly to collect results"""
+        if state.get("overall_status") == ProcessingStatus.ERROR:
+            return "error"
+        
+        # Check if any files need BDA processing
+        files_to_process = ["bill of sale", "compliance pack", "mv-1", "store pack"]
+        
+        sends = []
+        for file_id, file_info in state["files"].items():
+            should_process_with_bda = any(name in file_info.file_name.lower() for name in files_to_process)
+            if should_process_with_bda:
+                sends.append(Send("process_single_bda", {
+                    "file_id": file_id,
+                    "file_info": file_info
+                }))
+        
+        if sends:
+            return sends  # This will trigger parallel BDA processing
+        else:
+            return "continue"  # Skip BDA processing
     
     def _check_tool_calls(self, state: MultiFileDocumentState) -> str:
         """Decide tools call is present or not"""
