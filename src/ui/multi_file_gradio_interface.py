@@ -7,15 +7,17 @@ from ..config.settings import Config
 
 logger = logging.getLogger(__name__)
 
+INITIAL_STATE = MultiFileDocumentState()
+
 class MultiFileDocumentChatInterface:
     """Gradio interface for multi-file document processing and chat"""
     
     def __init__(self):
         self.workflow = get_workflow()
-        self.current_state: Optional[MultiFileDocumentState] = None
+        self.current_state = INITIAL_STATE
         self.processing = False
     
-    def upload_and_process_files(self, files: List[Tuple[str, str]]) -> Tuple[str, str, str, List[str], bool]:
+    def upload_and_process_files(self, files: List[Tuple[str, str]], user_id: str) -> Tuple[str, str, str, List[str], bool]:
         """
         Handle multiple file uploads and processing.
         Returns: (status_message, summary, progress, questions, chat_visible)
@@ -34,7 +36,7 @@ class MultiFileDocumentChatInterface:
             
             # Process documents through workflow
             uploaded_files = [(file.name, file.name) for file in files]
-            result = self.workflow.process_documents(uploaded_files)
+            result = self.workflow.process_documents(uploaded_files, user_id)
             
             # Store state
             self.current_state = result
@@ -69,7 +71,7 @@ class MultiFileDocumentChatInterface:
             self.processing = False
             return f"Error processing files: {str(e)}", "", "Error", [], False
     
-    def answer_question(self, question: str, chat_history: List[Dict]):
+    def answer_question(self, question: str, chat_history: List[Dict], user_id: str):
         """
         Handle user question and return updated chat history.
         Yields: (updated_chat_history, empty_input)
@@ -100,7 +102,7 @@ class MultiFileDocumentChatInterface:
             yield chat_history, ""
             
             # Process question through workflow
-            result = self.workflow.ask_question(self.current_state, question)
+            result = self.workflow.ask_question(self.current_state, question, user_id)
             
             # Get response
             # response = result.get("response", "I couldn't generate a response.")
@@ -124,10 +126,10 @@ class MultiFileDocumentChatInterface:
                 ])
             yield chat_history, ""
     
-    def use_suggested_question(self, question: str, chat_history: List[Dict]):
+    def use_suggested_question(self, question: str, chat_history: List[Dict], user_id: str):
         # Get the final result from the generator
         result = None
-        for result in self.answer_question(question, chat_history):
+        for result in self.answer_question(question, chat_history, user_id):
             pass  # Keep iterating to get the final result
         return result if result else (chat_history, "")
     
@@ -174,6 +176,12 @@ class MultiFileDocumentChatInterface:
                             file_types=[".pdf", ".png", ".jpg", ".jpeg"],
                             file_count="multiple",
                             height=125
+                        )
+                        
+                        user_id = gr.Textbox(
+                            label="User ID (for session tracking)",
+                            placeholder="Enter a unique user ID",
+                            interactive=True
                         )
                         
                         process_btn = gr.Button("Process Documents", variant="primary", size="lg")
@@ -224,8 +232,8 @@ class MultiFileDocumentChatInterface:
                                 btn = gr.Button("", visible=False, size="sm")
                                 question_buttons.append(btn)
             # Event handlers
-            def handle_processing(files):
-                result = self.upload_and_process_files(files)
+            def handle_processing(files, user_id):
+                result = self.upload_and_process_files(files, user_id)
                 status, summary, progress, questions, chat_visible = result
 
                 chatbot.examples = [{"role": "user", "content": q} for q in questions]
@@ -252,7 +260,7 @@ class MultiFileDocumentChatInterface:
             # Process button click
             process_btn.click(
                 fn=handle_processing,
-                inputs=[file_input],
+                inputs=[file_input, user_id],
                 outputs=[
                     status_output, 
                     summary_output,
@@ -264,20 +272,20 @@ class MultiFileDocumentChatInterface:
             # Chat input handlers
             chat_input.submit(
                 fn=self.answer_question,
-                inputs=[chat_input, chatbot],
+                inputs=[chat_input, chatbot, user_id],
                 outputs=[chatbot, chat_input]
             )
             
             send_btn.click(
                 fn=self.answer_question,
-                inputs=[chat_input, chatbot],
+                inputs=[chat_input, chatbot, user_id],
                 outputs=[chatbot, chat_input]
             )
             
             # Suggested question handlers
             for btn in question_buttons:
                 btn.click(
-                    fn=lambda q, hist: self.use_suggested_question(q, hist),
+                    fn=lambda q, hist: self.use_suggested_question(q, hist, user_id),
                     inputs=[btn, chatbot],
                     outputs=[chatbot, chat_input]
                 )

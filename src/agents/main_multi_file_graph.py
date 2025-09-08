@@ -9,6 +9,9 @@ from .store_embeddings import store_embeddings
 from langgraph.prebuilt import ToolNode, tools_condition
 from .multi_file_qa import tools
 from langgraph.types import Send
+from langgraph.checkpoint.postgres import PostgresSaver
+import os
+from .checkpointer_manager import CheckpointerManager
 
 logger = logging.getLogger(__name__)
 
@@ -17,7 +20,8 @@ class MultiFileDocumentWorkflow:
     
     def __init__(self):
         self.workflow = self._create_workflow()
-        self.app = self.workflow.compile()
+        checkpointer = CheckpointerManager.get_checkpointer()
+        self.app = self.workflow.compile(checkpointer=checkpointer)
     
     def _create_workflow(self) -> StateGraph:
         """Create the LangGraph workflow"""
@@ -147,7 +151,7 @@ class MultiFileDocumentWorkflow:
         else:
             return "end"
     
-    def process_documents(self, uploaded_files: List[Tuple[str, str]]) -> Dict[str, Any]:
+    def process_documents(self, uploaded_files: List[Tuple[str, str]], user_id: str) -> Dict[str, Any]:
         """
         Process multiple documents through the complete workflow
         """
@@ -156,11 +160,13 @@ class MultiFileDocumentWorkflow:
             initial_state = MultiFileDocumentState()
             initial_state["uploaded_file_paths"] = uploaded_files
             initial_state["overall_status"] = ProcessingStatus.IDLE
+            initial_state["user_id"] = user_id
             
             logger.info(f"Starting multi-file document processing workflow for {len(uploaded_files)} files")
             
             # Run the workflow
-            result = self.app.invoke(initial_state)
+            config = {"configurable": {"thread_id": "1", "user_id": user_id}}
+            result = self.app.invoke(initial_state, config=config)
             
             logger.info(f"Workflow completed with status: {result.get('overall_status')}")
             
@@ -173,13 +179,13 @@ class MultiFileDocumentWorkflow:
                 "error_message": f"Workflow error: {str(e)}"
             }
     
-    def ask_question(self, state: MultiFileDocumentState, question: str) -> Dict[str, Any]:
+    def ask_question(self, state: MultiFileDocumentState, question: str, user_id: str) -> Dict[str, Any]:
         """
         Ask a question about the processed documents
         """
         try:
             if not question.strip():
-                raise ValueError("Question cannot be empty")
+                raise ("Question cannot be empty")
             
             if not state.get("overall_status") == ProcessingStatus.VECTORIZED:
                 raise ("Documents must be processed before asking questions")
@@ -190,7 +196,8 @@ class MultiFileDocumentWorkflow:
             logger.info(f"Processing question: {question}...")
             
             # Run QA node directly
-            result = self.app.invoke(state, config={"recursion_limit": 10})
+            config = {"configurable": {"thread_id": "1", "user_id": user_id}}
+            result = self.app.invoke(state, config=config)
             
             logger.info("Question answered successfully")
             

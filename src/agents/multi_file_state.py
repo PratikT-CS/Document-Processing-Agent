@@ -106,6 +106,8 @@ class MultiFileDocumentState(TypedDict):
     temperature: float
     max_files: int
     
+    user_id: str
+    
     def __init__(self):
         return {
             "uploaded_file_paths": [],
@@ -131,6 +133,7 @@ class MultiFileDocumentState(TypedDict):
             "max_chunk_size": 1000,
             "overlap_size": 200,
             "temperature": 0.7,
-            "max_files": 10
+            "max_files": 10,
+            "user_id": None
         }
         

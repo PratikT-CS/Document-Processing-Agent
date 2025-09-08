@@ -61,10 +61,6 @@ class OCREngine:
         """Extract text from PDF file"""
         text_content = []
         
-        files_to_process_as_of_now = ["bill of sale", "compliance pack", "mv-1", "store pack"]
-        
-        should_process_with_detext_document = any(name in file_path.lower() for name in files_to_process_as_of_now)
-        
         # try:
         #     with open(file_path, 'rb') as file:
         #         pdf_reader = PyPDF2.PdfReader(file)
@@ -87,34 +83,30 @@ class OCREngine:
         #     raise
         
         try:
-            if should_process_with_detext_document:
-                logger.info(f"Detect document text for {file_path}")
-                doc = fitz.open(filename=file_path, filetype="pdf")
-                for page_num in range(doc.page_count):
-                    page = doc.load_page(page_num)
-                    
-                    pix = page.get_pixmap(matrix=fitz.Matrix(RENDERING_DPI/72, RENDERING_DPI/72))
-                    image_bytes = pix.tobytes()
-
-                    if len(image_bytes) > 5 * 1024 * 1024:  # 5MB limit
-                        logger.warning(f"Warning: Page {page_num + 1} image is too large for Textract. Skipping.")
-                        continue
-
-                    page_text = self.extract_text_from_page(image_bytes)
-
-                    if page_text.strip():
-                            text_content.append(page_text)
-                    else:
-                        # If no text found, might be scanned PDF - use OCR
-                        logger.warning(f"No text found on page {page_num + 1}")
-
-                full_text = '\n'.join(text_content)
-                confidence = 1.0 if full_text.strip() else 0.0  # PDF text extraction is reliable
+            logger.info(f"Detect document text for {file_path}")
+            doc = fitz.open(filename=file_path, filetype="pdf")
+            for page_num in range(doc.page_count):
+                page = doc.load_page(page_num)
                 
-                return full_text, confidence
-            else:
-                logger.info(f"Raw text already extracted for {file_path} while extracting key-value pairs")
-                return "", 1.0
+                pix = page.get_pixmap(matrix=fitz.Matrix(RENDERING_DPI/72, RENDERING_DPI/72))
+                image_bytes = pix.tobytes()
+
+                if len(image_bytes) > 5 * 1024 * 1024:  # 5MB limit
+                    logger.warning(f"Warning: Page {page_num + 1} image is too large for Textract. Skipping.")
+                    continue
+
+                page_text = self.extract_text_from_page(image_bytes)
+
+                if page_text.strip():
+                        text_content.append(page_text)
+                else:
+                    # If no text found, might be scanned PDF - use OCR
+                    logger.warning(f"No text found on page {page_num + 1}")
+
+            full_text = '\n'.join(text_content)
+            confidence = 1.0 if full_text.strip() else 0.0  # PDF text extraction is reliable
+            
+            return full_text, confidence
         except Exception as e:
             logger.error(f"Error reading PDF: {str(e)}")
             raise

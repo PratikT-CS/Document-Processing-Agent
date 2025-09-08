@@ -2,6 +2,7 @@ import logging
 import time
 import uuid
 from typing import List, Dict, Any, Tuple
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from ..core.file_handler import FileHandler
 from ..core.ocr_engine import OCREngine
 from ..core.text_processor import TextProcessor
@@ -150,7 +151,6 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
         if not files:
             raise Exception("No files to process")
 
-
         # Initialize processors
         ocr_engine = OCREngine(Config.TESSERACT_CONFIG)
         state["max_chunk_size"] = 2000
@@ -205,24 +205,28 @@ def process_all_files_ocr(state: MultiFileDocumentState) -> MultiFileDocumentSta
                 file_info.error_message = str(e)
                 return file_id, file_info
 
-        # Process files sequentially (no ThreadPool)
+        # Process files in parallel using ThreadPoolExecutor
         completed_files = 0
         total_files = len(files)
         
-        for file_id, file_info in files.items():
-            try:
-                processed_file_id, updated_file_info = process_single_file(file_id, file_info)
-
-                # Update state with processed file
-                state["files"][processed_file_id] = updated_file_info
-                completed_files += 1
-
-                # Update progress
-                progress = int((completed_files / total_files) * 60) + 20  # 20-80% range
-                state["processing_progress"]["overall"] = progress
-                state["processing_progress"][processed_file_id] = 100 if updated_file_info.processing_status == ProcessingStatus.OCR_COMPLETE else 0
-            except Exception as e:
-                logger.error(f"Error processing file {file_id}: {str(e)}")
+        with ThreadPoolExecutor(max_workers=4) as executor:
+            future_to_file = {
+                executor.submit(process_single_file, file_id, file_info): file_id 
+                for file_id, file_info in files.items()
+            }
+            
+            for future in as_completed(future_to_file):
+                file_id = future_to_file[future]
+                try:
+                    processed_file_id, updated_file_info = future.result()
+                    state["files"][processed_file_id] = updated_file_info
+                    completed_files += 1
+                    
+                    progress = int((completed_files / total_files) * 60) + 20
+                    state["processing_progress"]["overall"] = progress
+                    state["processing_progress"][processed_file_id] = 100 if updated_file_info.processing_status == ProcessingStatus.OCR_COMPLETE else 0
+                except Exception as e:
+                    logger.error(f"Error processing file {file_id}: {str(e)}")
         
         # Require all files to be successfully processed before continuing
         successful_files = [
@@ -340,7 +344,7 @@ def get_invocation_result(invocation_arn):
         if status in ["Success", "ServiceError", "ClientError", "Failed"]:
             break
         
-        time.sleep(5)
+        time.sleep(8)
     return response
 
 def read_json_result_from_s3(s3_url: str):
@@ -376,7 +380,6 @@ def process_single_bda(state: dict):
         file_info.extracted_data = json.loads(json_result)["explainability_info"]
     
     logger.info(f"BDA Results stored for file {state['file_info'].file_name}")
-    logger.info(f"BDA Results stored for file {file_info}")
     return {
         "files": {
             file_id: file_info

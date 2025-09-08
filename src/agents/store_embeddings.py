@@ -37,81 +37,72 @@ def merge_bounding_boxes(bboxes):
         "width": right - left,
         "height": bottom - top
     }
-
+        
 def store_embeddings(state: MultiFileDocumentState) -> MultiFileDocumentState:
-    """
-    store embeddings of documents and visual outputs in vector store with metadata.
-    """ 
     if state["overall_status"] == ProcessingStatus.VECTORIZED:
         return state
+    
     try:
         files = state["files"]
-        docs = []
+        all_docs = []
         
         for file_id, file_info in files.items():
-            docs.append(Document(
+            # Process text document
+            text_doc = Document(
                 page_content=file_info.processed_text,
                 id=str(uuid.uuid4()),
                 metadata={
                     "type": "text",
                     "source": file_info.file_name,
-                    "bounding_box": json.dumps({}),
+                    "bounding_box": "{}",
                     "page": 0,
                     "key": "",
                     "value": "",
                     "type-value": ""
                 }
-            ))
+            )
+            all_docs.extend(text_splitter.split_documents([text_doc]))
             
-        docs_splits = text_splitter.split_documents(docs)
-        
-        for file_id, file_info in files.items():
-            if len(file_info.extracted_data) > 1:
-                flatten_extracted_data = file_info.extracted_data
-            else:
-                flatten_extracted_data = flatten_kv_items(file_info.extracted_data)
-                logger.info(f"FLATTEN EXTRACTED DATA: {flatten_extracted_data}\n\n\n")
-                [value['geometry'][0].pop('vertices') for pair in flatten_extracted_data for (key, value) in pair.items() if not isinstance(value, list) and "geometry" in value.keys()]
-                file_info.extracted_data = flatten_extracted_data
+            # Process extracted data
+            flatten_data = file_info.extracted_data if len(file_info.extracted_data) > 1 else flatten_kv_items(file_info.extracted_data)
             
-            all_extracted_fields = {}
-            logger.info(f"Extracted Data: {flatten_extracted_data}")
-            for item in flatten_extracted_data:
+            # Remove vertices to reduce storage
+            [value['geometry'][0].pop('vertices', None) for pair in flatten_data for (key, value) in pair.items() if not isinstance(value, list) and "geometry" in value.keys() and value["geometry"]]
+            
+            extracted_fields = {}
+            
+            for item in flatten_data:
                 for key, value in item.items():
-                    if isinstance(value, list):
+                    if isinstance(value, list) or "geometry" not in value or not value["geometry"]:
                         continue
-                    if "geometry" in value.keys() and len(value["geometry"]) > 0:
-                        all_extracted_fields[key] = value["value"]
                         
-                        bboxes = []
-                        for item in value["geometry"]:
-                            bboxes.append(item["boundingBox"])
-                        
-                        bbox =  merge_bounding_boxes(bboxes)  
-                        
-                        docs_splits.append(Document(
-                            page_content=f"{key} is {value['value'] if not isinstance(value['value'], bool) else 'present' if value['value'] == True else 'not present'}",
-                            id=str(uuid.uuid4()),
-                            metadata={
-                                "type": "key-value",
-                                "source": file_info.file_name,
-                                "bounding_box": json.dumps(bbox),
-                                "page": value["geometry"][0]["page"],
-                                "key": str(key),
-                                "value": value["value"],
-                                "type-value": value["type"]
-                            }
-                        ))
+                    extracted_fields[key] = value["value"]
+                    bbox = merge_bounding_boxes([g["boundingBox"] for g in value["geometry"]])
+                    
+                    all_docs.append(Document(
+                        page_content=f"{key} is {value['value'] if not isinstance(value['value'], bool) else 'present' if value['value'] else 'not present'}",
+                        id=str(uuid.uuid4()),
+                        metadata={
+                            "type": "key-value",
+                            "source": file_info.file_name,
+                            "bounding_box": json.dumps(bbox),
+                            "page": value["geometry"][0]["page"],
+                            "key": str(key),
+                            "value": value["value"],
+                            "type-value": value["type"]
+                        }
+                    ))
+            
+            file_info.extracted_data = flatten_data
+            file_info.extracted_data_structured = extracted_fields
         
-            file_info.extracted_data_structured = all_extracted_fields
-                      
-        _ = vector_store.add_documents(documents=docs_splits)
+        vector_store.add_documents(documents=all_docs)
         
         state["overall_status"] = ProcessingStatus.VECTORIZED
         state["uploaded_file_paths"] = []
-        
         return state
-    
+        
     except Exception as e:
-        logger.error(f"Error storing embeddings for documents {e}")
+        logger.error(f"Error storing embeddings: {e}")
         state["overall_status"] = ProcessingStatus.ERROR
+        return state
