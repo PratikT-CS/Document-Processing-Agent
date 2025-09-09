@@ -4,7 +4,7 @@ from langgraph.graph import StateGraph, END, START
 from .multi_file_state import MultiFileDocumentState, ProcessingStatus
 from .multi_file_processor import collect_bda_results, process_single_bda, upload_multiple_files, process_all_files_ocr
 from .multi_file_summarizer import generate_multi_document_summary
-from .multi_file_qa import process_multi_document_question, format_response_for_gradio
+from .multi_file_qa import process_multi_document_question, format_response_for_gradio, summarize_conversation
 from .store_embeddings import store_embeddings
 from langgraph.prebuilt import ToolNode, tools_condition
 from .multi_file_qa import tools
@@ -39,6 +39,7 @@ class MultiFileDocumentWorkflow:
         workflow.add_node("format_response", format_response_for_gradio)
         workflow.add_node("process_single_bda", process_single_bda)
         workflow.add_node("collect_bda_results", collect_bda_results)
+        workflow.add_node("summarize_conversation", summarize_conversation)
         
         # Define entry point
         workflow.add_conditional_edges(
@@ -46,7 +47,7 @@ class MultiFileDocumentWorkflow:
             self._route_initial_request,
             {
                 "process": "upload_files",
-                "QnA": "answer_question"
+                "QnA": "summarize_conversation"
             }
         )
         
@@ -89,6 +90,8 @@ class MultiFileDocumentWorkflow:
                 "error": END
             }
         )
+        
+        workflow.add_edge("summarize_conversation", "answer_question")
         
         workflow.add_conditional_edges(
             "answer_question", 
@@ -156,21 +159,30 @@ class MultiFileDocumentWorkflow:
         Process multiple documents through the complete workflow
         """
         try:
-            # Initialize state
-            initial_state = MultiFileDocumentState()
-            initial_state["uploaded_file_paths"] = uploaded_files
-            initial_state["overall_status"] = ProcessingStatus.IDLE
-            initial_state["user_id"] = user_id
-            
-            logger.info(f"Starting multi-file document processing workflow for {len(uploaded_files)} files")
-            
-            # Run the workflow
-            config = {"configurable": {"thread_id": "1", "user_id": user_id}}
-            result = self.app.invoke(initial_state, config=config)
-            
-            logger.info(f"Workflow completed with status: {result.get('overall_status')}")
-            
-            return result
+            with PostgresSaver.from_conn_string(os.getenv("DOC_AGENT_DB_URI")) as checkpointer:
+                # Initialize state
+                self.app.checkpointer = checkpointer
+                config = {"configurable": {"thread_id": user_id, "user_id": user_id}}
+                checkpointer_list = list(self.app.get_state_history(config=config))
+                if checkpointer_list == []:
+                    logger.info(f"No previous state found, starting fresh workflow")
+                    initial_state = MultiFileDocumentState()
+                    initial_state["uploaded_file_paths"] = uploaded_files
+                    initial_state["overall_status"] = ProcessingStatus.IDLE
+                    initial_state["user_id"] = user_id
+                    
+                    logger.info(f"Starting multi-file document processing workflow for {len(uploaded_files)} files")
+                    
+                    # Run the workflow
+                    config = {"configurable": {"thread_id": user_id, "user_id": user_id}}
+                    result = self.app.invoke(initial_state, config=config)
+                else:
+                    result = checkpointer_list[0].values    
+                    logger.info(f"Resuming workflow from previous state with status: {result.get('overall_status')}")
+                            
+                logger.info(f"Workflow completed with status: {result.get('overall_status')}")
+                
+                return result
             
         except Exception as e:
             logger.error(f"Error in multi-file document processing workflow: {str(e)}")
@@ -184,24 +196,36 @@ class MultiFileDocumentWorkflow:
         Ask a question about the processed documents
         """
         try:
-            if not question.strip():
-                raise ("Question cannot be empty")
-            
-            if not state.get("overall_status") == ProcessingStatus.VECTORIZED:
-                raise ("Documents must be processed before asking questions")
-            
-            # Update state with question
-            state["current_query"] = question
-            
-            logger.info(f"Processing question: {question}...")
-            
-            # Run QA node directly
-            config = {"configurable": {"thread_id": "1", "user_id": user_id}}
-            result = self.app.invoke(state, config=config)
-            
-            logger.info("Question answered successfully")
-            
-            return result
+            with PostgresSaver.from_conn_string(os.getenv("DOC_AGENT_DB_URI")) as checkpointer:
+                self.app.checkpointer = checkpointer
+                config = {"configurable": {"thread_id": user_id, "user_id": user_id}}
+                checkpointer_list = list(self.app.get_state_history(config=config))
+                if checkpointer_list == []:
+                    logger.error(f"No previous state found! Please first process docs first!")
+                    return {
+                        "overall_status": "error",
+                        "error_message": "Workflow error: No previous state found! Please first process docs first!"
+                    }
+                else:
+                    state = checkpointer_list[0].values
+                if not question.strip():
+                    raise ("Question cannot be empty")
+                
+                if not state.get("overall_status") == ProcessingStatus.VECTORIZED:
+                    raise ("Documents must be processed before asking questions")
+                
+                # Update state with question
+                state["current_query"] = question
+                
+                logger.info(f"Processing question: {question}...")
+                
+                # Run QA node directly
+                config = {"configurable": {"thread_id": user_id, "user_id": user_id}}
+                result = self.app.invoke(state, config=config)
+                
+                logger.info("Question answered successfully")
+                
+                return result
             
         except Exception as e:
             logger.error(f"Error in QA workflow: {str(e)}")
@@ -217,6 +241,18 @@ class MultiFileDocumentWorkflow:
             "error": state.get("error_message"),
             "ready_for_qa": state.get("overall_status") == "summarized"
         }
+        
+    def check_state_stored(self, user_id: str):
+        """Check if a state is stored for the given user_id"""
+        try:
+            with PostgresSaver.from_conn_string(os.getenv("DOC_AGENT_DB_URI")) as checkpointer:
+                self.app.checkpointer = checkpointer
+                config = {"configurable": {"thread_id": user_id, "user_id": user_id}}
+                checkpointer_list = list(self.app.get_state_history(config=config))
+                return len(checkpointer_list) > 0, checkpointer_list[0].values
+        except Exception as e:
+            logger.error(f"Error checking state in DB: {str(e)}")
+            return False, {}
 
 # Singleton instance
 multi_file_workflow = MultiFileDocumentWorkflow()

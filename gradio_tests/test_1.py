@@ -24,9 +24,12 @@ def respond_with_file(message, history, file):
 with gr.Blocks(title="Document Processing Agent",css=".btn {height : 60px;}") as demo:
     gr.Markdown("# LangGraph Document Agent")
     gr.Markdown('''
+        <p>Label</p>
+        <img src="https://doc-processing-agent-k.s3.us-east-1.amazonaws.com/cropped_imgs/027026a1-1582-4b1f-b858-995663f7248e.png" style="height: 1rem; width: 1rem;">
+        
         **Text**
         Label
-        ![Extracted Img](https://doc-processing-agent-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")
+        ![Extracted Img](https://doc-processing-agent-k.s3.us-east-1.amazonaws.com/cropped_imgs/027026a1-1582-4b1f-b858-995663f7248e.png "From MV-1.pdf")
         
         Label
         ![Extracted Img](https://doc-processing-agent-k.s3.amazonaws.com/cropped_imgs/79b30c9d-e8c4-4c25-8d75-ef9e7c543904.png "From MV-1.pdf")

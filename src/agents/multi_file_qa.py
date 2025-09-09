@@ -564,16 +564,13 @@ NOTE:
         for s3_uri in formatted_response["s3_uris"]:
             chat_history.append({
                 "role": "assistant",
-                "content": f"Image: {s3_uri['label']}"
-            })
-            chat_history.append({
-                "role": "assistant",
-                "content": gr.Image(
-                    value=s3_uri["s3_uri"],
-                    label=s3_uri["label"],
-                    show_label=True
-                )
-            })
+                "content": f"""
+                        <center>
+                            <p>Image: {s3_uri["label"]}</p>
+                            <img src={s3_uri["s3_uri"]} style="height: auto; width: auto;">
+                        </center>
+                    """
+                })
         
         logger.info(f"Response formatted and added to chat history.")
         return state
@@ -586,3 +583,38 @@ NOTE:
         })
         return state    
          
+def summarize_conversation(state: MultiFileDocumentState) -> MultiFileDocumentState:
+    messages_of_state = state["messages"]
+    
+    if len(messages_of_state) > 8:
+        summary_to_date = state.get("summary_to_date", "")
+        if len(summary_to_date) > 0:
+            summary_message = (
+                f"This is a summary of the conversation to date: {summary_to_date}\n\n"
+                "Extend the summary by incorporating the new messages above. Focus on: "
+                "1) Key questions asked about documents, 2) Important findings or insights discovered, "
+                "3) Document references and file names mentioned, 4) Any specific data points or analysis results. "
+                "Keep the summary concise but comprehensive for future reference in this document chat session."
+            )
+
+        else:
+            summary_message = (
+                "Create a comprehensive summary of the conversation above for a document processing chat system. "
+                "Include: 1) Main questions asked about the documents, 2) Key findings and insights discovered, "
+                "3) Document names and types processed, 4) Important data points, analysis results, or patterns identified, "
+                "5) Any specific document sections or content referenced. This summary will help maintain context "
+                "for future questions in this document chat session. Keep it detailed but concise."
+            )
+
+        # Add prompt to our history
+        messages_to_llm = state["messages"][:-2] + [HumanMessage(content=summary_message)]
+        llm = init_chat_model(Config.QnA_MODEL_NAME)
+        response = llm.invoke(messages_to_llm)
+
+        # Delete all but the 2 most recent messages
+        messages = [HumanMessage(content=f"Summary of conversation till now: {response.content.strip()}")] + state["messages"][-2:]
+        state["summary_to_date"] = response.content.strip()
+        state["messages"] = messages
+        return state
+    else:
+        return state

@@ -95,6 +95,7 @@ class MultiFileDocumentState(TypedDict):
     messages: Annotated[List, add_messages]
     current_query: Optional[str]
     response: Optional[str]
+    summary_to_date: Optional[str]
     chat_history: List[Dict[str, str]]
     
     # Context for retrieval (combines all files)
@@ -128,6 +129,7 @@ class MultiFileDocumentState(TypedDict):
             "messages": [],
             "current_query": None,
             "response": None,
+            "summary_to_date": "",
             "chat_history": [],
             "relevant_chunks": [],
             "max_chunk_size": 1000,

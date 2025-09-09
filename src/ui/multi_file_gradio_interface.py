@@ -23,53 +23,79 @@ class MultiFileDocumentChatInterface:
         Returns: (status_message, summary, progress, questions, chat_visible)
         """
         try:
-            if not files:
-                return "Please select files to upload.", "", "No files selected", [], False
-            
-            if self.processing:
-                return "Currently processing other files. Please wait.", "", "Processing in progress", [], False
-            
-            self.processing = True
-            
-            # Start processing
-            logger.info(f"Processing uploaded files: {[file.name for file in files]}")
-            
-            # Process documents through workflow
-            uploaded_files = [(file.name, file.name) for file in files]
-            result = self.workflow.process_documents(uploaded_files, user_id)
-            
-            # Store state
-            self.current_state = result
-            logger.info(f"Status: {result.get('overall_status')}")
-            if result.get("overall_status") == ProcessingStatus.ERROR:
-                error_msg = result.get("error_message", "Unknown error occurred")
-                self.processing = False
-                return f"Error: {error_msg}", "", "Error occurred", [], False
-            
-            elif result.get("overall_status") == ProcessingStatus.VECTORIZED:
-                summary = result.get("combined_summary", "No summary available")
-                questions = result.get("suggested_questions", [])
+            is_state_stored, stored_state = self.workflow.check_state_stored(user_id)
+            if is_state_stored:
+                self.current_state = stored_state
+                if self.current_state.get("overall_status") == ProcessingStatus.ERROR:
+                    error_msg = self.current_state.get("error_message", "Unknown error occurred")
+                    self.processing = False
+                    return f"Error: {error_msg}", "", "Error occurred", [], self.current_state.get("chat_history"), False
                 
-                # Format summary for display
-                formatted_summary = self._format_summary(summary)
-                
-                self.processing = False
-                return (
-                    "✅ Documents processed successfully! You can now ask questions.",
-                    formatted_summary,
-                    "Processing complete",
-                    questions,
-                    True  # Make chat visible
-                )
-            
+                elif self.current_state.get("overall_status") == ProcessingStatus.VECTORIZED:
+                    summary = self.current_state.get("combined_summary", "No summary available")
+                    questions = self.current_state.get("suggested_questions", [])
+                    
+                    # Format summary for display
+                    formatted_summary = self._format_summary(summary)
+                    
+                    self.processing = False
+                    return (
+                        "✅ Documents processed successfully! You can now ask questions.",
+                        formatted_summary,
+                        "Processing complete",
+                        questions,
+                        self.current_state.get("chat_history"),
+                        True  # Make chat visible
+                    )
             else:
-                self.processing = False
-                return "Processing completed but status unclear.", "", "Status unclear", [], False
+                if not files:
+                    return "Please select files to upload.", "", "No files selected", [], self.current_state.get("chat_history"), False
+                
+                if self.processing:
+                    return "Currently processing other files. Please wait.", "", "Processing in progress", [], self.current_state.get("chat_history"), False
+                
+                self.processing = True
+                
+                # Start processing
+                logger.info(f"Processing uploaded files: {[file.name for file in files]}")
+                
+                # Process documents through workflow
+                uploaded_files = [(file.name, file.name) for file in files]
+                result = self.workflow.process_documents(uploaded_files, user_id)
+                
+                # Store state
+                self.current_state = result
+                logger.info(f"Status: {result.get('overall_status')}")
+                if result.get("overall_status") == ProcessingStatus.ERROR:
+                    error_msg = result.get("error_message", "Unknown error occurred")
+                    self.processing = False
+                    return f"Error: {error_msg}", "", "Error occurred", [], self.current_state.get("chat_history"), False
+                
+                elif result.get("overall_status") == ProcessingStatus.VECTORIZED:
+                    summary = result.get("combined_summary", "No summary available")
+                    questions = result.get("suggested_questions", [])
+                    
+                    # Format summary for display
+                    formatted_summary = self._format_summary(summary)
+                    
+                    self.processing = False
+                    return (
+                        "✅ Documents processed successfully! You can now ask questions.",
+                        formatted_summary,
+                        "Processing complete",
+                        questions,
+                        self.current_state.get("chat_history"),
+                        True  # Make chat visible
+                    )
+            
+                else:
+                    self.processing = False
+                    return "Processing completed but status unclear.", "", "Status unclear", [], self.current_state.get("chat_history"), False
                 
         except Exception as e:
             logger.error(f"Error in upload_and_process_files: {str(e)}")
             self.processing = False
-            return f"Error processing files: {str(e)}", "", "Error", [], False
+            return f"Error processing files: {str(e)}", "", "Error", [], [], False
     
     def answer_question(self, question: str, chat_history: List[Dict], user_id: str):
         """
@@ -77,44 +103,62 @@ class MultiFileDocumentChatInterface:
         Yields: (updated_chat_history, empty_input)
         """
         try:
-            chat_history.extend([{"role": "user", "content": question}])
-            yield chat_history, ""
+            result = self.upload_and_process_files([], user_id)
             
-            if not self.current_state:
-                chat_history.extend([
-                    {
-                        "role": "assistant",
-                        "content": "Please upload and process documents first." 
-                    }
-                ])
+            status, summary, progress, questions, chat_hist, chat_visible = result
+            
+            if chat_visible:
+                chat_history.extend([{"role": "user", "content": question}])
                 yield chat_history, ""
-            
-            if self.current_state.get("overall_status") != ProcessingStatus.VECTORIZED:
-                chat_history.extend([
-                    {
-                        "role": "assistant",
-                        "content": "Documents are not ready for questions yet. Please wait for processing to complete." 
-                    }
-                ])
+                
+                chat_history.append({"role": "assistant", "content": "🤔 Thinking..."})
                 yield chat_history, ""
-            
-            chat_history.append({"role": "assistant", "content": "🤔 Thinking..."})
-            yield chat_history, ""
-            
-            # Process question through workflow
-            result = self.workflow.ask_question(self.current_state, question, user_id)
-            
-            # Get response
-            # response = result.get("response", "I couldn't generate a response.")
-            response = result.get("chat_history", [])
-            
-            # Update current state
-            self.current_state = result
-            
-            # Add to chat history
-            chat_history = response
-            
-            yield chat_history, ""  # Clear input
+                
+                result = self.workflow.ask_question(self.current_state, question, user_id)
+                response = result.get("chat_history", [])
+                self.current_state = result
+                chat_history = response
+                
+                yield chat_history, ""  # Clear input
+            else:         
+                chat_history.extend([{"role": "user", "content": question}])
+                yield chat_history, ""
+                
+                if not self.current_state:
+                    chat_history.extend([
+                        {
+                            "role": "assistant",
+                            "content": "Please upload and process documents first." 
+                        }
+                    ])
+                    yield chat_history, ""
+                
+                if self.current_state.get("overall_status") != ProcessingStatus.VECTORIZED:
+                    chat_history.extend([
+                        {
+                            "role": "assistant",
+                            "content": "Documents are not ready for questions yet. Please wait for processing to complete." 
+                        }
+                    ])
+                    yield chat_history, ""
+                
+                chat_history.append({"role": "assistant", "content": "🤔 Thinking..."})
+                yield chat_history, ""
+                
+                # Process question through workflow
+                result = self.workflow.ask_question(self.current_state, question, user_id)
+                
+                # Get response
+                # response = result.get("response", "I couldn't generate a response.")
+                response = result.get("chat_history", [])
+                
+                # Update current state
+                self.current_state = result
+                
+                # Add to chat history
+                chat_history = response
+                
+                yield chat_history, ""  # Clear input
             
         except Exception as e:
             logger.error(f"Error answering question: {str(e)}")
@@ -234,7 +278,7 @@ class MultiFileDocumentChatInterface:
             # Event handlers
             def handle_processing(files, user_id):
                 result = self.upload_and_process_files(files, user_id)
-                status, summary, progress, questions, chat_visible = result
+                status, summary, progress, questions, chat_history, chat_visible = result
 
                 chatbot.examples = [{"role": "user", "content": q} for q in questions]
                 
@@ -254,6 +298,7 @@ class MultiFileDocumentChatInterface:
                     status,  # status_output 
                     summary,  # summary_output
                     gr.Group(visible=bool(questions)),  # questions_group
+                    chat_history,
                     gr.Group(visible=chat_visible),  # chat_group
                 ] + question_updates
             
@@ -265,6 +310,7 @@ class MultiFileDocumentChatInterface:
                     status_output, 
                     summary_output,
                     questions_group,
+                    chatbot,
                     chat_group
                 ] + question_buttons
             )
